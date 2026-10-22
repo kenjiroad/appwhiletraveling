@@ -1,4 +1,5 @@
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 import type { Exercise } from '../../modules/rep-counter';
 
@@ -10,13 +11,22 @@ export type Settings = {
   reps: number;
 };
 
+// SecureStore has no web implementation; the browser preview keeps data in localStorage.
+const store =
+  Platform.OS === 'web'
+    ? {
+        getItem: (key: string) => globalThis.localStorage?.getItem(key) ?? null,
+        setItem: (key: string, value: string) => globalThis.localStorage?.setItem(key, value),
+      }
+    : { getItem: SecureStore.getItem, setItem: SecureStore.setItem };
+
 const SETTINGS_KEY = 'settings';
 const HISTORY_KEY = 'completed_days';
 
 export const DEFAULT_SETTINGS: Settings = { hour: 7, minute: 0, enabled: true, exercise: 'pushup', reps: 15 };
 
 function readJson<T>(key: string, fallback: T): T {
-  const raw = SecureStore.getItem(key);
+  const raw = store.getItem(key);
   if (!raw) return fallback;
   try {
     return JSON.parse(raw) as T;
@@ -30,7 +40,7 @@ export function getSettings(): Settings | null {
 }
 
 export function saveSettings(settings: Settings) {
-  SecureStore.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  store.setItem(SETTINGS_KEY, JSON.stringify(settings));
 }
 
 export function dayKey(date = new Date()) {
@@ -48,7 +58,7 @@ export function markTodayCompleted() {
   const days = new Set(getCompletedDays());
   days.add(dayKey());
   // Keep the last year only; the streak never needs more.
-  SecureStore.setItem(HISTORY_KEY, JSON.stringify([...days].sort().slice(-366)));
+  store.setItem(HISTORY_KEY, JSON.stringify([...days].sort().slice(-366)));
 }
 
 export function isTodayCompleted() {

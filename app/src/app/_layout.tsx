@@ -1,9 +1,9 @@
 import * as Notifications from 'expo-notifications';
-import { DarkTheme, router, Stack, ThemeProvider } from 'expo-router';
+import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 
 import { colors } from '@/lib/theme';
+import { useAlarmResponse } from '@/lib/use-alarm-response';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -20,14 +20,7 @@ const theme = {
 };
 
 export default function RootLayout() {
-  const lastResponse = Notifications.useLastNotificationResponse();
-
-  // Tapping an alarm notification goes straight to the challenge.
-  useEffect(() => {
-    if (lastResponse?.notification.request.content.data?.url === '/challenge') {
-      router.push('/challenge');
-    }
-  }, [lastResponse]);
+  useAlarmResponse();
 
   return (
     <ThemeProvider value={theme}>

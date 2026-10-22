@@ -36,11 +36,13 @@ export default function PaywallScreen() {
           key={plan.id}
           onPress={() => setSelected(plan.id)}
           style={[styles.plan, selected === plan.id && styles.planSelected]}>
-          <View>
+          <View style={{ flex: 1 }}>
             <Text style={styles.planTitle}>{plan.title}</Text>
             <Text style={styles.planDetail}>{plan.detail}</Text>
           </View>
-          <Text style={styles.planPrice}>{plan.price}</Text>
+          <Text style={styles.planPrice} numberOfLines={1}>
+            {plan.price}
+          </Text>
         </Pressable>
       ))}
 
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
   planSelected: { borderColor: colors.accent },
   planTitle: { color: colors.text, fontSize: 17, fontWeight: '700' },
   planDetail: { color: colors.textMuted, fontSize: 14, marginTop: 2 },
-  planPrice: { color: colors.text, fontSize: 17, fontWeight: '700' },
+  planPrice: { color: colors.text, fontSize: 17, fontWeight: '700', marginLeft: 12, flexShrink: 0 },
   cta: { backgroundColor: colors.accent, borderRadius: radius.md, paddingVertical: 18, alignItems: 'center', marginTop: 4 },
   ctaText: { color: colors.text, fontSize: 18, fontWeight: '700' },
   restore: { paddingVertical: 14, alignItems: 'center' },

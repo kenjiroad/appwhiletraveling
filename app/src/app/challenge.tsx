@@ -1,8 +1,8 @@
 import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Pressable, Share, StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { cancelTodayReminders } from '@/lib/alarm';
 import { EXERCISE_LABELS } from '@/lib/exercises';
@@ -12,7 +12,10 @@ import { isRepCounterAvailable, RepCounterView } from '../../modules/rep-counter
 
 export default function ChallengeScreen() {
   const [settings] = useState(() => getSettings() ?? DEFAULT_SETTINGS);
+  const insets = useSafeAreaInsets();
   const [count, setCount] = useState(0);
+  // Taps in demo mode can arrive faster than re-renders, so the latest count lives in a ref.
+  const countRef = useRef(0);
   const [bodyVisible, setBodyVisible] = useState(false);
   const [streak, setStreak] = useState<number | null>(null);
 
@@ -21,6 +24,7 @@ export default function ChallengeScreen() {
 
   const onRep = (newCount: number) => {
     if (done) return;
+    countRef.current = newCount;
     setCount(newCount);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     if (newCount >= settings.reps) {
@@ -66,31 +70,27 @@ export default function ChallengeScreen() {
           onBodyVisibilityChange={(e) => setBodyVisible(e.nativeEvent.visible)}
         />
       ) : (
-        <Pressable style={[StyleSheet.absoluteFill, styles.demo]} onPress={() => onRep(count + 1)}>
+        <Pressable style={[StyleSheet.absoluteFill, styles.demo]} onPress={() => onRep(countRef.current + 1)}>
           <Text style={styles.demoText}>Mode démo (Expo Go){'\n'}Tape l’écran à chaque {label.singular}</Text>
         </Pressable>
       )}
 
-      <SafeAreaView style={styles.overlay} pointerEvents="box-none">
-        <View style={styles.topBar}>
-          <Pressable onPress={() => router.back()} hitSlop={12}>
-            <Text style={styles.quit}>Quitter</Text>
-          </Pressable>
-        </View>
+      <View style={styles.counter} pointerEvents="none">
+        <Text style={styles.count}>{count}</Text>
+        <Text style={styles.target}>
+          / {settings.reps} {label.plural}
+        </Text>
+      </View>
 
-        <View style={styles.counter} pointerEvents="none">
-          <Text style={styles.count}>{count}</Text>
-          <Text style={styles.target}>
-            / {settings.reps} {label.plural}
-          </Text>
-        </View>
+      <Pressable style={[styles.quitButton, { top: insets.top + 12 }]} onPress={() => router.back()} hitSlop={12}>
+        <Text style={styles.quit}>Quitter</Text>
+      </Pressable>
 
-        {isRepCounterAvailable && !bodyVisible && (
-          <View style={styles.hint} pointerEvents="none">
-            <Text style={styles.hintText}>Mets-toi dans le cadre 👀{'\n'}{label.tip}</Text>
-          </View>
-        )}
-      </SafeAreaView>
+      {isRepCounterAvailable && !bodyVisible && (
+        <View style={[styles.hint, { bottom: insets.bottom + 20 }]} pointerEvents="none">
+          <Text style={styles.hintText}>Mets-toi dans le cadre 👀{'\n'}{label.tip}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -98,10 +98,9 @@ export default function ChallengeScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
   center: { justifyContent: 'center', alignItems: 'center', padding: 24 },
-  overlay: { flex: 1, justifyContent: 'space-between' },
-  topBar: { flexDirection: 'row', justifyContent: 'flex-end', padding: 20 },
+  quitButton: { position: 'absolute', right: 20 },
   quit: { color: colors.textMuted, fontSize: 15 },
-  counter: { alignItems: 'center' },
+  counter: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   count: {
     color: colors.text,
     fontSize: 140,
@@ -111,9 +110,9 @@ const styles = StyleSheet.create({
     textShadowRadius: 12,
   },
   target: { color: colors.text, fontSize: 22, fontWeight: '700', textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 8 },
-  hint: { margin: 20, padding: 16, borderRadius: radius.md, backgroundColor: 'rgba(0,0,0,0.65)' },
+  hint: { position: 'absolute', left: 20, right: 20, padding: 16, borderRadius: radius.md, backgroundColor: 'rgba(0,0,0,0.65)' },
   hintText: { color: colors.text, fontSize: 16, textAlign: 'center', lineHeight: 23 },
-  demo: { justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 140, backgroundColor: colors.card },
+  demo: { justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 60, backgroundColor: colors.card },
   demoText: { color: colors.textMuted, fontSize: 16, textAlign: 'center' },
   bigEmoji: { fontSize: 72, marginBottom: 12 },
   title: { color: colors.text, fontSize: 36, fontWeight: '800', marginBottom: 8 },

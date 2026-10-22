@@ -5,6 +5,13 @@ _Date : 22 octobre 2026_
 **Le concept :** le réveil sonne. Pour l'arrêter, tu fais tes pompes ou tes squats devant la caméra.
 L'IA compte tes répétitions. Pas de bouton « répéter ».
 
+## Le parcours en images
+
+Capturé dans un navigateur au format iPhone, en mode démo (tape l'écran à la place de la caméra) :
+accroche → défi → heure → autorisations → paywall → accueil → défi en cours → « Réveillé ! » → accueil avec la série 🔥 1.
+
+![Parcours de Debout](images/parcours-debout.png)
+
 ## Ce qui est construit (dans `app/`)
 
 | Partie | Fichier | Rôle |

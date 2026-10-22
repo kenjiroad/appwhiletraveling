@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 import { EXERCISE_LABELS } from '@/lib/exercises';
 import { dayKey, isTodayCompleted, type Settings } from '@/lib/storage';
@@ -10,12 +11,17 @@ import { dayKey, isTodayCompleted, type Settings } from '@/lib/storage';
 const DAYS_AHEAD = 5;
 const REMINDERS_PER_DAY = 10;
 
+// Local notifications don't exist on web; the browser preview just skips the alarm.
+const supported = Platform.OS !== 'web';
+
 export async function requestNotificationPermissionAsync() {
+  if (!supported) return false;
   const { granted } = await Notifications.requestPermissionsAsync();
   return granted;
 }
 
 export async function scheduleAlarms(settings: Settings) {
+  if (!supported) return;
   await Notifications.cancelAllScheduledNotificationsAsync();
   if (!settings.enabled) return;
 
@@ -47,6 +53,7 @@ export async function scheduleAlarms(settings: Settings) {
 
 /** Called once the challenge is done: today's remaining reminders go away. */
 export async function cancelTodayReminders() {
+  if (!supported) return;
   const today = dayKey();
   const scheduled = await Notifications.getAllScheduledNotificationsAsync();
   await Promise.all(
