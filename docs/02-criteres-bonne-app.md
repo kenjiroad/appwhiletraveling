@@ -14,6 +14,8 @@ pour choisir l'idée **et** pour vérifier chaque décision pendant qu'on constr
 | 5 | **Faisable seul en < 3 mois (V1)** | Pas d'IA lourde, pas de matériel, pas de marketplace à deux faces | ✅ |
 | 6 | **Distribution claire** | Comment les 1 000 premiers utilisateurs arrivent-ils ? | ✅ Audience des coachs + TikTok |
 | 7 | **Contenu « montrable »** | Peut-on faire des vidéos TikTok/Reels avec l'app ? | ✅ Séances, transformations |
+| 7b | **Aucune dépendance à des tiers** _(ajouté étape 5)_ | L'app marche-t-elle sans coach, partenaire ou contenu à produire à la main ? | ❌ besoin de coachs → idée remplacée |
+| 7c | **Distribution organique d'abord** _(ajouté étape 5)_ | Peut-on faire des slideshows TikTok « faceless » qui tournent, depuis un téléphone ? Les influenceurs viennent en phase 2. | — |
 
 ## B. Construire le produit
 

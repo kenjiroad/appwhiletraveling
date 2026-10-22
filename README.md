@@ -1,9 +1,10 @@
-# Cordée — app iOS de musculation coachée, pour la France
+# App While Traveling — première app iOS grand public, pour la France
 
-Première app, construite en voyageant. Idée : reprendre le concept de **Ladder**
-(app de muscu n°1 en revenus aux US, uniquement en anglais) et le lancer en France.
+Première app, construite en voyageant. Le principe : reprendre une app qui marche aux US et la lancer en
+France, **sans dépendre de partenaires**, avec une distribution organique (TikTok) d'abord.
 
-> Choisis ton coach, rejoins son équipe, reçois ton programme de muscu chaque dimanche — en français.
+> Idée en cours de choix (étape 5) : **app alternance IA** recommandée, **coach muscu IA** en plan B.
+> L'idée « Cordée » (Ladder avec des coachs) est en pause : elle dépendait de coachs à recruter.
 
 ## Les étapes (à lire dans l'ordre)
 
@@ -11,7 +12,8 @@ Première app, construite en voyageant. Idée : reprendre le concept de **Ladder
 1. [Étude de marché](docs/01-etude-de-marche.md) — pourquoi Ladder
 2. [Critères d'une bonne app](docs/02-criteres-bonne-app.md)
 3. [Stack technique](docs/03-stack-technique.md) — outils et comment lancer l'app
-4. [Feuille de route](docs/04-feuille-de-route.md) — jusqu'au lancement
+4. [Feuille de route](docs/04-feuille-de-route.md) — jusqu'au lancement (version Cordée)
+5. [Nouvelles idées](docs/05-nouvelles-idees.md) — apps qui se distribuent seules
 
 ## Lancer l'app
 

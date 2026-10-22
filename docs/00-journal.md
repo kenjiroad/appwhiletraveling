@@ -20,5 +20,11 @@ Projet Expo SDK 58 créé dans `app/`, nom de travail **Cordée**, bundle id `fr
 Plan en 5 phases, de la validation au lancement (~12 semaines).
 → Détails : [04-feuille-de-route.md](04-feuille-de-route.md)
 
-## Étape 5 — Validation (à faire)
-Nom, premier coach partenaire, interviews, page d'attente, création des comptes.
+## Étape 5 — Changement de cap : apps qui se distribuent seules ✅ (22/10/2026)
+Nouvelle règle : pas besoin de contacter qui que ce soit (pas de coachs). La distribution passe par
+l'organique (slideshows TikTok faceless), puis par la pub ; les influenceurs viendront en phase 2.
+Cordée est mise en pause. 5 nouvelles idées notées.
+**Recommandation : app alternance IA** (modèle Sprout). Plan B : coach muscu IA gamifié (modèle Stronger).
+→ Détails : [05-nouvelles-idees.md](05-nouvelles-idees.md)
+
+## Étape 6 — Choix final de l'idée (en attente de ta décision)
