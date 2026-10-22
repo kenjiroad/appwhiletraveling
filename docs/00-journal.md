@@ -53,4 +53,9 @@ Onboarding, accueil, défi caméra, série, partage, paywall (factice). Mode dé
 Le Swift n'est pas encore compilé (pas de Mac ici) : ce sera fait au premier build EAS.
 → Détails : [09-debout-v1.md](09-debout-v1.md)
 
-## Étape 10 — Compte Apple Developer + premier build EAS (à faire)
+## Étape 10 — Nouvelle DA + gamification ✅ (22/10/2026)
+Refonte complète : style néon/Bricolage Grotesque, XP, 8 rangs d'évolution (😴 → 👑), écran « ÉVOLUTION ! »,
+ligue hebdo avec podium (joueurs fictifs en attendant les comptes), onglets Réveil / Ligue / Évolution.
+→ Détails : [10-direction-artistique.md](10-direction-artistique.md)
+
+## Étape 11 — Validation de la DA, puis compte Apple Developer + premier build EAS (à faire)

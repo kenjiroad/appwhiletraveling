@@ -9,6 +9,7 @@ export type Settings = {
   enabled: boolean;
   exercise: Exercise;
   reps: number;
+  name?: string;
 };
 
 // SecureStore has no web implementation; the browser preview keeps data in localStorage.
@@ -21,7 +22,9 @@ const store =
     : { getItem: SecureStore.getItem, setItem: SecureStore.setItem };
 
 const SETTINGS_KEY = 'settings';
-const HISTORY_KEY = 'completed_days';
+const HISTORY_KEY = 'history';
+
+export type DayRecord = { reps: number; done: boolean };
 
 export const DEFAULT_SETTINGS: Settings = { hour: 7, minute: 0, enabled: true, exercise: 'pushup', reps: 15 };
 
@@ -50,31 +53,71 @@ export function dayKey(date = new Date()) {
   return `${y}-${m}-${d}`;
 }
 
-function getCompletedDays(): string[] {
-  return readJson<string[]>(HISTORY_KEY, []);
+export function getHistory(): Record<string, DayRecord> {
+  return readJson<Record<string, DayRecord>>(HISTORY_KEY, {});
 }
 
-export function markTodayCompleted() {
-  const days = new Set(getCompletedDays());
-  days.add(dayKey());
-  // Keep the last year only; the streak never needs more.
-  store.setItem(HISTORY_KEY, JSON.stringify([...days].sort().slice(-366)));
+/** Adds a finished session to today's total; `done` marks the daily challenge as completed. */
+export function recordSession(reps: number, done: boolean) {
+  const history = getHistory();
+  const today = history[dayKey()] ?? { reps: 0, done: false };
+  history[dayKey()] = { reps: today.reps + reps, done: today.done || done };
+  store.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
 export function isTodayCompleted() {
-  return getCompletedDays().includes(dayKey());
+  return getHistory()[dayKey()]?.done ?? false;
 }
 
 /** Consecutive completed days ending today (or yesterday, if today isn't done yet). */
 export function getStreak() {
-  const days = new Set(getCompletedDays());
+  const history = getHistory();
   const cursor = new Date();
-  if (!days.has(dayKey(cursor))) cursor.setDate(cursor.getDate() - 1);
+  if (!history[dayKey(cursor)]?.done) cursor.setDate(cursor.getDate() - 1);
 
   let streak = 0;
-  while (days.has(dayKey(cursor))) {
+  while (history[dayKey(cursor)]?.done) {
     streak += 1;
     cursor.setDate(cursor.getDate() - 1);
   }
   return streak;
+}
+
+export function getBestStreak() {
+  const history = getHistory();
+  const days = Object.keys(history)
+    .filter((d) => history[d].done)
+    .sort();
+  let best = 0;
+  let current = 0;
+  let previous: Date | null = null;
+  for (const day of days) {
+    const date = new Date(`${day}T12:00:00`);
+    const consecutive = previous && Math.round((date.getTime() - previous.getTime()) / 86_400_000) === 1;
+    current = consecutive ? current + 1 : 1;
+    best = Math.max(best, current);
+    previous = date;
+  }
+  return best;
+}
+
+export function getTotals() {
+  const records = Object.values(getHistory());
+  return {
+    reps: records.reduce((sum, r) => sum + r.reps, 0),
+    completedDays: records.filter((r) => r.done).length,
+  };
+}
+
+/** Reps since Monday of the current week. */
+export function getWeekReps() {
+  const history = getHistory();
+  const cursor = new Date();
+  const daysSinceMonday = (cursor.getDay() + 6) % 7;
+  let total = 0;
+  for (let i = 0; i <= daysSinceMonday; i++) {
+    total += history[dayKey(cursor)]?.reps ?? 0;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return total;
 }

@@ -1,60 +1,103 @@
 import * as Haptics from 'expo-haptics';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useRef, useState } from 'react';
 import { Pressable, Share, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Body, GhostButton, GradientCard, PrimaryButton, ProgressBar } from '@/components/ui';
 import { cancelTodayReminders } from '@/lib/alarm';
 import { EXERCISE_LABELS } from '@/lib/exercises';
-import { DEFAULT_SETTINGS, getSettings, getStreak, markTodayCompleted } from '@/lib/storage';
-import { colors, radius } from '@/lib/theme';
+import { getXp, rankFor, XP_PER_COMPLETED_DAY, type Rank } from '@/lib/progress';
+import { DEFAULT_SETTINGS, getSettings, getStreak, isTodayCompleted, recordSession } from '@/lib/storage';
+import { colors, fonts, gradients } from '@/lib/theme';
 import { isRepCounterAvailable, RepCounterView } from '../../modules/rep-counter';
 
+type Result = { xpGained: number; streak: number; rankUp: Rank | null };
+
+function encouragement(remaining: number) {
+  if (remaining <= 0) return 'C’est gagné 🔥';
+  if (remaining === 1) return 'LA DERNIÈRE !';
+  if (remaining <= 3) return `Plus que ${remaining} !`;
+  if (remaining <= 6) return 'Tu y es presque 💪';
+  return 'Allez, on se réveille !';
+}
+
 export default function ChallengeScreen() {
-  const [settings] = useState(() => getSettings() ?? DEFAULT_SETTINGS);
   const insets = useSafeAreaInsets();
+  const [settings] = useState(() => getSettings() ?? DEFAULT_SETTINGS);
   const [count, setCount] = useState(0);
   // Taps in demo mode can arrive faster than re-renders, so the latest count lives in a ref.
   const countRef = useRef(0);
   const [bodyVisible, setBodyVisible] = useState(false);
-  const [streak, setStreak] = useState<number | null>(null);
+  const [result, setResult] = useState<Result | null>(null);
 
   const label = EXERCISE_LABELS[settings.exercise];
-  const done = streak !== null;
+  const remaining = settings.reps - count;
+
+  const finish = (reps: number) => {
+    const firstWinToday = !isTodayCompleted();
+    const before = rankFor(getXp()).rank;
+    recordSession(reps, true);
+    cancelTodayReminders();
+    const after = rankFor(getXp()).rank;
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    setResult({
+      xpGained: reps + (firstWinToday ? XP_PER_COMPLETED_DAY : 0),
+      streak: getStreak(),
+      rankUp: after.name !== before.name ? after : null,
+    });
+  };
 
   const onRep = (newCount: number) => {
-    if (done) return;
+    if (result) return;
     countRef.current = newCount;
     setCount(newCount);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    if (newCount >= settings.reps) {
-      markTodayCompleted();
-      cancelTodayReminders();
-      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      setStreak(getStreak());
-    }
+    if (newCount >= settings.reps) finish(newCount);
   };
 
-  if (done) {
+  if (result) {
+    const { rank, next, progress, xpToNext } = rankFor(getXp());
     return (
-      <SafeAreaView style={[styles.screen, styles.center]}>
-        <Text style={styles.bigEmoji}>🔥</Text>
-        <Text style={styles.title}>Réveillé !</Text>
-        <Text style={styles.subtitle}>
-          {settings.reps} {label.plural} faites.{'\n'}Série : {streak} jour{streak > 1 ? 's' : ''} d’affilée.
-        </Text>
-        <Pressable
-          style={styles.secondaryButton}
-          onPress={() =>
-            Share.share({
-              message: `${streak} jour${streak > 1 ? 's' : ''} d’affilée à faire ${settings.reps} ${label.plural} au réveil avec Debout ⏰💪`,
-            })
-          }>
-          <Text style={styles.secondaryButtonText}>Partager ma série</Text>
-        </Pressable>
-        <Pressable style={styles.primaryButton} onPress={() => router.back()}>
-          <Text style={styles.primaryButtonText}>Commencer ma journée</Text>
-        </Pressable>
+      <SafeAreaView style={[styles.screen, styles.result]}>
+        <View style={styles.resultTop}>
+          <Text style={styles.bigEmoji}>{result.rankUp ? result.rankUp.emoji : '🔥'}</Text>
+          <Text style={styles.resultTitle}>{result.rankUp ? 'ÉVOLUTION !' : 'RÉVEILLÉ !'}</Text>
+          <Text style={styles.xp}>+{result.xpGained} XP</Text>
+          <Body style={{ textAlign: 'center' }}>
+            {settings.reps} {label.plural} · série de {result.streak} jour{result.streak > 1 ? 's' : ''} 🔥
+          </Body>
+        </View>
+
+        {result.rankUp ? (
+          <GradientCard style={{ alignItems: 'center', gap: 4 }}>
+            <Text style={styles.rankUpTitle}>Tu es maintenant {result.rankUp.name}</Text>
+            <Text style={styles.rankUpTag}>{result.rankUp.tagline}</Text>
+          </GradientCard>
+        ) : (
+          <View style={{ gap: 8 }}>
+            <View style={styles.rowBetween}>
+              <Text style={styles.rankLabel}>
+                {rank.emoji} {rank.name}
+              </Text>
+              <Text style={styles.rankLabelMuted}>{next ? `${next.emoji} dans ${xpToNext} XP` : 'Rang max'}</Text>
+            </View>
+            <ProgressBar progress={progress} height={14} />
+          </View>
+        )}
+
+        <View style={{ gap: 12 }}>
+          <GhostButton
+            label="📸 Partager ma série"
+            onPress={() =>
+              Share.share({
+                message: `${result.streak} jour${result.streak > 1 ? 's' : ''} d’affilée à faire ${settings.reps} ${label.plural} au réveil sur Debout. Rang : ${rank.emoji} ${rank.name}. Tu tiens combien ? ⏰💪`,
+              })
+            }
+          />
+          <PrimaryButton label="Commencer ma journée" onPress={() => router.back()} />
+        </View>
       </SafeAreaView>
     );
   }
@@ -70,63 +113,73 @@ export default function ChallengeScreen() {
           onBodyVisibilityChange={(e) => setBodyVisible(e.nativeEvent.visible)}
         />
       ) : (
-        <Pressable style={[StyleSheet.absoluteFill, styles.demo]} onPress={() => onRep(countRef.current + 1)}>
-          <Text style={styles.demoText}>Mode démo (Expo Go){'\n'}Tape l’écran à chaque {label.singular}</Text>
+        <Pressable style={StyleSheet.absoluteFill} onPress={() => onRep(countRef.current + 1)}>
+          <LinearGradient colors={gradients.night} style={StyleSheet.absoluteFill} />
         </Pressable>
       )}
 
       <View style={styles.counter} pointerEvents="none">
         <Text style={styles.count}>{count}</Text>
         <Text style={styles.target}>
-          / {settings.reps} {label.plural}
+          sur {settings.reps} {label.plural}
         </Text>
       </View>
 
-      <Pressable style={[styles.quitButton, { top: insets.top + 12 }]} onPress={() => router.back()} hitSlop={12}>
-        <Text style={styles.quit}>Quitter</Text>
-      </Pressable>
+      <LinearGradient
+        colors={['transparent', 'rgba(13,10,30,0.95)']}
+        style={[styles.bottomShade, { paddingBottom: insets.bottom + 24 }]}
+        pointerEvents="none">
+        <Text style={styles.encouragement}>{encouragement(remaining)}</Text>
+        <ProgressBar progress={count / settings.reps} height={16} />
+        <Text style={styles.hint}>
+          {!isRepCounterAvailable
+            ? `Mode démo : tape l’écran à chaque ${label.singular}`
+            : bodyVisible
+              ? `L’IA compte tes ${label.plural} 👀`
+              : `Mets-toi dans le cadre. ${label.tip}`}
+        </Text>
+      </LinearGradient>
 
-      {isRepCounterAvailable && !bodyVisible && (
-        <View style={[styles.hint, { bottom: insets.bottom + 20 }]} pointerEvents="none">
-          <Text style={styles.hintText}>Mets-toi dans le cadre 👀{'\n'}{label.tip}</Text>
-        </View>
-      )}
+      <Pressable style={[styles.quitButton, { top: insets.top + 12 }]} onPress={() => router.back()} hitSlop={12}>
+        <Text style={styles.quit}>Abandonner</Text>
+      </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  center: { justifyContent: 'center', alignItems: 'center', padding: 24 },
   quitButton: { position: 'absolute', right: 20 },
-  quit: { color: colors.textMuted, fontSize: 15 },
-  counter: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
+  quit: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 15 },
+  counter: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center', paddingBottom: 80 },
   count: {
-    color: colors.text,
-    fontSize: 140,
-    fontWeight: '900',
+    color: colors.lime,
+    fontFamily: fonts.black,
+    fontSize: 200,
+    lineHeight: 210,
+    letterSpacing: -8,
     fontVariant: ['tabular-nums'],
-    textShadowColor: 'rgba(0,0,0,0.6)',
-    textShadowRadius: 12,
+    textShadowColor: 'rgba(200,255,46,0.45)',
+    textShadowRadius: 30,
   },
-  target: { color: colors.text, fontSize: 22, fontWeight: '700', textShadowColor: 'rgba(0,0,0,0.6)', textShadowRadius: 8 },
-  hint: { position: 'absolute', left: 20, right: 20, padding: 16, borderRadius: radius.md, backgroundColor: 'rgba(0,0,0,0.65)' },
-  hintText: { color: colors.text, fontSize: 16, textAlign: 'center', lineHeight: 23 },
-  demo: { justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 60, backgroundColor: colors.card },
-  demoText: { color: colors.textMuted, fontSize: 16, textAlign: 'center' },
-  bigEmoji: { fontSize: 72, marginBottom: 12 },
-  title: { color: colors.text, fontSize: 36, fontWeight: '800', marginBottom: 8 },
-  subtitle: { color: colors.textMuted, fontSize: 18, lineHeight: 26, textAlign: 'center', marginBottom: 32 },
-  primaryButton: { backgroundColor: colors.accent, paddingVertical: 18, alignSelf: 'stretch', borderRadius: radius.md, alignItems: 'center' },
-  primaryButtonText: { color: colors.text, fontSize: 18, fontWeight: '700' },
-  secondaryButton: {
-    borderColor: colors.accent,
-    borderWidth: 2,
-    paddingVertical: 16,
-    alignSelf: 'stretch',
-    borderRadius: radius.md,
-    alignItems: 'center',
-    marginBottom: 12,
+  target: { color: colors.text, fontFamily: fonts.bold, fontSize: 22 },
+  bottomShade: { position: 'absolute', left: 0, right: 0, bottom: 0, paddingHorizontal: 24, paddingTop: 60, gap: 14 },
+  encouragement: { color: colors.text, fontFamily: fonts.black, fontSize: 30, textAlign: 'center' },
+  hint: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 14, textAlign: 'center' },
+  result: { padding: 24, justifyContent: 'space-between' },
+  resultTop: { alignItems: 'center', gap: 6, marginTop: 30 },
+  bigEmoji: { fontSize: 96 },
+  resultTitle: { color: colors.text, fontFamily: fonts.black, fontSize: 44, letterSpacing: -1 },
+  xp: {
+    color: colors.lime,
+    fontFamily: fonts.black,
+    fontSize: 56,
+    textShadowColor: 'rgba(200,255,46,0.45)',
+    textShadowRadius: 24,
   },
-  secondaryButtonText: { color: colors.text, fontSize: 17, fontWeight: '700' },
+  rankUpTitle: { color: colors.text, fontFamily: fonts.black, fontSize: 24, textAlign: 'center' },
+  rankUpTag: { color: 'rgba(255,255,255,0.9)', fontFamily: fonts.semibold, fontSize: 16 },
+  rowBetween: { flexDirection: 'row', justifyContent: 'space-between' },
+  rankLabel: { color: colors.text, fontFamily: fonts.bold, fontSize: 16 },
+  rankLabelMuted: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 15 },
 });

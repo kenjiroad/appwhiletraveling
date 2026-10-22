@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radius } from '@/lib/theme';
+import { colors, fonts, radius } from '@/lib/theme';
 
 type Props<T extends string | number> = {
   options: { value: T; label: string }[];
@@ -17,7 +17,7 @@ export function ChoiceRow<T extends string | number>({ options, value, onChange 
           <Pressable
             key={String(option.value)}
             onPress={() => onChange(option.value)}
-            style={[styles.chip, selected && styles.chipSelected]}>
+            style={({ pressed }) => [styles.chip, selected && styles.chipSelected, pressed && styles.pressed]}>
             <Text style={[styles.label, selected && styles.labelSelected]}>{option.label}</Text>
           </Pressable>
         );
@@ -30,14 +30,15 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', gap: 8 },
   chip: {
     flex: 1,
-    backgroundColor: colors.card,
-    borderColor: colors.cardBorder,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderWidth: 2,
     borderRadius: radius.md,
     paddingVertical: 14,
     alignItems: 'center',
   },
-  chipSelected: { borderColor: colors.accent },
-  label: { color: colors.textMuted, fontSize: 16, fontWeight: '700' },
-  labelSelected: { color: colors.text },
+  chipSelected: { backgroundColor: colors.lime, borderColor: colors.lime },
+  pressed: { transform: [{ scale: 0.96 }] },
+  label: { color: colors.textMuted, fontFamily: fonts.bold, fontSize: 16 },
+  labelSelected: { color: colors.onLime },
 });

@@ -7,10 +7,7 @@ L'IA compte tes répétitions. Pas de bouton « répéter ».
 
 ## Le parcours en images
 
-Capturé dans un navigateur au format iPhone, en mode démo (tape l'écran à la place de la caméra) :
-accroche → défi → heure → autorisations → paywall → accueil → défi en cours → « Réveillé ! » → accueil avec la série 🔥 1.
-
-![Parcours de Debout](images/parcours-debout.png)
+Les écrans ont été entièrement refaits à l'étape 10 : voir [10-direction-artistique.md](10-direction-artistique.md).
 
 ## Ce qui est construit (dans `app/`)
 
