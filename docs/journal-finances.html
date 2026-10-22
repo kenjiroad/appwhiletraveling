@@ -1,0 +1,152 @@
+<title>Debout — carnet de bord</title>
+<style>
+  :root {
+    --bg: #F6F1EA; --card: #FFFFFF; --text: #1A1530; --muted: #5E5872; --faint: #E4DCD0;
+    --sun: #E8622D; --gold: #B57A12; --rose: #D63F6D; --ok: #2E7D4F; --wait: #8A6A12;
+    --grad: linear-gradient(135deg, #FFC46B, #FF7A45 50%, #FF5E8A);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0A0B1A; --card: rgba(255,255,255,0.06); --text: #F6F1EA; --muted: rgba(246,241,234,0.62);
+      --faint: rgba(255,255,255,0.12); --sun: #FF7A45; --gold: #FFC46B; --rose: #FF5E8A; --ok: #7BD8A0; --wait: #FFC46B;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0A0B1A; --card: rgba(255,255,255,0.06); --text: #F6F1EA; --muted: rgba(246,241,234,0.62);
+    --faint: rgba(255,255,255,0.12); --sun: #FF7A45; --gold: #FFC46B; --rose: #FF5E8A; --ok: #7BD8A0; --wait: #FFC46B;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 "Instrument Sans", system-ui, -apple-system, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+  .serif { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-weight: 400; }
+  .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  h1 { font-size: clamp(40px, 9vw, 64px); line-height: 1; margin: 8px 0 12px; }
+  h1 span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h2 { font-size: 34px; margin: 48px 0 8px; }
+  h3 { font-size: 18px; margin: 0 0 6px; }
+  p { margin: 0 0 12px; }
+  .lead { color: var(--muted); font-size: 17px; max-width: 58ch; }
+  nav { display: flex; gap: 8px; flex-wrap: wrap; margin: 20px 0 0; }
+  nav a { color: var(--text); text-decoration: none; border: 1px solid var(--faint); padding: 6px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+  .card { background: var(--card); border: 1px solid var(--faint); border-radius: 20px; padding: 20px; margin: 14px 0; }
+  .day { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .day .serif { font-size: 30px; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; border: 1px solid currentColor; }
+  .done { color: var(--ok); } .todo { color: var(--wait); }
+  ol.steps { list-style: none; padding: 0; margin: 12px 0 0; }
+  ol.steps li { display: grid; grid-template-columns: 34px 1fr; gap: 10px; padding: 12px 0; border-top: 1px solid var(--faint); }
+  ol.steps .n { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 24px; color: var(--sun); line-height: 1.1; }
+  ol.steps b { display: block; }
+  ol.steps span { color: var(--muted); font-size: 15px; }
+  .term { border-left: 3px solid var(--gold); padding: 2px 0 2px 12px; margin: 10px 0; color: var(--muted); font-size: 15px; }
+  .term b { color: var(--text); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 16px 0; }
+  .kpi { background: var(--card); border: 1px solid var(--faint); border-radius: 16px; padding: 14px 16px; }
+  .kpi .v { font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 34px; line-height: 1.1; }
+  .kpi .l { font-size: 13px; color: var(--muted); }
+  .table { width: 100%; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; min-width: 520px; }
+  th, td { text-align: left; padding: 10px 8px; border-top: 1px solid var(--faint); vertical-align: top; }
+  th { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 600; border-top: 0; }
+  td.num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .note { font-size: 14px; color: var(--muted); }
+  footer { margin-top: 48px; font-size: 13px; color: var(--muted); }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+
+<div class="wrap">
+  <div class="eyebrow">Carnet de bord · mis à jour le 22 octobre 2026</div>
+  <h1 class="serif">Debout, <span>jour après jour.</span></h1>
+  <p class="lead">Ce qu’on construit chaque jour, expliqué simplement, et tout ce que l’app coûte. Le réveil qui ne s’arrête que quand tu fais tes pompes ou tes squats.</p>
+  <nav><a href="#jours">Jour par jour</a><a href="#finances">Finances</a><a href="#suite">La suite</a></nav>
+
+  <h2 class="serif" id="jours">Jour par jour</h2>
+
+  <div class="card">
+    <div class="day">
+      <div><div class="eyebrow">Jour 1 · mercredi 22 octobre 2026</div><div class="serif">De zéro à l’app qui tourne</div></div>
+      <span class="pill done">14 étapes faites</span>
+    </div>
+    <ol class="steps">
+      <li><div class="n">1</div><div><b>Étude de marché</b><span>Les apps qui montent aux États-Unis, 7 candidates comparées.</span></div></li>
+      <li><div class="n">2</div><div><b>Critères d’une bonne app</b><span>20 critères (idée, produit, lancement) pour trier les idées.</span></div></li>
+      <li><div class="n">3</div><div><b>Stack technique</b><span>Choix des outils : Expo pour l’app, Supabase pour les comptes, RevenueCat pour les abonnements.</span></div></li>
+      <li><div class="n">4</div><div><b>Feuille de route</b><span>Le plan, de la validation au lancement.</span></div></li>
+      <li><div class="n">5</div><div><b>Apps qui se distribuent seules</b><span>Nouvelle règle : pas besoin de contacter qui que ce soit. Organique d’abord, pub ensuite.</span></div></li>
+      <li><div class="n">6</div><div><b>Veille sur X</b><span>Ce que font les créateurs d’apps qui gagnent de l’argent.</span></div></li>
+      <li><div class="n">7</div><div><b>Essai « Ménage »</b><span>Une app codée en 1 jour, puis abandonnée : l’idée n’était pas assez forte.</span></div></li>
+      <li><div class="n">8</div><div><b>Partir de la douleur</b><span>Ce qui fait vraiment mal aux gens + les apps récentes qui ont démarré vite. Catégorie retenue : la discipline prouvée par l’IA.</span></div></li>
+      <li><div class="n">9</div><div><b>Debout V1</b><span>Le réveil, le défi caméra qui compte les pompes, la série, le paywall.</span></div></li>
+      <li><div class="n">10</div><div><b>Gamification</b><span>XP, 8 niveaux, ligue de la semaine. (La DA néon de cette étape a été rejetée.)</span></div></li>
+      <li><div class="n">11</div><div><b>Design &amp; marketing</b><span>La méthode Floup appliquée à Debout : positionnement, plan de DA.</span></div></li>
+      <li><div class="n">12</div><div><b>DA premium « Aube »</b><span>Le ciel se lève pendant le défi, verre dépoli, serif italique, animations.</span></div></li>
+      <li><div class="n">13</div><div><b>La mascotte</b><span>Une marmotte 3D qui évolue sur 8 niveaux, + 6 poses, générée avec Higgsfield.</span></div></li>
+      <li><div class="n">14</div><div><b>DA validée</b><span>Kenji valide le design. On passe à la technique.</span></div></li>
+    </ol>
+    <div class="term"><b>Expo</b> : l’outil qui permet d’écrire l’app iPhone en TypeScript (un langage du web) au lieu de Swift.</div>
+    <div class="term"><b>Module natif</b> : un petit bout de code Swift (le langage d’Apple) pour ce qu’Expo ne sait pas faire seul : ici, compter les pompes avec la caméra (Apple Vision).</div>
+  </div>
+
+  <div class="card">
+    <div class="day">
+      <div><div class="eyebrow">Jour 2 · à venir</div><div class="serif">L’app sur ton iPhone</div></div>
+      <span class="pill todo">en attente</span>
+    </div>
+    <ol class="steps">
+      <li><div class="n">15</div><div><b>Compte Apple Developer</b><span>Ton inscription chez Apple (obligatoire pour mettre une app sur l’App Store). Validation : de quelques heures à 2 jours.</span></div></li>
+      <li><div class="n">16</div><div><b>Premier build EAS</b><span>Les serveurs d’Expo fabriquent l’app iPhone à ta place (pas besoin de Mac). On vérifie que le code Swift compile.</span></div></li>
+    </ol>
+  </div>
+
+  <h2 class="serif" id="finances">Finances</h2>
+  <p class="lead">Tout ce que Debout coûte, en vrai. Les cases « à confirmer » attendent ton chiffre : je n’invente rien.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="v">0 €</div><div class="l">payé spécialement pour Debout</div></div>
+    <div class="kpi"><div class="v">46</div><div class="l">crédits Higgsfield utilisés pour Debout</div></div>
+    <div class="kpi"><div class="v">99 €</div><div class="l">prochaine dépense prévue (Apple)</div></div>
+  </div>
+
+  <div class="card">
+    <h3>Déjà dépensé</h3>
+    <div class="table"><table>
+      <thead><tr><th>Date</th><th>Quoi</th><th>Pourquoi</th><th>Coût</th></tr></thead>
+      <tbody>
+        <tr><td class="num">22/10</td><td>Higgsfield · Nano Banana Pro</td><td>16 images de mascotte (2 pistes de style + 8 niveaux + 6 poses)</td><td class="num">32 crédits</td></tr>
+        <tr><td class="num">22/10</td><td>Higgsfield · détourage</td><td>14 images détourées (fond retiré)</td><td class="num">14 crédits</td></tr>
+        <tr><td class="num">—</td><td>Abonnement Higgsfield Plus</td><td>Tu l’avais déjà ; il sert aussi à tes autres projets</td><td class="num">à confirmer</td></tr>
+        <tr><td class="num">—</td><td>Abonnement Claude</td><td>Recherche, code, design</td><td class="num">à confirmer</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">Source des crédits : historique des transactions Higgsfield. Il te restait environ 1 000 crédits avant la mascotte. Pour avoir le prix en euros, il me faut le prix de ton abonnement Higgsfield.</p>
+  </div>
+
+  <div class="card">
+    <h3>Prévu</h3>
+    <div class="table"><table>
+      <thead><tr><th>Quand</th><th>Quoi</th><th>Pourquoi</th><th>Coût</th></tr></thead>
+      <tbody>
+        <tr><td>Jour 2</td><td>Apple Developer Program</td><td>Obligatoire pour TestFlight et l’App Store</td><td class="num">99 € / an</td></tr>
+        <tr><td>Jour 2</td><td>Expo / EAS</td><td>Fabriquer l’app sans Mac</td><td class="num">0 € (offre gratuite, builds limités par mois)</td></tr>
+        <tr><td>Plus tard</td><td>Supabase</td><td>Comptes et vraie ligue</td><td class="num">0 € au départ</td></tr>
+        <tr><td>Plus tard</td><td>RevenueCat</td><td>Gérer les abonnements</td><td class="num">0 € jusqu’à 2 500 $ de revenus / mois</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">À savoir : Apple garde 15 % de chaque abonnement vendu (programme pour les petits développeurs, sous 1 M$ par an). Ce n’est pas une dépense, c’est une part des revenus.</p>
+  </div>
+
+  <h2 class="serif" id="suite">La suite</h2>
+  <div class="card">
+    <ol class="steps">
+      <li><div class="n">→</div><div><b>Compte Apple Developer</b><span>Ce que tu fais de ton côté.</span></div></li>
+      <li><div class="n">→</div><div><b>Premier build + test sur iPhone</b><span>Corriger le Swift, régler le comptage des pompes.</span></div></li>
+      <li><div class="n">→</div><div><b>Comptes + vraie ligue</b><span>Supabase, pour remplacer les joueurs fictifs.</span></div></li>
+      <li><div class="n">→</div><div><b>Vrai réveil + paiements</b><span>AlarmKit (sonne même en silencieux) et RevenueCat.</span></div></li>
+      <li><div class="n">→</div><div><b>TestFlight puis App Store</b><span>Icône, captures, fiche, envoi à Apple.</span></div></li>
+    </ol>
+  </div>
+
+  <footer>Copie dans le dépôt : <code>docs/14-carnet-de-bord.md</code>. Mise à jour à chaque étape.</footer>
+</div>

@@ -77,4 +77,8 @@ partout dans l'app avec des animations (respire, saute à chaque pompe, silhouet
 ## Étape 14 — DA validée par Kenji ✅ (22/10/2026)
 DA « Aube » + mascotte validées. On passe à la technique.
 
+## Carnet de bord + finances ✅ (22/10/2026)
+Page « jour par jour » + tout ce que l'app coûte (0 € payé pour Debout, 46 crédits Higgsfield ; Apple 99 €/an prévu).
+→ Détails : [14-carnet-de-bord.md](14-carnet-de-bord.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
