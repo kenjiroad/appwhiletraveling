@@ -1,14 +1,16 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
+import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Aurora } from '@/components/aurora';
 import { ChoiceRow } from '@/components/choice-row';
+import { SunBadge } from '@/components/sun-badge';
 import { TimeStepper } from '@/components/time-stepper';
-import { Body, GradientCard, PrimaryButton, Title } from '@/components/ui';
+import { Body, Eyebrow, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
 import { requestNotificationPermissionAsync, scheduleAlarms } from '@/lib/alarm';
 import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
-import { RANKS } from '@/lib/progress';
 import { DEFAULT_SETTINGS, saveSettings, type Settings } from '@/lib/storage';
 import { colors, fonts, radius } from '@/lib/theme';
 import { requestCameraPermissionAsync } from '../../modules/rep-counter';
@@ -31,126 +33,163 @@ export default function OnboardingScreen() {
   };
 
   const next = () => (stepIndex < STEPS.length - 1 ? setStep(STEPS[stepIndex + 1]) : finish());
+  const enter = (i: number) => FadeInDown.delay(80 + i * 90).duration(550);
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <View style={styles.dots}>
-        {STEPS.map((s, i) => (
-          <View key={s} style={[styles.dot, i <= stepIndex && styles.dotActive]} />
-        ))}
-      </View>
+    <View style={styles.screen}>
+      <Aurora warmth={stepIndex / (STEPS.length - 1)} />
+      <SafeAreaView style={styles.safe}>
+        <View style={styles.dots}>
+          {STEPS.map((s, i) => (
+            <View key={s} style={[styles.dot, i <= stepIndex && styles.dotActive]} />
+          ))}
+        </View>
 
-      <KeyboardAvoidingView style={styles.body} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-        {step === 'pitch' && (
-          <>
-            <Text style={styles.heroEmoji}>😴 → 🐓</Text>
-            <Text style={styles.giant}>Fini la{'\n'}marmotte.</Text>
-            <Body style={styles.lead}>
-              Le réveil sonne. Pour l’arrêter, tu fais tes pompes devant la caméra. L’IA compte. Pas de bouton
-              « répéter ».
-            </Body>
-          </>
-        )}
+        <KeyboardAvoidingView style={styles.body} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          <Animated.View key={step} exiting={FadeOutUp.duration(200)} style={{ gap: 18 }}>
+            {step === 'pitch' && (
+              <>
+                <Animated.View entering={enter(0)}>
+                  <SunBadge level={2} size={130} />
+                </Animated.View>
+                <Animated.View entering={enter(1)}>
+                  <Serif style={styles.giant}>Fini la{'\n'}marmotte.</Serif>
+                </Animated.View>
+                <Animated.View entering={enter(2)}>
+                  <Body style={styles.lead}>
+                    Ton réveil ne s’arrête que quand tu bouges. Quelques pompes devant la caméra, l’IA compte, et le
+                    soleil se lève.
+                  </Body>
+                </Animated.View>
+              </>
+            )}
 
-        {step === 'name' && (
-          <>
-            <Title>Comment on t’appelle ?</Title>
-            <Body>C’est le nom que tes potes verront dans la ligue.</Body>
-            <TextInput
-              value={settings.name ?? ''}
-              onChangeText={(name) => setSettings({ ...settings, name })}
-              placeholder="Ton pseudo"
-              placeholderTextColor={colors.textMuted}
-              style={styles.input}
-              autoFocus
-              maxLength={16}
-            />
-          </>
-        )}
+            {step === 'name' && (
+              <>
+                <Animated.View entering={enter(0)}>
+                  <Eyebrow>Ton pseudo</Eyebrow>
+                  <Serif>Comment on t’appelle ?</Serif>
+                </Animated.View>
+                <Animated.View entering={enter(1)}>
+                  <TextInput
+                    value={settings.name ?? ''}
+                    onChangeText={(name) => setSettings({ ...settings, name })}
+                    placeholder="Ton pseudo"
+                    placeholderTextColor={colors.textFaint}
+                    style={styles.input}
+                    autoFocus
+                    maxLength={16}
+                  />
+                </Animated.View>
+                <Animated.View entering={enter(2)}>
+                  <Body>C’est le nom que tes potes verront dans la ligue.</Body>
+                </Animated.View>
+              </>
+            )}
 
-        {step === 'challenge' && (
-          <>
-            <Title>Ton défi du matin</Title>
-            <ChoiceRow
-              value={settings.exercise}
-              onChange={(exercise) => setSettings({ ...settings, exercise })}
-              options={[
-                { value: 'pushup', label: '💪 Pompes' },
-                { value: 'squat', label: '🦵 Squats' },
-              ]}
-            />
-            <Body>Combien ?</Body>
-            <ChoiceRow
-              value={settings.reps}
-              onChange={(reps) => setSettings({ ...settings, reps })}
-              options={REP_OPTIONS.map((n) => ({ value: n, label: String(n) }))}
-            />
-            <Body>
-              Chaque {EXERCISE_LABELS[settings.exercise].singular} = 1 XP. Fais évoluer ton perso :{' '}
-              {RANKS.map((r) => r.emoji).join(' ')}
-            </Body>
-          </>
-        )}
+            {step === 'challenge' && (
+              <>
+                <Animated.View entering={enter(0)}>
+                  <Eyebrow>Le défi du matin</Eyebrow>
+                  <Serif>Qu’est-ce qui te réveille ?</Serif>
+                </Animated.View>
+                <Animated.View entering={enter(1)} style={{ gap: 10 }}>
+                  <ChoiceRow
+                    value={settings.exercise}
+                    onChange={(exercise) => setSettings({ ...settings, exercise })}
+                    options={[
+                      { value: 'pushup', label: 'Pompes' },
+                      { value: 'squat', label: 'Squats' },
+                    ]}
+                  />
+                  <ChoiceRow
+                    value={settings.reps}
+                    onChange={(reps) => setSettings({ ...settings, reps })}
+                    options={REP_OPTIONS.map((n) => ({ value: n, label: String(n) }))}
+                  />
+                </Animated.View>
+                <Animated.View entering={enter(2)}>
+                  <Body>
+                    Chaque {EXERCISE_LABELS[settings.exercise].singular} te rapporte de l’XP. Huit niveaux, de la Marmotte à
+                    la Légende.
+                  </Body>
+                </Animated.View>
+              </>
+            )}
 
-        {step === 'time' && (
-          <>
-            <Title>Debout à quelle heure ?</Title>
-            <GradientCard style={{ paddingVertical: 28 }}>
-              <TimeStepper
-                hour={settings.hour}
-                minute={settings.minute}
-                onChange={(hour, minute) => setSettings({ ...settings, hour, minute })}
-              />
-            </GradientCard>
-          </>
-        )}
+            {step === 'time' && (
+              <>
+                <Animated.View entering={enter(0)}>
+                  <Eyebrow>Ton réveil</Eyebrow>
+                  <Serif>Debout à quelle heure ?</Serif>
+                </Animated.View>
+                <Animated.View entering={enter(1)}>
+                  <Glass style={{ paddingVertical: 28 }}>
+                    <TimeStepper
+                      hour={settings.hour}
+                      minute={settings.minute}
+                      size={96}
+                      onChange={(hour, minute) => setSettings({ ...settings, hour, minute })}
+                    />
+                  </Glass>
+                </Animated.View>
+              </>
+            )}
 
-        {step === 'permissions' && (
-          <>
-            <Title>Deux autorisations</Title>
-            <View style={styles.permission}>
-              <Text style={styles.permissionEmoji}>🔔</Text>
-              <Body style={{ flex: 1 }}>Les notifications, pour te réveiller (et te relancer si tu traînes).</Body>
-            </View>
-            <View style={styles.permission}>
-              <Text style={styles.permissionEmoji}>📷</Text>
-              <Body style={{ flex: 1 }}>
-                La caméra, pour compter tes {EXERCISE_LABELS[settings.exercise].plural}. Tout reste sur ton téléphone :
-                aucune image n’est envoyée.
-              </Body>
-            </View>
-          </>
-        )}
-      </KeyboardAvoidingView>
+            {step === 'permissions' && (
+              <>
+                <Animated.View entering={enter(0)}>
+                  <Eyebrow>Dernière étape</Eyebrow>
+                  <Serif>Deux autorisations.</Serif>
+                </Animated.View>
+                <Animated.View entering={enter(1)}>
+                  <Glass style={{ gap: 6 }}>
+                    <Label>Notifications</Label>
+                    <Body>Pour te réveiller, et te relancer si tu traînes.</Body>
+                  </Glass>
+                </Animated.View>
+                <Animated.View entering={enter(2)}>
+                  <Glass style={{ gap: 6 }}>
+                    <Label>Caméra</Label>
+                    <Body>
+                      Pour compter tes {EXERCISE_LABELS[settings.exercise].plural}. Tout reste sur ton téléphone : aucune
+                      image n’est envoyée.
+                    </Body>
+                  </Glass>
+                </Animated.View>
+              </>
+            )}
+          </Animated.View>
+        </KeyboardAvoidingView>
 
-      <PrimaryButton
-        label={step === 'pitch' ? 'C’est parti' : step === 'permissions' ? 'Autoriser et commencer' : 'Continuer'}
-        onPress={next}
-      />
-    </SafeAreaView>
+        <PrimaryButton
+          label={step === 'pitch' ? 'Commencer' : step === 'permissions' ? 'Autoriser et continuer' : 'Continuer'}
+          breathing={step === 'pitch'}
+          onPress={next}
+        />
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background, padding: 24 },
+  screen: { flex: 1, backgroundColor: colors.night },
+  safe: { flex: 1, padding: 24 },
   dots: { flexDirection: 'row', gap: 6 },
-  dot: { flex: 1, height: 6, borderRadius: 3, backgroundColor: colors.surfaceHigh },
-  dotActive: { backgroundColor: colors.lime },
-  body: { flex: 1, justifyContent: 'center', gap: 18 },
-  heroEmoji: { fontSize: 56 },
-  giant: { color: colors.text, fontFamily: fonts.black, fontSize: 60, lineHeight: 60, letterSpacing: -2 },
-  lead: { fontSize: 18, lineHeight: 26 },
+  dot: { flex: 1, height: 3, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.12)' },
+  dotActive: { backgroundColor: colors.gold },
+  body: { flex: 1, justifyContent: 'center' },
+  giant: { fontSize: 76, lineHeight: 76, letterSpacing: -1.5 },
+  lead: { fontSize: 18, lineHeight: 27 },
   input: {
-    backgroundColor: colors.surface,
-    borderColor: colors.lime,
-    borderWidth: 2,
-    borderRadius: radius.md,
+    backgroundColor: colors.glass,
+    borderColor: colors.glassBorder,
+    borderWidth: 1,
+    borderRadius: radius.pill,
     color: colors.text,
-    fontFamily: fonts.bold,
-    fontSize: 24,
-    paddingHorizontal: 18,
-    paddingVertical: 16,
+    fontFamily: fonts.medium,
+    fontSize: 22,
+    paddingHorizontal: 24,
+    paddingVertical: 18,
   },
-  permission: { flexDirection: 'row', gap: 14, alignItems: 'center' },
-  permissionEmoji: { fontSize: 36 },
 });

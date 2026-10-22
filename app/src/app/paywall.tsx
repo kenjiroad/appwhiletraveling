@@ -1,17 +1,20 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Body, PrimaryButton, Title } from '@/components/ui';
+import { Aurora } from '@/components/aurora';
+import { SunBadge } from '@/components/sun-badge';
+import { Body, Eyebrow, PrimaryButton, Serif } from '@/components/ui';
 import { PLANS, purchase, restore, type Plan } from '@/lib/purchases';
 import { colors, fonts, radius } from '@/lib/theme';
 
 const BENEFITS = [
-  ['⏰', 'Le réveil qui ne pardonne pas, tous les matins'],
-  ['🤖', 'Pompes et squats comptés par l’IA'],
-  ['🧬', 'Fais évoluer ton perso jusqu’à 👑 Légende'],
-  ['🏆', 'Ligues hebdo contre tes potes'],
+  'Le réveil qui ne pardonne pas, tous les matins',
+  'Pompes et squats comptés par l’IA',
+  'Huit niveaux, de la Marmotte à la Légende',
+  'Ligues de la semaine contre tes potes',
 ];
 
 export default function PaywallScreen() {
@@ -22,86 +25,96 @@ export default function PaywallScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.screen}>
-      <Pressable onPress={() => router.back()} hitSlop={12} style={styles.close}>
-        <Text style={styles.closeText}>✕</Text>
-      </Pressable>
+    <View style={styles.screen}>
+      <Aurora warmth={0.7} />
+      <SafeAreaView style={styles.safe}>
+        <Pressable onPress={() => router.back()} hitSlop={12} style={styles.close}>
+          <Text style={styles.closeText}>Plus tard</Text>
+        </Pressable>
 
-      <Text style={styles.emoji}>🐓⚡</Text>
-      <Title style={{ fontSize: 40, lineHeight: 42 }}>Debout{'\n'}Pro</Title>
-      <View style={styles.benefits}>
-        {BENEFITS.map(([emoji, text]) => (
-          <View key={text} style={styles.benefit}>
-            <Text style={styles.benefitEmoji}>{emoji}</Text>
-            <Body style={{ flex: 1, color: colors.text }}>{text}</Body>
-          </View>
-        ))}
-      </View>
+        <Animated.View entering={FadeInDown.duration(500)}>
+          <SunBadge level={7} size={110} />
+          <Eyebrow>Debout Pro</Eyebrow>
+          <Serif style={{ fontSize: 52, lineHeight: 56 }}>Chaque matin,{'\n'}tu gagnes.</Serif>
+        </Animated.View>
 
-      <View style={{ flex: 1 }} />
-
-      {PLANS.map((plan) => {
-        const isSelected = selected === plan.id;
-        return (
-          <Pressable
-            key={plan.id}
-            onPress={() => setSelected(plan.id)}
-            style={[styles.plan, isSelected && styles.planSelected]}>
-            {plan.id === 'yearly' && <Text style={styles.ribbon}>−69 %</Text>}
-            <View style={{ flex: 1 }}>
-              <Text style={styles.planTitle}>{plan.title}</Text>
-              <Text style={styles.planDetail}>{plan.detail}</Text>
+        <Animated.View entering={FadeInDown.delay(150).duration(500)} style={styles.benefits}>
+          {BENEFITS.map((text) => (
+            <View key={text} style={styles.benefit}>
+              <View style={styles.bullet} />
+              <Body style={{ flex: 1, color: colors.text }}>{text}</Body>
             </View>
-            <Text style={styles.planPrice} numberOfLines={1}>
-              {plan.price}
-            </Text>
-          </Pressable>
-        );
-      })}
+          ))}
+        </Animated.View>
 
-      <PrimaryButton label={selected === 'yearly' ? 'Essayer 3 jours gratuits' : 'Continuer'} onPress={buy} />
-      <Pressable onPress={restore} style={styles.restore}>
-        <Text style={styles.restoreText}>Restaurer mes achats · Annulable à tout moment</Text>
-      </Pressable>
-    </SafeAreaView>
+        <View style={{ flex: 1 }} />
+
+        <Animated.View entering={FadeInDown.delay(300).duration(500)}>
+          {PLANS.map((plan) => {
+            const isSelected = selected === plan.id;
+            return (
+              <Pressable key={plan.id} onPress={() => setSelected(plan.id)} style={[styles.plan, isSelected && styles.planSelected]}>
+                {plan.id === 'yearly' && <Text style={styles.ribbon}>−69 %</Text>}
+                <View style={[styles.radio, isSelected && styles.radioOn]} />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.planTitle}>{plan.title}</Text>
+                  <Text style={styles.planDetail}>{plan.detail}</Text>
+                </View>
+                <Text style={styles.planPrice} numberOfLines={1}>
+                  {plan.price}
+                </Text>
+              </Pressable>
+            );
+          })}
+
+          <PrimaryButton label={selected === 'yearly' ? 'Essayer 3 jours gratuits' : 'Continuer'} breathing onPress={buy} />
+          <Pressable onPress={restore} style={styles.restore}>
+            <Text style={styles.restoreText}>Restaurer mes achats · Annulable à tout moment</Text>
+          </Pressable>
+        </Animated.View>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background, padding: 24 },
+  screen: { flex: 1, backgroundColor: colors.night },
+  safe: { flex: 1, padding: 24 },
   close: { alignSelf: 'flex-end' },
-  closeText: { color: colors.textMuted, fontSize: 22 },
-  emoji: { fontSize: 54, marginBottom: 6 },
-  benefits: { gap: 12, marginTop: 18 },
+  closeText: { color: colors.textMuted, fontFamily: fonts.medium, fontSize: 15 },
+  benefits: { gap: 12, marginTop: 20 },
   benefit: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  benefitEmoji: { fontSize: 24 },
+  bullet: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.gold },
   plan: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
-    borderWidth: 2,
-    borderRadius: radius.lg,
+    gap: 14,
+    backgroundColor: colors.glass,
+    borderColor: colors.glassBorder,
+    borderWidth: 1,
+    borderRadius: radius.md,
     padding: 18,
     marginBottom: 12,
   },
-  planSelected: { borderColor: colors.lime, backgroundColor: colors.surfaceHigh },
+  planSelected: { borderColor: colors.gold, backgroundColor: 'rgba(255,196,107,0.1)' },
+  radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: colors.textFaint },
+  radioOn: { borderColor: colors.gold, backgroundColor: colors.gold },
   ribbon: {
     position: 'absolute',
-    top: -12,
+    top: -11,
     right: 18,
-    backgroundColor: colors.pink,
-    color: colors.text,
-    fontFamily: fonts.black,
-    fontSize: 13,
+    backgroundColor: colors.rose,
+    color: '#FFFFFF',
+    fontFamily: fonts.bold,
+    fontSize: 12,
     paddingHorizontal: 10,
     paddingVertical: 3,
     borderRadius: radius.pill,
     overflow: 'hidden',
   },
-  planTitle: { color: colors.text, fontFamily: fonts.black, fontSize: 18 },
+  planTitle: { color: colors.text, fontFamily: fonts.semibold, fontSize: 17 },
   planDetail: { color: colors.textMuted, fontFamily: fonts.regular, fontSize: 14, marginTop: 2 },
-  planPrice: { color: colors.text, fontFamily: fonts.black, fontSize: 18, marginLeft: 12, flexShrink: 0 },
+  planPrice: { color: colors.text, fontFamily: fonts.serif, fontSize: 24, marginLeft: 8, flexShrink: 0 },
   restore: { paddingVertical: 14, alignItems: 'center' },
   restoreText: { color: colors.textMuted, fontFamily: fonts.regular, fontSize: 13 },
 });

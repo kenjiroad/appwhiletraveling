@@ -42,9 +42,11 @@ function StepButton({ label, onPress }: { label: string; onPress: () => void }) 
 const styles = StyleSheet.create({
   wrapper: { alignItems: 'center', gap: 12 },
   row: { flexDirection: 'row', gap: 8 },
-  time: { color: colors.text, fontFamily: fonts.black, letterSpacing: -2, fontVariant: ['tabular-nums'] },
+  time: { color: colors.text, fontFamily: fonts.serif, letterSpacing: -1 },
   step: {
-    backgroundColor: 'rgba(255,255,255,0.14)',
+    backgroundColor: colors.glass,
+    borderColor: colors.glassBorder,
+    borderWidth: 1,
     borderRadius: radius.pill,
     paddingVertical: 8,
     paddingHorizontal: 14,
@@ -52,5 +54,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pressed: { transform: [{ scale: 0.94 }] },
-  stepText: { color: colors.text, fontFamily: fonts.bold, fontSize: 15 },
+  stepText: { color: colors.text, fontFamily: fonts.semibold, fontSize: 15 },
 });

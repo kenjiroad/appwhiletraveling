@@ -1,5 +1,7 @@
 # Étape 10 — Nouvelle direction artistique + gamification
 
+> ⚠️ DA remplacée à l'étape 12 (« ça fait trop Discord ») : voir [12-da-aube.md](12-da-aube.md). La gamification est conservée.
+
 _Date : 22 octobre 2026_
 
 La V1 faisait « vieille appli ». Refonte complète pour qu'elle soit **fun, énergique et compétitive**.
@@ -31,11 +33,11 @@ Navigation en 3 onglets : **Réveil**, **Ligue**, **Évolution**.
 
 Onboarding : accroche → pseudo → défi → heure → autorisations → paywall
 
-![Onboarding](images/da-onboarding.png)
+_(captures retirées : DA remplacée)_
 
 App : accueil, ligue, évolution, défi en cours, écran d'évolution de rang (historique de 6 jours simulé pour la capture)
 
-![App](images/da-app.png)
+
 
 ## Ensuite (une fois la DA validée)
 

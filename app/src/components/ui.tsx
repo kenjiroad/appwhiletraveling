@@ -1,13 +1,31 @@
+import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
+import Animated, {
+  Easing,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 
 import { colors, fonts, gradients, radius } from '@/lib/theme';
 
 type TextProps = { children: ReactNode; style?: StyleProp<TextStyle>; numberOfLines?: number };
 
-export function Title({ children, style }: TextProps) {
-  return <Text style={[styles.title, style]}>{children}</Text>;
+/** Big italic serif: hours, counters, rank names, headlines. */
+export function Serif({ children, style, numberOfLines }: TextProps) {
+  return (
+    <Text style={[styles.serif, style]} numberOfLines={numberOfLines}>
+      {children}
+    </Text>
+  );
+}
+
+export function Eyebrow({ children, style }: TextProps) {
+  return <Text style={[styles.eyebrow, style]}>{children}</Text>;
 }
 
 export function Label({ children, style, numberOfLines }: TextProps) {
@@ -22,107 +40,126 @@ export function Body({ children, style }: TextProps) {
   return <Text style={[styles.body, style]}>{children}</Text>;
 }
 
-export function Card({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
-  return <View style={[styles.card, style]}>{children}</View>;
-}
-
-export function GradientCard({
-  children,
-  colors: gradientColors = gradients.hero,
-  style,
-}: {
-  children: ReactNode;
-  colors?: readonly [string, string];
-  style?: StyleProp<ViewStyle>;
-}) {
+export function Glass({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   return (
-    <LinearGradient colors={gradientColors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.gradientCard, style]}>
+    <View style={[styles.glass, style]}>
+      <BlurView intensity={30} tint="dark" style={StyleSheet.absoluteFill} />
       {children}
-    </LinearGradient>
+    </View>
   );
 }
 
-export function PrimaryButton({ label, onPress, style }: { label: string; onPress: () => void; style?: StyleProp<ViewStyle> }) {
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
+function usePressScale() {
+  const scale = useSharedValue(1);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
+  return {
+    style,
+    onPressIn: () => scale.set(withSpring(0.95, { damping: 15, stiffness: 300 })),
+    onPressOut: () => scale.set(withSpring(1, { damping: 12, stiffness: 200 })),
+  };
+}
+
+/** Sunrise pill. `breathing` adds a slow pulsing glow to draw the eye to the one action that matters. */
+export function PrimaryButton({
+  label,
+  onPress,
+  breathing = false,
+  style,
+}: {
+  label: string;
+  onPress: () => void;
+  breathing?: boolean;
+  style?: StyleProp<ViewStyle>;
+}) {
+  const press = usePressScale();
+  const glow = useSharedValue(0);
+  useEffect(() => {
+    if (breathing) glow.value = withRepeat(withTiming(1, { duration: 1600, easing: Easing.inOut(Easing.sin) }), -1, true);
+  }, [breathing, glow]);
+  // A soft sun-coloured shadow that breathes; no extra shape, so nothing shows behind the pill.
+  const glowStyle = useAnimatedStyle(() => ({
+    shadowOpacity: 0.25 + glow.value * 0.45,
+    shadowRadius: 14 + glow.value * 14,
+  }));
+
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.primary, pressed && styles.pressed, style]}>
-      <Text style={styles.primaryText}>{label}</Text>
-    </Pressable>
+    <AnimatedPressable onPress={onPress} onPressIn={press.onPressIn} onPressOut={press.onPressOut} style={[press.style, style]}>
+      <Animated.View style={[styles.primaryShadow, glowStyle]}>
+        <LinearGradient colors={gradients.sun} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.primary}>
+          <Text style={styles.primaryText}>{label}</Text>
+        </LinearGradient>
+      </Animated.View>
+    </AnimatedPressable>
   );
 }
 
 export function GhostButton({ label, onPress }: { label: string; onPress: () => void }) {
+  const press = usePressScale();
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [styles.ghost, pressed && styles.pressed]}>
+    <AnimatedPressable onPress={onPress} onPressIn={press.onPressIn} onPressOut={press.onPressOut} style={[styles.ghost, press.style]}>
       <Text style={styles.ghostText}>{label}</Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 }
 
-export function ProgressBar({ progress, colors: barColors = gradients.lime, height = 12 }: {
-  progress: number;
-  colors?: readonly [string, string];
-  height?: number;
-}) {
-  const clamped = Math.max(0, Math.min(1, progress));
+export function ProgressBar({ progress, height = 8 }: { progress: number; height?: number }) {
+  const width = useSharedValue(0);
+  useEffect(() => {
+    width.value = withTiming(Math.max(0.03, Math.min(1, progress)), { duration: 900, easing: Easing.out(Easing.cubic) });
+  }, [progress, width]);
+  const fill = useAnimatedStyle(() => ({ width: `${width.value * 100}%` }));
+
   return (
     <View style={[styles.track, { height, borderRadius: height }]}>
-      <LinearGradient
-        colors={barColors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-        style={{ width: `${Math.max(clamped * 100, 4)}%`, height, borderRadius: height }}
-      />
+      <Animated.View style={[{ height, borderRadius: height, overflow: 'hidden' }, fill]}>
+        <LinearGradient colors={gradients.bar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={StyleSheet.absoluteFill} />
+      </Animated.View>
     </View>
   );
 }
 
-export function Chip({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
+export function Pill({ children, style }: { children: ReactNode; style?: StyleProp<ViewStyle> }) {
   return (
-    <View style={[styles.chip, style]}>
-      <Text style={styles.chipText}>{children}</Text>
-    </View>
+    <Glass style={[styles.pill, style]}>
+      <Text style={styles.pillText}>{children}</Text>
+    </Glass>
   );
 }
 
 const styles = StyleSheet.create({
-  title: { color: colors.text, fontFamily: fonts.black, fontSize: 34, lineHeight: 38, letterSpacing: -0.8 },
-  label: { color: colors.text, fontFamily: fonts.bold, fontSize: 17 },
+  serif: { color: colors.text, fontFamily: fonts.serif, fontSize: 44, lineHeight: 50, letterSpacing: -0.5 },
+  eyebrow: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 12, letterSpacing: 2, textTransform: 'uppercase' },
+  label: { color: colors.text, fontFamily: fonts.semibold, fontSize: 17 },
   body: { color: colors.textMuted, fontFamily: fonts.regular, fontSize: 16, lineHeight: 23 },
-  card: {
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
+  glass: {
+    backgroundColor: colors.glass,
+    borderColor: colors.glassBorder,
     borderWidth: 1,
     borderRadius: radius.lg,
-    padding: 18,
+    padding: 20,
+    overflow: 'hidden',
   },
-  gradientCard: { borderRadius: radius.lg, padding: 20, overflow: 'hidden' },
-  primary: {
-    backgroundColor: colors.lime,
+  primaryShadow: {
     borderRadius: radius.pill,
-    paddingVertical: 19,
-    alignItems: 'center',
-    shadowColor: colors.lime,
-    shadowOpacity: 0.45,
-    shadowRadius: 18,
-    shadowOffset: { width: 0, height: 6 },
+    shadowColor: colors.sun,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
   },
-  primaryText: { color: colors.onLime, fontFamily: fonts.black, fontSize: 19, letterSpacing: -0.2 },
+  primary: { borderRadius: radius.pill, paddingVertical: 20, alignItems: 'center' },
+  primaryText: { color: colors.onSun, fontFamily: fonts.bold, fontSize: 18, letterSpacing: 0.2 },
   ghost: {
     borderRadius: radius.pill,
-    paddingVertical: 17,
+    paddingVertical: 18,
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: colors.border,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
+    backgroundColor: colors.glass,
   },
-  ghostText: { color: colors.text, fontFamily: fonts.bold, fontSize: 17 },
-  pressed: { transform: [{ scale: 0.97 }], opacity: 0.9 },
-  track: { backgroundColor: colors.surfaceHigh, overflow: 'hidden' },
-  chip: {
-    backgroundColor: colors.surfaceHigh,
-    borderRadius: radius.pill,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    alignSelf: 'flex-start',
-  },
-  chipText: { color: colors.text, fontFamily: fonts.bold, fontSize: 14 },
+  ghostText: { color: colors.text, fontFamily: fonts.semibold, fontSize: 17 },
+  track: { backgroundColor: 'rgba(255,255,255,0.08)', overflow: 'hidden' },
+  pill: { borderRadius: radius.pill, paddingHorizontal: 14, paddingVertical: 8, alignSelf: 'flex-start' },
+  pillText: { color: colors.text, fontFamily: fonts.semibold, fontSize: 14 },
 });

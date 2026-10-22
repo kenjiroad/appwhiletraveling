@@ -1,10 +1,11 @@
 import {
-  BricolageGrotesque_400Regular,
-  BricolageGrotesque_600SemiBold,
-  BricolageGrotesque_700Bold,
-  BricolageGrotesque_800ExtraBold,
+  InstrumentSans_400Regular,
+  InstrumentSans_500Medium,
+  InstrumentSans_600SemiBold,
+  InstrumentSans_700Bold,
   useFonts,
-} from '@expo-google-fonts/bricolage-grotesque';
+} from '@expo-google-fonts/instrument-sans';
+import { InstrumentSerif_400Regular_Italic } from '@expo-google-fonts/instrument-serif';
 import * as Notifications from 'expo-notifications';
 import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
@@ -27,15 +28,16 @@ Notifications.setNotificationHandler({
 
 const theme = {
   ...DarkTheme,
-  colors: { ...DarkTheme.colors, background: colors.background, card: colors.background },
+  colors: { ...DarkTheme.colors, background: colors.night, card: colors.night },
 };
 
 export default function RootLayout() {
   const [fontsLoaded, fontError] = useFonts({
-    [fonts.regular]: BricolageGrotesque_400Regular,
-    [fonts.semibold]: BricolageGrotesque_600SemiBold,
-    [fonts.bold]: BricolageGrotesque_700Bold,
-    [fonts.black]: BricolageGrotesque_800ExtraBold,
+    [fonts.regular]: InstrumentSans_400Regular,
+    [fonts.medium]: InstrumentSans_500Medium,
+    [fonts.semibold]: InstrumentSans_600SemiBold,
+    [fonts.bold]: InstrumentSans_700Bold,
+    [fonts.serif]: InstrumentSerif_400Regular_Italic,
   });
   useAlarmResponse();
 
@@ -49,11 +51,12 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={theme}>
       <StatusBar style="light" />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.night } }}>
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
         <Stack.Screen name="challenge" options={{ presentation: 'fullScreenModal', gestureEnabled: false }} />
         <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>
   );

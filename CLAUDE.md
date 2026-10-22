@@ -19,7 +19,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 
 - 22/10/2026 — Idée retenue : Debout (après Cordée, Ménage, alternance, Écho…). Voir `docs/08`.
 - 22/10/2026 — Stack : Expo + EAS (pas de Mac), Supabase (UE) pour les comptes, RevenueCat pour les abonnements.
-- 22/10/2026 — DA « néon » + gamification (XP, 8 rangs, ligue). Kenji veut un rendu plus premium : plan dans `docs/11`.
+- 22/10/2026 — DA « néon » rejetée (« trop Discord ») → DA premium « Aube » + animations (`docs/12`). Gamification gardée.
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)

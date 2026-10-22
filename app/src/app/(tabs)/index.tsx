@@ -1,143 +1,101 @@
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ChoiceRow } from '@/components/choice-row';
-import { TimeStepper } from '@/components/time-stepper';
-import { Body, Card, Chip, GradientCard, Label, PrimaryButton, ProgressBar, Title } from '@/components/ui';
+import { Aurora } from '@/components/aurora';
+import { Body, Eyebrow, Glass, Label, Pill, PrimaryButton, Serif } from '@/components/ui';
+import { WeekDots } from '@/components/week-dots';
 import { scheduleAlarms } from '@/lib/alarm';
-import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
+import { EXERCISE_LABELS, formatTime } from '@/lib/exercises';
 import { getXp, rankFor } from '@/lib/progress';
-import { getSettings, getStreak, isTodayCompleted, saveSettings, type Settings } from '@/lib/storage';
+import { getSettings, getStreak, isTodayCompleted } from '@/lib/storage';
 import { colors, fonts } from '@/lib/theme';
 
+function load() {
+  return { settings: getSettings(), streak: getStreak(), doneToday: isTodayCompleted(), xp: getXp() };
+}
+
 export default function AlarmScreen() {
-  const [settings, setSettings] = useState(getSettings);
-  const [streak, setStreak] = useState(getStreak);
-  const [doneToday, setDoneToday] = useState(isTodayCompleted);
-  const [xp, setXp] = useState(getXp);
+  const [data, setData] = useState(load);
 
   useFocusEffect(
     useCallback(() => {
-      setStreak(getStreak());
-      setDoneToday(isTodayCompleted());
-      setXp(getXp());
+      const next = load();
+      setData(next);
       // Re-plan on every visit so the notification window keeps rolling forward.
-      const current = getSettings();
-      if (current) scheduleAlarms(current);
+      if (next.settings) scheduleAlarms(next.settings);
     }, [])
   );
 
+  const { settings, streak, doneToday, xp } = data;
   if (!settings) return <Redirect href="/onboarding" />;
 
-  const { rank, next, progress, xpToNext } = rankFor(xp);
-
-  const update = (patch: Partial<Settings>) => {
-    const nextSettings = { ...settings, ...patch };
-    setSettings(nextSettings);
-    saveSettings(nextSettings);
-    scheduleAlarms(nextSettings);
-  };
+  const { rank, index } = rankFor(xp);
+  const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
 
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <View>
-            <Body>Salut {settings.name ?? 'toi'} 👋</Body>
-            <Title>Debout.</Title>
-          </View>
-          <Chip style={{ borderColor: rank.color, borderWidth: 2 }}>
-            {rank.emoji} {rank.name}
-          </Chip>
-        </View>
+    <View style={styles.screen}>
+      <Aurora warmth={doneToday ? 0.8 : 0.3} />
+      <SafeAreaView style={styles.safe} edges={['top']}>
+        <Animated.View entering={FadeInDown.duration(500)} style={styles.header}>
+          <Eyebrow>{today}</Eyebrow>
+          <Pressable onPress={() => router.navigate('/profile')}>
+            <Pill>
+              Niv. {index + 1} · {rank.name}
+            </Pill>
+          </Pressable>
+        </Animated.View>
 
-        <GradientCard>
-          <View style={styles.heroTop}>
-            <Text style={styles.overline}>PROCHAIN RÉVEIL</Text>
-            <Switch
-              value={settings.enabled}
-              onValueChange={(enabled) => update({ enabled })}
-              trackColor={{ true: colors.lime, false: 'rgba(255,255,255,0.25)' }}
-              thumbColor={colors.background}
-            />
-          </View>
-          <TimeStepper hour={settings.hour} minute={settings.minute} onChange={(hour, minute) => update({ hour, minute })} />
-          <Text style={styles.heroHint}>
-            {settings.enabled
-              ? `Pour l’arrêter : ${settings.reps} ${EXERCISE_LABELS[settings.exercise].plural}. Pas de pitié.`
-              : 'Réveil en pause.'}
-          </Text>
-        </GradientCard>
+        <Animated.View entering={FadeInDown.delay(120).duration(600)} style={styles.hero}>
+          <Eyebrow>{settings.enabled ? 'Prochain réveil' : 'Réveil en pause'}</Eyebrow>
+          <Serif style={styles.time}>{formatTime(settings.hour, settings.minute)}</Serif>
+          <Body style={{ textAlign: 'center' }}>
+            {settings.reps} {EXERCISE_LABELS[settings.exercise].plural} pour l’arrêter
+          </Body>
+          <Pressable onPress={() => router.push('/settings')} style={styles.settingsLink} hitSlop={8}>
+            <Label style={styles.settingsText}>Réglages</Label>
+          </Pressable>
+        </Animated.View>
 
-        <View style={styles.statsRow}>
-          <Card style={styles.statCard}>
-            <Text style={styles.statEmoji}>🔥</Text>
-            <Text style={styles.statValue}>{streak}</Text>
-            <Body>jour{streak > 1 ? 's' : ''} de suite</Body>
-          </Card>
-          <Card style={styles.statCard}>
-            <Text style={styles.statEmoji}>⚡</Text>
-            <Text style={styles.statValue}>{xp}</Text>
-            <Body>XP</Body>
-          </Card>
-        </View>
+        <Animated.View entering={FadeInDown.delay(240).duration(600)}>
+          <Glass style={{ gap: 16 }}>
+            <View style={styles.weekHeader}>
+              <Eyebrow>Cette semaine</Eyebrow>
+              <Label>
+                <Serif style={styles.streak}>{streak}</Serif> jour{streak > 1 ? 's' : ''} de suite
+              </Label>
+            </View>
+            <WeekDots />
+          </Glass>
+        </Animated.View>
 
-        <Card style={{ gap: 10 }}>
-          <View style={styles.rowBetween}>
-            <Label>
-              {rank.emoji} {rank.name}
-            </Label>
-            <Body>{next ? `${next.emoji} ${next.name}` : 'Rang max'}</Body>
-          </View>
-          <ProgressBar progress={progress} />
-          <Body>{next ? `Plus que ${xpToNext} XP pour évoluer.` : 'Tu es une légende. Respect.'}</Body>
-        </Card>
+        <View style={{ flex: 1 }} />
 
-        <Label style={styles.section}>Ton défi</Label>
-        <ChoiceRow
-          value={settings.exercise}
-          onChange={(exercise) => update({ exercise })}
-          options={[
-            { value: 'pushup', label: '💪 Pompes' },
-            { value: 'squat', label: '🦵 Squats' },
-          ]}
-        />
-        <ChoiceRow
-          value={settings.reps}
-          onChange={(reps) => update({ reps })}
-          options={REP_OPTIONS.map((n) => ({ value: n, label: String(n) }))}
-        />
-
-        {doneToday ? (
-          <Card style={styles.doneCard}>
-            <Label style={{ color: colors.lime }}>✅ Défi du jour validé</Label>
-            <Body>Tu peux en refaire pour gagner de l’XP en plus.</Body>
-          </Card>
-        ) : null}
-        <PrimaryButton
-          label={doneToday ? '⚡ Bonus : refaire une série' : '⚡ Lancer le défi'}
-          onPress={() => router.push('/challenge')}
-          style={{ marginTop: 6 }}
-        />
-      </ScrollView>
-    </SafeAreaView>
+        <Animated.View entering={FadeInDown.delay(360).duration(600)} style={styles.cta}>
+          <PrimaryButton
+            label={doneToday ? 'Refaire une série bonus' : 'Lancer le défi'}
+            breathing={!doneToday}
+            onPress={() => router.push('/challenge')}
+          />
+          {doneToday && <Body style={styles.done}>Matin gagné. Le soleil est levé ☀︎</Body>}
+        </Animated.View>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  content: { padding: 20, gap: 14, paddingBottom: 40 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  heroTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 },
-  overline: { color: 'rgba(255,255,255,0.85)', fontFamily: fonts.black, fontSize: 13, letterSpacing: 1.5 },
-  heroHint: { color: 'rgba(255,255,255,0.9)', fontFamily: fonts.semibold, fontSize: 15, textAlign: 'center', marginTop: 14 },
-  statsRow: { flexDirection: 'row', gap: 12 },
-  statCard: { flex: 1, gap: 2 },
-  statEmoji: { fontSize: 26 },
-  statValue: { color: colors.text, fontFamily: fonts.black, fontSize: 34 },
-  rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  section: { fontSize: 20, marginTop: 8 },
-  doneCard: { borderColor: colors.lime, gap: 4 },
+  screen: { flex: 1, backgroundColor: colors.night },
+  safe: { flex: 1, paddingHorizontal: 22 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
+  hero: { alignItems: 'center', marginTop: 48, marginBottom: 36 },
+  time: { fontSize: 128, lineHeight: 140, marginTop: 4 },
+  settingsLink: { marginTop: 14, borderBottomWidth: 1, borderBottomColor: colors.textFaint },
+  settingsText: { fontSize: 14, color: colors.textMuted },
+  weekHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  streak: { fontSize: 26, lineHeight: 28, color: colors.gold },
+  cta: { marginBottom: 110, gap: 12 },
+  done: { textAlign: 'center', fontFamily: fonts.medium },
 });

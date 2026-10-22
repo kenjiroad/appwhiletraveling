@@ -64,4 +64,9 @@ audit de la DA face à la recette premium, plan de DA (signature « l'aube », m
 livrables prévus (planche de maquettes, dossier produit avec PRD léger), CLAUDE.md du projet.
 → Détails : [11-design-marketing-debout.md](11-design-marketing-debout.md)
 
-## Étape 12 — Références de Kenji + feu vert pour la DA premium, puis Apple Developer + build EAS (à faire)
+## Étape 12 — DA premium « Aube » + animations ✅ (22/10/2026)
+La DA néon « faisait trop Discord » : passage à la DA premium. Signature « l'aube » (le ciel se lève
+pendant le défi), niveaux en soleils levants, verre dépoli, serif italique, pilule flottante, animations partout.
+→ Détails : [12-da-aube.md](12-da-aube.md)
+
+## Étape 13 — Validation de la DA, puis Apple Developer + premier build EAS (à faire)
