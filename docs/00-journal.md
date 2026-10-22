@@ -58,4 +58,10 @@ Refonte complète : style néon/Bricolage Grotesque, XP, 8 rangs d'évolution (�
 ligue hebdo avec podium (joueurs fictifs en attendant les comptes), onglets Réveil / Ligue / Évolution.
 → Détails : [10-direction-artistique.md](10-direction-artistique.md)
 
-## Étape 11 — Validation de la DA, puis compte Apple Developer + premier build EAS (à faire)
+## Étape 11 — Design & marketing, méthode Floup ✅ (22/10/2026)
+Méthode du skill design-marketing (exemple Floup) appliquée à Debout : réflexion produit/marketing,
+audit de la DA face à la recette premium, plan de DA (signature « l'aube », mascotte qui évolue),
+livrables prévus (planche de maquettes, dossier produit avec PRD léger), CLAUDE.md du projet.
+→ Détails : [11-design-marketing-debout.md](11-design-marketing-debout.md)
+
+## Étape 12 — Références de Kenji + feu vert pour la DA premium, puis Apple Developer + build EAS (à faire)

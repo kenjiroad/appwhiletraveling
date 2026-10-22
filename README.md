@@ -24,4 +24,5 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 7. [L'app en 1 jour : Ménage](docs/07-app-en-1-jour.md) — abandonnée
 8. [Partir de la douleur](docs/08-recherche-douleurs-et-choix.md) — comment on a choisi Debout
 9. [Debout V1](docs/09-debout-v1.md) — fonctionnement, comment tester
-10. [Direction artistique](docs/10-direction-artistique.md) — **le design actuel**, XP, rangs, ligue
+10. [Direction artistique](docs/10-direction-artistique.md) — le design actuel, XP, rangs, ligue
+11. [Design & marketing](docs/11-design-marketing-debout.md) — **méthode Floup appliquée à Debout**, plan de DA premium, PRD léger
