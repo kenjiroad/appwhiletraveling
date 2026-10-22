@@ -26,4 +26,5 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 9. [Debout V1](docs/09-debout-v1.md) — fonctionnement, comment tester
 10. [Direction artistique](docs/10-direction-artistique.md) — le design actuel, XP, rangs, ligue
 11. [Design & marketing](docs/11-design-marketing-debout.md) — méthode Floup appliquée à Debout, PRD léger
-12. [DA « Aube »](docs/12-da-aube.md) — **le design actuel**, animations, vidéos de démo
+12. [DA « Aube »](docs/12-da-aube.md) — le design actuel, animations
+13. [La mascotte](docs/13-mascotte.md) — **la marmotte qui évolue**, vidéos de démo

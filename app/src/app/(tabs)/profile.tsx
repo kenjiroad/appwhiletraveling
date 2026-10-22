@@ -5,8 +5,9 @@ import Animated, { FadeInDown, ZoomIn } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
-import { SunBadge } from '@/components/sun-badge';
+import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, Glass, Label, ProgressBar, Serif } from '@/components/ui';
+import { MASCOT_LEVELS } from '@/lib/mascot';
 import { getXp, RANKS, rankFor } from '@/lib/progress';
 import { getBestStreak, getTotals } from '@/lib/storage';
 import { colors, fonts } from '@/lib/theme';
@@ -30,7 +31,7 @@ export default function EvolutionScreen() {
 
           <View style={styles.hero}>
             <Animated.View entering={ZoomIn.springify().damping(13)}>
-              <SunBadge level={index} size={190} />
+              <Mascot source={MASCOT_LEVELS[index]} size={220} idle="float" />
             </Animated.View>
             <Animated.View entering={FadeInDown.delay(150).duration(600)} style={{ alignItems: 'center' }}>
               <Eyebrow>Niveau {index + 1}</Eyebrow>
@@ -67,11 +68,11 @@ export default function EvolutionScreen() {
               const current = i === index;
               return (
                 <View key={r.name} style={[styles.ladderRow, current && styles.ladderCurrent]}>
-                  <View style={{ opacity: unlocked ? 1 : 0.3 }}>
-                    <SunBadge level={i} size={44} animated={false} />
+                  <View style={styles.thumb}>
+                    <Mascot source={MASCOT_LEVELS[i]} size={52} idle="none" silhouette={!unlocked} />
                   </View>
                   <View style={{ flex: 1 }}>
-                    <Serif style={[styles.ladderName, !unlocked && { color: colors.textFaint }]}>{r.name}</Serif>
+                    <Serif style={[styles.ladderName, !unlocked && { color: colors.textFaint }]}>{unlocked ? r.name : '???'}</Serif>
                     <Text style={styles.ladderXp}>
                       Niv. {i + 1} · {r.minXp} XP
                     </Text>
@@ -109,6 +110,15 @@ const styles = StyleSheet.create({
   ladderRow: { flexDirection: 'row', alignItems: 'center', gap: 14, padding: 8, borderRadius: 18 },
   ladderCurrent: { backgroundColor: 'rgba(255,196,107,0.12)', borderWidth: 1, borderColor: 'rgba(255,196,107,0.45)' },
   ladderName: { fontSize: 24, lineHeight: 28 },
+  thumb: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
   ladderXp: { color: colors.textMuted, fontFamily: fonts.regular, fontSize: 13 },
   badge: {
     color: colors.onSun,

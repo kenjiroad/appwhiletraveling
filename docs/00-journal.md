@@ -69,4 +69,9 @@ La DA néon « faisait trop Discord » : passage à la DA premium. Signature « 
 pendant le défi), niveaux en soleils levants, verre dépoli, serif italique, pilule flottante, animations partout.
 → Détails : [12-da-aube.md](12-da-aube.md)
 
-## Étape 13 — Validation de la DA, puis Apple Developer + premier build EAS (à faire)
+## Étape 13 — La mascotte ✅ (22/10/2026)
+Marmotte 3D (piste A) générée avec Higgsfield : 8 niveaux d'évolution + 6 poses, détourées et intégrées
+partout dans l'app avec des animations (respire, saute à chaque pompe, silhouettes mystère).
+→ Détails : [13-mascotte.md](13-mascotte.md)
+
+## Étape 14 — Validation de la DA, puis Apple Developer + premier build EAS (à faire)

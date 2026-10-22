@@ -6,11 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
 import { ChoiceRow } from '@/components/choice-row';
-import { SunBadge } from '@/components/sun-badge';
+import { Mascot } from '@/components/mascot';
 import { TimeStepper } from '@/components/time-stepper';
 import { Body, Eyebrow, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
 import { requestNotificationPermissionAsync, scheduleAlarms } from '@/lib/alarm';
 import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
+import { MASCOT_POSES } from '@/lib/mascot';
 import { DEFAULT_SETTINGS, saveSettings, type Settings } from '@/lib/storage';
 import { colors, fonts, radius } from '@/lib/theme';
 import { requestCameraPermissionAsync } from '../../modules/rep-counter';
@@ -50,7 +51,7 @@ export default function OnboardingScreen() {
             {step === 'pitch' && (
               <>
                 <Animated.View entering={enter(0)}>
-                  <SunBadge level={2} size={130} />
+                  <Mascot source={MASCOT_POSES.sleep} size={190} />
                 </Animated.View>
                 <Animated.View entering={enter(1)}>
                   <Serif style={styles.giant}>Fini la{'\n'}marmotte.</Serif>

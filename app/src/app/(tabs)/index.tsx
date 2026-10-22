@@ -5,10 +5,12 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
+import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, Glass, Label, Pill, PrimaryButton, Serif } from '@/components/ui';
 import { WeekDots } from '@/components/week-dots';
 import { scheduleAlarms } from '@/lib/alarm';
 import { EXERCISE_LABELS, formatTime } from '@/lib/exercises';
+import { MASCOT_LEVELS } from '@/lib/mascot';
 import { getXp, rankFor } from '@/lib/progress';
 import { getSettings, getStreak, isTodayCompleted } from '@/lib/storage';
 import { colors, fonts } from '@/lib/theme';
@@ -19,6 +21,7 @@ function load() {
 
 export default function AlarmScreen() {
   const [data, setData] = useState(load);
+  const [hop, setHop] = useState(0);
 
   useFocusEffect(
     useCallback(() => {
@@ -49,6 +52,7 @@ export default function AlarmScreen() {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(120).duration(600)} style={styles.hero}>
+          <Mascot source={MASCOT_LEVELS[index]} size={118} hopKey={hop} onPress={() => setHop((h) => h + 1)} />
           <Eyebrow>{settings.enabled ? 'Prochain réveil' : 'Réveil en pause'}</Eyebrow>
           <Serif style={styles.time}>{formatTime(settings.hour, settings.minute)}</Serif>
           <Body style={{ textAlign: 'center' }}>
@@ -90,8 +94,8 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.night },
   safe: { flex: 1, paddingHorizontal: 22 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 8 },
-  hero: { alignItems: 'center', marginTop: 48, marginBottom: 36 },
-  time: { fontSize: 128, lineHeight: 140, marginTop: 4 },
+  hero: { alignItems: 'center', marginTop: 4, marginBottom: 16 },
+  time: { fontSize: 92, lineHeight: 100 },
   settingsLink: { marginTop: 14, borderBottomWidth: 1, borderBottomColor: colors.textFaint },
   settingsText: { fontSize: 14, color: colors.textMuted },
   weekHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },

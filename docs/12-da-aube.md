@@ -45,15 +45,15 @@ Fichiers : `app/src/lib/theme.ts`, `app/src/components/` (`aurora`, `ui`, `sun-b
 
 L'app (accueil, ligue, évolution, réglages) :
 
-![App](images/aube-app.png)
+_(captures remplacées : voir l’étape 13)_
 
 Le défi, de 0 à 15 pompes, puis le passage de niveau :
 
-![Défi](images/aube-defi.png)
+
 
 L'onboarding et le paywall :
 
-![Onboarding](images/aube-onboarding.png)
+
 
 Vidéos : [parcours complet](images/debout-demo.mp4) · [le défi seul](images/debout-defi.mp4)
 

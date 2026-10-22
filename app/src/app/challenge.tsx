@@ -17,11 +17,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Mascot } from '@/components/mascot';
 import { ProgressRing } from '@/components/progress-ring';
-import { SunBadge } from '@/components/sun-badge';
 import { Body, Eyebrow, GhostButton, Glass, PrimaryButton, ProgressBar, Serif } from '@/components/ui';
 import { cancelTodayReminders } from '@/lib/alarm';
 import { EXERCISE_LABELS } from '@/lib/exercises';
+import { MASCOT_LEVELS, MASCOT_POSES } from '@/lib/mascot';
 import { getXp, rankFor, XP_PER_COMPLETED_DAY, type Rank } from '@/lib/progress';
 import { DEFAULT_SETTINGS, getSettings, getStreak, isTodayCompleted, recordSession } from '@/lib/storage';
 import { colors, fonts, gradients } from '@/lib/theme';
@@ -110,7 +111,11 @@ export default function ChallengeScreen() {
         <SafeAreaView style={styles.result}>
           <View style={styles.resultTop}>
             <Animated.View entering={ZoomIn.springify().damping(12)}>
-              <SunBadge level={index} size={170} />
+              <Mascot
+                source={result.rankUp ? MASCOT_LEVELS[index] : MASCOT_POSES.victory}
+                size={210}
+                idle={result.rankUp ? 'float' : 'bounce'}
+              />
             </Animated.View>
             <Animated.View entering={FadeInUp.delay(200).duration(600)} style={{ alignItems: 'center' }}>
               <Eyebrow style={{ color: 'rgba(255,255,255,0.8)' }}>
@@ -192,6 +197,10 @@ export default function ChallengeScreen() {
         </Animated.Text>
       </View>
 
+      <View style={[styles.coach, { bottom: insets.bottom + 56 }]} pointerEvents="none">
+        <Mascot source={settings.exercise === 'squat' ? MASCOT_POSES.squat : MASCOT_POSES.pushup} size={120} idle="none" hopKey={count} />
+      </View>
+
       <Text style={[styles.hint, { bottom: insets.bottom + 28 }]} pointerEvents="none">
         {!isRepCounterAvailable
           ? `Mode démo · touche l’écran à chaque ${label.singular}`
@@ -216,6 +225,7 @@ const styles = StyleSheet.create({
   encouragement: { color: colors.text, fontFamily: fonts.serif, fontSize: 30 },
   hint: { position: 'absolute', left: 24, right: 24, textAlign: 'center', color: colors.textMuted, fontFamily: fonts.medium, fontSize: 14 },
   quitButton: { position: 'absolute', right: 22 },
+  coach: { position: 'absolute', left: 14 },
   quit: { color: colors.textMuted, fontFamily: fonts.medium, fontSize: 15 },
   result: { flex: 1, padding: 24, justifyContent: 'space-between' },
   resultTop: { alignItems: 'center', gap: 4, marginTop: 20 },

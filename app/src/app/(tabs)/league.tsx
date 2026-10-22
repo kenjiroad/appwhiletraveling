@@ -6,8 +6,10 @@ import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
+import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, GhostButton, Glass, Label, Serif } from '@/components/ui';
 import { getLeague, IS_DEMO_LEAGUE, LEAGUE, type LeaguePlayer } from '@/lib/league';
+import { MASCOT_LEVELS } from '@/lib/mascot';
 import { getXp, rankFor } from '@/lib/progress';
 import { getSettings } from '@/lib/storage';
 import { colors, fonts, gradients, radius } from '@/lib/theme';
@@ -19,9 +21,7 @@ function loadPlayers() {
 function Avatar({ player, size = 40 }: { player: LeaguePlayer; size?: number }) {
   return (
     <View style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }, player.isMe && styles.avatarMe]}>
-      <Text style={[styles.avatarText, { fontSize: size * 0.42 }, player.isMe && { color: colors.onSun }]}>
-        {player.name.charAt(0).toUpperCase()}
-      </Text>
+      <Mascot source={MASCOT_LEVELS[Math.max(0, player.level - 1)]} size={size * 0.92} idle="none" style={{ marginTop: size * 0.12 }} />
     </View>
   );
 }
@@ -121,9 +121,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   podiumPlace: { fontSize: 40, lineHeight: 46 },
-  avatar: { backgroundColor: colors.nightHigh, borderWidth: 1, borderColor: colors.glassBorder, alignItems: 'center', justifyContent: 'center' },
-  avatarMe: { backgroundColor: colors.gold, borderColor: colors.gold },
-  avatarText: { color: colors.text, fontFamily: fonts.serif },
+  avatar: {
+    backgroundColor: colors.nightHigh,
+    borderWidth: 1,
+    borderColor: colors.glassBorder,
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  avatarMe: { backgroundColor: 'rgba(255,196,107,0.35)', borderColor: colors.gold },
   row: { flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 10, paddingHorizontal: 12, borderRadius: radius.md },
   meRow: { backgroundColor: 'rgba(255,196,107,0.14)', borderWidth: 1, borderColor: 'rgba(255,196,107,0.5)' },
   place: { color: colors.textFaint, fontFamily: fonts.semibold, fontSize: 14, width: 18 },

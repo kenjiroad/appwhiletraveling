@@ -5,8 +5,9 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
-import { SunBadge } from '@/components/sun-badge';
+import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, PrimaryButton, Serif } from '@/components/ui';
+import { MASCOT_LEVELS } from '@/lib/mascot';
 import { PLANS, purchase, restore, type Plan } from '@/lib/purchases';
 import { colors, fonts, radius } from '@/lib/theme';
 
@@ -33,7 +34,7 @@ export default function PaywallScreen() {
         </Pressable>
 
         <Animated.View entering={FadeInDown.duration(500)}>
-          <SunBadge level={7} size={110} />
+          <Mascot source={MASCOT_LEVELS[7]} size={150} idle="float" />
           <Eyebrow>Debout Pro</Eyebrow>
           <Serif style={{ fontSize: 52, lineHeight: 56 }}>Chaque matin,{'\n'}tu gagnes.</Serif>
         </Animated.View>
