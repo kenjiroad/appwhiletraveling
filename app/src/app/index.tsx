@@ -1,98 +1,117 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
+import * as MediaLibrary from 'expo-media-library/legacy';
+import { router, useFocusEffect } from 'expo-router';
+import { useCallback, useState } from 'react';
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
-
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import { formatStorage, getMonthsWithPhotos, type Month } from '@/lib/photos';
+import { colors, radius } from '@/lib/theme';
+import { getDeletedTotal } from '@/lib/usage';
 
 export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+  const [permission, requestPermission] = MediaLibrary.usePermissions({ granularPermissions: ['photo'] });
+  const [months, setMonths] = useState<Month[] | null>(null);
+  const [deletedTotal, setDeletedTotal] = useState(0);
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+  const granted = permission?.granted ?? false;
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+  useFocusEffect(
+    useCallback(() => {
+      setDeletedTotal(getDeletedTotal());
+      if (granted) getMonthsWithPhotos().then(setMonths);
+    }, [granted])
+  );
 
-        {Platform.OS === 'web' && <WebBadge />}
+  if (!permission) return <View style={styles.screen} />;
+
+  if (!granted) {
+    return (
+      <SafeAreaView style={[styles.screen, styles.onboarding]}>
+        <Text style={styles.emoji}>🧹</Text>
+        <Text style={styles.title}>Ton iPhone est plein ?</Text>
+        <Text style={styles.subtitle}>
+          Swipe tes photos comme sur Tinder.{'\n'}À gauche : supprimer. À droite : garder.{'\n'}
+          Libère des Go en quelques minutes.
+        </Text>
+        <Pressable style={styles.primaryButton} onPress={requestPermission}>
+          <Text style={styles.primaryButtonText}>Commencer le ménage</Text>
+        </Pressable>
+        <Text style={styles.hint}>Tes photos restent sur ton téléphone. Rien n’est envoyé.</Text>
       </SafeAreaView>
-    </ThemedView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.screen} edges={['top']}>
+      <FlatList
+        data={months ?? []}
+        keyExtractor={(m) => m.key}
+        contentContainerStyle={styles.list}
+        ListHeaderComponent={
+          <View>
+            <Text style={styles.title}>Ménage</Text>
+            <View style={styles.statCard}>
+              <Text style={styles.statValue}>{formatStorage(deletedTotal)}</Text>
+              <Text style={styles.statLabel}>
+                libérés · {deletedTotal} photo{deletedTotal > 1 ? 's' : ''} supprimée{deletedTotal > 1 ? 's' : ''}
+              </Text>
+            </View>
+            <Text style={styles.sectionTitle}>Choisis un mois à trier</Text>
+            {!months && <ActivityIndicator color={colors.text} style={{ marginTop: 24 }} />}
+          </View>
+        }
+        renderItem={({ item }) => (
+          <Pressable
+            style={styles.monthRow}
+            onPress={() =>
+              router.push({
+                pathname: '/swipe',
+                params: { start: item.start, end: item.end, label: item.label },
+              })
+            }>
+            <Text style={styles.monthLabel}>{item.label}</Text>
+            <Text style={styles.monthCount}>{item.count} photos ›</Text>
+          </Pressable>
+        )}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
+  screen: { flex: 1, backgroundColor: colors.background },
+  onboarding: { justifyContent: 'center', alignItems: 'center', padding: 28 },
+  emoji: { fontSize: 72, marginBottom: 16 },
+  title: { color: colors.text, fontSize: 34, fontWeight: '800', marginBottom: 12 },
+  subtitle: { color: colors.textMuted, fontSize: 17, lineHeight: 25, textAlign: 'center', marginBottom: 32 },
+  primaryButton: {
+    backgroundColor: colors.accent,
+    paddingVertical: 18,
     alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+    borderRadius: radius.md,
+    alignItems: 'center',
   },
+  primaryButtonText: { color: colors.text, fontSize: 18, fontWeight: '700' },
+  hint: { color: colors.textMuted, fontSize: 13, marginTop: 16 },
+  list: { padding: 20, gap: 10 },
+  statCard: {
+    backgroundColor: colors.card,
+    borderColor: colors.cardBorder,
+    borderWidth: 1,
+    borderRadius: radius.lg,
+    padding: 20,
+    marginBottom: 24,
+  },
+  statValue: { color: colors.keep, fontSize: 40, fontWeight: '800' },
+  statLabel: { color: colors.textMuted, fontSize: 15, marginTop: 4 },
+  sectionTitle: { color: colors.text, fontSize: 20, fontWeight: '700', marginBottom: 6 },
+  monthRow: {
+    backgroundColor: colors.card,
+    borderRadius: radius.md,
+    padding: 18,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  monthLabel: { color: colors.text, fontSize: 17, fontWeight: '600' },
+  monthCount: { color: colors.textMuted, fontSize: 16 },
 });

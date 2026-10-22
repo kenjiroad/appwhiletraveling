@@ -33,4 +33,11 @@ slideshows, agents IA pour le contenu, clipping payé à la vue = distribution s
 4 nouvelles idées notées. Recommandation inchangée : **app alternance IA** ; option fun : **app couple**.
 → Détails : [06-veille-x.md](06-veille-x.md)
 
-## Étape 7 — Choix final de l'idée (en attente de ta décision)
+## Étape 7 — App en 1 jour : « Ménage » ✅ (22/10/2026)
+Nouveau cahier des charges : l'app doit se coder en 1 jour, être fun, gagner de l'argent vite et ne dépendre de personne.
+Choix : **nettoyeur de photos par swipe** (modèle Swipewipe, racheté par le français MWM).
+V1 codée : onboarding, liste des mois, swipe, suppression, partage du score, paywall (paiement factice).
+TypeScript, lint et compilation iOS OK. Reste à faire : test sur iPhone, compte Apple, RevenueCat, publication.
+→ Détails : [07-app-en-1-jour.md](07-app-en-1-jour.md)
+
+## Étape 8 — Test sur iPhone + compte Apple Developer (à faire)

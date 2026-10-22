@@ -1,20 +1,8 @@
-# App While Traveling — première app iOS grand public, pour la France
+# Ménage 🧹 — nettoie tes photos en swipant
 
-Première app, construite en voyageant. Le principe : reprendre une app qui marche aux US et la lancer en
-France, **sans dépendre de partenaires**, avec une distribution organique (TikTok) d'abord.
-
-> Idée en cours de choix (étape 5) : **app alternance IA** recommandée, **coach muscu IA** en plan B.
-> L'idée « Cordée » (Ladder avec des coachs) est en pause : elle dépendait de coachs à recruter.
-
-## Les étapes (à lire dans l'ordre)
-
-0. [Journal de bord](docs/00-journal.md) — ce qui a été fait, étape par étape
-1. [Étude de marché](docs/01-etude-de-marche.md) — pourquoi Ladder
-2. [Critères d'une bonne app](docs/02-criteres-bonne-app.md)
-3. [Stack technique](docs/03-stack-technique.md) — outils et comment lancer l'app
-4. [Feuille de route](docs/04-feuille-de-route.md) — jusqu'au lancement (version Cordée)
-5. [Nouvelles idées](docs/05-nouvelles-idees.md) — apps qui se distribuent seules
-6. [Veille sur X](docs/06-veille-x.md) — ce que font les créateurs d'apps en 2026
+Première app iOS, construite en voyageant (direction Berlin). Le principe : tu swipes tes photos comme sur Tinder. À gauche, tu supprimes ; à droite, tu gardes. Tu libères des Go en quelques minutes.
+Elle reprend le modèle de **Swipewipe** (racheté par le français MWM), 100 % en français, sans serveur,
+et on la fait connaître par du contenu TikTok organique.
 
 ## Lancer l'app
 
@@ -22,4 +10,15 @@ France, **sans dépendre de partenaires**, avec une distribution organique (TikT
 cd app && npm install && npx expo start
 ```
 
-Scanne le QR code avec ton iPhone (app **Expo Go**).
+Installe **Expo Go** sur ton iPhone, puis scanne le QR code.
+
+## Les étapes (à lire dans l'ordre)
+
+0. [Journal de bord](docs/00-journal.md) — ce qui a été fait, étape par étape
+1. [Étude de marché](docs/01-etude-de-marche.md) — première idée (Ladder → Cordée, en pause)
+2. [Critères d'une bonne app](docs/02-criteres-bonne-app.md)
+3. [Stack technique](docs/03-stack-technique.md)
+4. [Feuille de route](docs/04-feuille-de-route.md) — version Cordée
+5. [Nouvelles idées](docs/05-nouvelles-idees.md) — apps qui se distribuent seules
+6. [Veille sur X](docs/06-veille-x.md) — ce que font les créateurs d'apps en 2026
+7. [L'app en 1 jour : Ménage](docs/07-app-en-1-jour.md) — **l'app actuelle** et les étapes jusqu'à l'argent

@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "Cordée",
-    "slug": "cordee",
+    "name": "Ménage",
+    "slug": "menage",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "cordee",
+    "scheme": "menage",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon",
-      "bundleIdentifier": "fr.cordee.app",
+      "bundleIdentifier": "fr.menage.app",
       "supportsTablet": false
     },
     "android": {
@@ -34,7 +34,15 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
-      ]
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Ménage a besoin d'accéder à tes photos pour t'aider à trier et supprimer celles que tu ne veux plus. Rien n'est envoyé.",
+          "savePhotosPermission": false
+        }
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,
