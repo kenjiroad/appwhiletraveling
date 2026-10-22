@@ -44,6 +44,20 @@ startups pour les copier » (conditions d'utilisation, section 9.3). On s'en ser
 **tendances par catégorie**, sans republier leurs données. La clé n'était pas encore disponible dans
 cette session : les appels n'ont donc pas été faits.
 
+### Essai avec les données publiques de TrustMRR (22/10/2026)
+
+Sans clé d'API, on a utilisé les deux accès publics prévus pour les IA (`/api/ai/discovery` et `/api/ai`).
+Ils donnent environ 100 startups au total (dernières ajoutées, plus forte croissance, dernières mises en vente).
+**Ces données ne permettent pas de conclure :**
+- La plupart font **moins de 1 000 $/mois**, et la « plus forte croissance » vient de projets qui passent de quelques
+  dollars à quelques centaines (croissance de +5 000 %, ce qui ne veut rien dire).
+- Aucune app mobile n'apparaît parmi les 25 qui grandissent le plus vite.
+- Dans les dernières mises en vente, l'IA et les apps mobiles sont les catégories les plus présentes, mais avec de
+  très petits revenus.
+
+→ Pour une vraie analyse par catégorie, il faut l'API avec la clé : filtrer `category=mobile-apps` et
+`health-fitness` avec un revenu minimum (ex. 5 000 $/mois), puis trier par croissance.
+
 ## Décision : « Debout », le réveil qui ne s'arrête que quand tu bouges
 
 Inspiré du concept d'Erly, mais pour la France : en français, avec pompes **et** squats, une détection
