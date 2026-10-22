@@ -74,4 +74,7 @@ Marmotte 3D (piste A) générée avec Higgsfield : 8 niveaux d'évolution + 6 po
 partout dans l'app avec des animations (respire, saute à chaque pompe, silhouettes mystère).
 → Détails : [13-mascotte.md](13-mascotte.md)
 
-## Étape 14 — Validation de la DA, puis Apple Developer + premier build EAS (à faire)
+## Étape 14 — DA validée par Kenji ✅ (22/10/2026)
+DA « Aube » + mascotte validées. On passe à la technique.
+
+## Étape 15 — Compte Apple Developer + premier build EAS (à faire)

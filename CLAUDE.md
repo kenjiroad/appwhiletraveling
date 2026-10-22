@@ -21,11 +21,11 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 22/10/2026 — Stack : Expo + EAS (pas de Mac), Supabase (UE) pour les comptes, RevenueCat pour les abonnements.
 - 22/10/2026 — DA « néon » rejetée (« trop Discord ») → DA premium « Aube » + animations (`docs/12`). Gamification gardée.
 - 22/10/2026 — Mascotte : marmotte 3D (piste A), 8 niveaux + 6 poses, dans `app/assets/mascot/` (`docs/13`).
+- 22/10/2026 — DA « Aube » + mascotte **validées** par Kenji.
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)
 
-- 🟡 Références visuelles de Kenji pour la DA premium.
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
 - 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
 - 🟡 Code Swift jamais compilé : à vérifier au premier build EAS.
