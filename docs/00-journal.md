@@ -81,4 +81,9 @@ DA « Aube » + mascotte validées. On passe à la technique.
 Page « jour par jour » + tout ce que l'app coûte (Apple 99 €/an payé, 46 crédits Higgsfield ≈ 2,30 $, outils 100 € + 59 $ par mois).
 → Détails : [14-carnet-de-bord.md](14-carnet-de-bord.md)
 
+## Comptes + vraie ligue — code prêt ✅ (22/10/2026)
+Supabase : compte anonyme créé au lancement, séances envoyées (avec renvoi si hors ligne), vraie ligue de la semaine.
+Sans fichier `app/.env`, l'app reste en mode démo comme avant. Reste à Kenji : créer le projet Supabase (10 min).
+→ Détails : [15-comptes-et-ligue.md](15-comptes-et-ligue.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)

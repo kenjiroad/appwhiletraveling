@@ -25,6 +25,7 @@ import { EXERCISE_LABELS } from '@/lib/exercises';
 import { MASCOT_LEVELS, MASCOT_POSES } from '@/lib/mascot';
 import { getXp, rankFor, XP_PER_COMPLETED_DAY, type Rank } from '@/lib/progress';
 import { DEFAULT_SETTINGS, getSettings, getStreak, isTodayCompleted, recordSession } from '@/lib/storage';
+import { syncNow } from '@/lib/sync';
 import { colors, fonts, gradients } from '@/lib/theme';
 import { isRepCounterAvailable, RepCounterView } from '../../modules/rep-counter';
 
@@ -81,6 +82,7 @@ export default function ChallengeScreen() {
     const firstWinToday = !isTodayCompleted();
     const before = rankFor(getXp()).rank;
     recordSession(reps, true);
+    syncNow();
     cancelTodayReminders();
     const after = rankFor(getXp()).rank;
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);

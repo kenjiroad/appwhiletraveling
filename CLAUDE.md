@@ -29,4 +29,4 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
 - 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
 - 🟡 Code Swift jamais compilé : à vérifier au premier build EAS.
-- 🟡 La ligue utilise des joueurs fictifs tant que les comptes n'existent pas.
+- 🟡 La ligue utilise des joueurs fictifs tant que le projet Supabase n'est pas créé (code prêt : `docs/15`). Sign in with Apple : plus tard.

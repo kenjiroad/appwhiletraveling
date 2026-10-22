@@ -12,6 +12,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 
+import { syncNow } from '@/lib/sync';
 import { colors, fonts } from '@/lib/theme';
 import { useAlarmResponse } from '@/lib/use-alarm-response';
 
@@ -40,6 +41,11 @@ export default function RootLayout() {
     [fonts.serif]: InstrumentSerif_400Regular_Italic,
   });
   useAlarmResponse();
+
+  // Creates the anonymous account on first launch and resends any session saved while offline.
+  useEffect(() => {
+    syncNow();
+  }, []);
 
   const ready = fontsLoaded || fontError != null;
   useEffect(() => {

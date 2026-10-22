@@ -23,6 +23,7 @@ const store =
 
 const SETTINGS_KEY = 'settings';
 const HISTORY_KEY = 'history';
+const PENDING_SYNC_KEY = 'pending-sync';
 
 export type DayRecord = { reps: number; done: boolean };
 
@@ -63,6 +64,21 @@ export function recordSession(reps: number, done: boolean) {
   const today = history[dayKey()] ?? { reps: 0, done: false };
   history[dayKey()] = { reps: today.reps + reps, done: today.done || done };
   store.setItem(HISTORY_KEY, JSON.stringify(history));
+  markDayPending(dayKey());
+}
+
+/** Days whose totals still have to be sent to the server (kept until a sync succeeds). */
+export function getPendingDays(): string[] {
+  return readJson<string[]>(PENDING_SYNC_KEY, []);
+}
+
+function markDayPending(day: string) {
+  const pending = getPendingDays();
+  if (!pending.includes(day)) store.setItem(PENDING_SYNC_KEY, JSON.stringify([...pending, day]));
+}
+
+export function clearPendingDays(synced: string[]) {
+  store.setItem(PENDING_SYNC_KEY, JSON.stringify(getPendingDays().filter((d) => !synced.includes(d))));
 }
 
 export function isTodayCompleted() {

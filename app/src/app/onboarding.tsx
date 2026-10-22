@@ -13,6 +13,7 @@ import { requestNotificationPermissionAsync, scheduleAlarms } from '@/lib/alarm'
 import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
 import { MASCOT_POSES } from '@/lib/mascot';
 import { DEFAULT_SETTINGS, saveSettings, type Settings } from '@/lib/storage';
+import { syncNow } from '@/lib/sync';
 import { colors, fonts, radius } from '@/lib/theme';
 import { requestCameraPermissionAsync } from '../../modules/rep-counter';
 
@@ -28,6 +29,7 @@ export default function OnboardingScreen() {
     await requestNotificationPermissionAsync();
     await requestCameraPermissionAsync();
     saveSettings(settings);
+    syncNow();
     await scheduleAlarms(settings);
     router.replace('/');
     router.push('/paywall');

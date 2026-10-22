@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Aurora } from '@/components/aurora';
 import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, GhostButton, Glass, Label, Serif } from '@/components/ui';
-import { getLeague, IS_DEMO_LEAGUE, LEAGUE, type LeaguePlayer } from '@/lib/league';
+import { fetchLeague, getLeague, IS_DEMO_LEAGUE, LEAGUE, type LeaguePlayer } from '@/lib/league';
 import { MASCOT_LEVELS } from '@/lib/mascot';
 import { getXp, rankFor } from '@/lib/progress';
 import { getSettings } from '@/lib/storage';
@@ -28,7 +28,18 @@ function Avatar({ player, size = 40 }: { player: LeaguePlayer; size?: number }) 
 
 export default function LeagueScreen() {
   const [players, setPlayers] = useState(loadPlayers);
-  useFocusEffect(useCallback(() => setPlayers(loadPlayers()), []));
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+      setPlayers(loadPlayers());
+      fetchLeague().then((real) => {
+        if (active && real) setPlayers(real);
+      });
+      return () => {
+        active = false;
+      };
+    }, [])
+  );
 
   const top = players.slice(0, 3);
   const podiumOrder = [top[1], top[0], top[2]].filter(Boolean);
@@ -50,7 +61,7 @@ export default function LeagueScreen() {
               const place = players.indexOf(p) + 1;
               const height = place === 1 ? 128 : place === 2 ? 96 : 72;
               return (
-                <Animated.View key={p.name} entering={FadeInUp.delay(150 + i * 120).springify().damping(14)} style={styles.podiumColumn}>
+                <Animated.View key={`${place}-${p.name}`} entering={FadeInUp.delay(150 + i * 120).springify().damping(14)} style={styles.podiumColumn}>
                   <Avatar player={p} size={place === 1 ? 58 : 48} />
                   <Label numberOfLines={1} style={{ fontSize: 15, marginTop: 6 }}>
                     {p.isMe ? 'Toi' : p.name}
@@ -68,7 +79,7 @@ export default function LeagueScreen() {
           <Animated.View entering={FadeInDown.delay(400).duration(600)}>
             <Glass style={{ padding: 8 }}>
               {players.map((p, i) => (
-                <View key={p.name}>
+                <View key={`${i}-${p.name}`}>
                   {i === LEAGUE.promoteTop && (
                     <View style={styles.zone}>
                       <View style={styles.zoneLine} />
@@ -96,7 +107,11 @@ export default function LeagueScreen() {
               Share.share({ message: 'Je te défie sur Debout : celui qui fait le plus de pompes au réveil cette semaine gagne.' })
             }
           />
-          {IS_DEMO_LEAGUE && <Body style={styles.demo}>Aperçu avec des joueurs fictifs. La vraie ligue arrive avec les comptes.</Body>}
+          {IS_DEMO_LEAGUE ? (
+            <Body style={styles.demo}>Aperçu avec des joueurs fictifs. La vraie ligue arrive avec les comptes.</Body>
+          ) : (
+            players.length < 2 && <Body style={styles.demo}>Personne d’autre cette semaine. Défie un pote pour remplir la ligue.</Body>
+          )}
         </ScrollView>
       </SafeAreaView>
     </View>
