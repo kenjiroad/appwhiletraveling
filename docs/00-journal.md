@@ -27,4 +27,10 @@ Cordée est mise en pause. 5 nouvelles idées notées.
 **Recommandation : app alternance IA** (modèle Sprout). Plan B : coach muscu IA gamifié (modèle Stronger).
 → Détails : [05-nouvelles-idees.md](05-nouvelles-idees.md)
 
-## Étape 6 — Choix final de l'idée (en attente de ta décision)
+## Étape 6 — Veille sur X ✅ (22/10/2026)
+6 leçons des créateurs d'apps sur X (contenu > code, copier les gagnants, V1 en 7–14 jours, volume de
+slideshows, agents IA pour le contenu, clipping payé à la vue = distribution sans contacter personne).
+4 nouvelles idées notées. Recommandation inchangée : **app alternance IA** ; option fun : **app couple**.
+→ Détails : [06-veille-x.md](06-veille-x.md)
+
+## Étape 7 — Choix final de l'idée (en attente de ta décision)

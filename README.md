@@ -14,6 +14,7 @@ France, **sans dépendre de partenaires**, avec une distribution organique (TikT
 3. [Stack technique](docs/03-stack-technique.md) — outils et comment lancer l'app
 4. [Feuille de route](docs/04-feuille-de-route.md) — jusqu'au lancement (version Cordée)
 5. [Nouvelles idées](docs/05-nouvelles-idees.md) — apps qui se distribuent seules
+6. [Veille sur X](docs/06-veille-x.md) — ce que font les créateurs d'apps en 2026
 
 ## Lancer l'app
 
