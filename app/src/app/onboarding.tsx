@@ -9,7 +9,7 @@ import { ChoiceRow } from '@/components/choice-row';
 import { Mascot } from '@/components/mascot';
 import { TimeStepper } from '@/components/time-stepper';
 import { Body, Eyebrow, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
-import { requestNotificationPermissionAsync, scheduleAlarms } from '@/lib/alarm';
+import { requestAlarmPermissionAsync, scheduleAlarms } from '@/lib/alarm';
 import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
 import { MASCOT_POSES } from '@/lib/mascot';
 import { DEFAULT_SETTINGS, saveSettings, type Settings } from '@/lib/storage';
@@ -26,7 +26,7 @@ export default function OnboardingScreen() {
   const stepIndex = STEPS.indexOf(step);
 
   const finish = async () => {
-    await requestNotificationPermissionAsync();
+    await requestAlarmPermissionAsync();
     await requestCameraPermissionAsync();
     saveSettings(settings);
     syncNow();
@@ -147,8 +147,8 @@ export default function OnboardingScreen() {
                 </Animated.View>
                 <Animated.View entering={enter(1)}>
                   <Glass style={{ gap: 6 }}>
-                    <Label>Notifications</Label>
-                    <Body>Pour te réveiller, et te relancer si tu traînes.</Body>
+                    <Label>Réveil et notifications</Label>
+                    <Body>Pour sonner comme un vrai réveil, même en silencieux, et te relancer si tu traînes.</Body>
                   </Glass>
                 </Animated.View>
                 <Animated.View entering={enter(2)}>

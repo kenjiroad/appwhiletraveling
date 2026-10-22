@@ -1,14 +1,37 @@
 import * as Notifications from 'expo-notifications';
-import { router } from 'expo-router';
-import { useEffect } from 'react';
+import { router, usePathname } from 'expo-router';
+import { useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 
-/** Tapping an alarm notification goes straight to the challenge. */
+import { isAlarmDue } from '@/lib/alarm';
+import { getSettings } from '@/lib/storage';
+
+/**
+ * Sends you to the challenge when you tap an alarm notification, and whenever the app opens
+ * while the alarm is due (e.g. from the "Mes pompes" button of the AlarmKit alarm).
+ */
 export function useAlarmResponse() {
   const lastResponse = Notifications.useLastNotificationResponse();
+  const pathname = usePathname();
+  const pathnameRef = useRef(pathname);
+  useEffect(() => {
+    pathnameRef.current = pathname;
+  }, [pathname]);
 
   useEffect(() => {
     if (lastResponse?.notification.request.content.data?.url === '/challenge') {
       router.push('/challenge');
     }
   }, [lastResponse]);
+
+  useEffect(() => {
+    const openChallengeIfDue = () => {
+      if (pathnameRef.current !== '/challenge' && isAlarmDue(getSettings())) router.push('/challenge');
+    };
+    openChallengeIfDue();
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') openChallengeIfDue();
+    });
+    return () => subscription.remove();
+  }, []);
 }

@@ -30,3 +30,4 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 13. [La mascotte](docs/13-mascotte.md) — **la marmotte qui évolue**, vidéos de démo
 14. [Carnet de bord](docs/14-carnet-de-bord.md) — jour par jour + finances
 15. [Comptes + vraie ligue](docs/15-comptes-et-ligue.md) — Supabase, ce que Kenji doit configurer
+16. [Vrai réveil (AlarmKit)](docs/16-reveil-alarmkit.md) — sonne même en silencieux

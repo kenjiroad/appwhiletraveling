@@ -86,4 +86,9 @@ Supabase : compte anonyme créé au lancement, séances envoyées (avec renvoi s
 Sans fichier `app/.env`, l'app reste en mode démo comme avant. Reste à Kenji : créer le projet Supabase (10 min).
 → Détails : [15-comptes-et-ligue.md](15-comptes-et-ligue.md)
 
+## Vrai réveil (AlarmKit) — code prêt ✅ (22/10/2026)
+Sur iOS 26, Debout sonne comme l'app Horloge, même en silencieux. « Mes pompes » ouvre le défi ;
+« Arrêter » ne coupe que 2 minutes. Notifications gardées en secours. À tester au premier build.
+→ Détails : [16-reveil-alarmkit.md](16-reveil-alarmkit.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)

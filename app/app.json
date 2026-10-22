@@ -12,7 +12,8 @@
       "bundleIdentifier": "fr.debout.app",
       "supportsTablet": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "Debout utilise la caméra pour compter tes pompes et tes squats. Tout est analysé sur ton téléphone : aucune image n’est envoyée ni enregistrée."
+        "NSCameraUsageDescription": "Debout utilise la caméra pour compter tes pompes et tes squats. Tout est analysé sur ton téléphone : aucune image n’est envoyée ni enregistrée.",
+        "NSAlarmKitUsageDescription": "Debout sonne comme un vrai réveil, même en mode silencieux, jusqu’à ce que tu aies fait tes pompes."
       },
       "entitlements": {
         "com.apple.developer.usernotifications.time-sensitive": true
