@@ -40,4 +40,17 @@ V1 codée : onboarding, liste des mois, swipe, suppression, partage du score, pa
 TypeScript, lint et compilation iOS OK. Reste à faire : test sur iPhone, compte Apple, RevenueCat, publication.
 → Détails : [07-app-en-1-jour.md](07-app-en-1-jour.md)
 
-## Étape 8 — Test sur iPhone + compte Apple Developer (à faire)
+> Ménage a été abandonnée (idée pas assez forte) : son code reste dans l'historique git.
+
+## Étape 8 — Partir de la douleur, viser un démarrage rapide ✅ (22/10/2026)
+Analyse des douleurs des Français et des apps **récentes** qui ont démarré vite (Starter Story).
+Catégorie retenue : **discipline avec preuve physique vérifiée par l'IA**.
+→ Détails : [08-recherche-douleurs-et-choix.md](08-recherche-douleurs-et-choix.md)
+
+## Étape 9 — Debout V1 ✅ (22/10/2026)
+Réveil qui ne s'arrête qu'avec des pompes ou des squats comptés par la caméra (Apple Vision, sur le téléphone).
+Onboarding, accueil, défi caméra, série, partage, paywall (factice). Mode démo dans Expo Go.
+Le Swift n'est pas encore compilé (pas de Mac ici) : ce sera fait au premier build EAS.
+→ Détails : [09-debout-v1.md](09-debout-v1.md)
+
+## Étape 10 — Compte Apple Developer + premier build EAS (à faire)

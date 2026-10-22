@@ -1,16 +1,22 @@
 {
   "expo": {
-    "name": "Ménage",
-    "slug": "menage",
+    "name": "Debout",
+    "slug": "debout",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "menage",
+    "scheme": "debout",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon",
-      "bundleIdentifier": "fr.menage.app",
-      "supportsTablet": false
+      "bundleIdentifier": "fr.debout.app",
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Debout utilise la caméra pour compter tes pompes et tes squats. Tout est analysé sur ton téléphone : aucune image n’est envoyée ni enregistrée."
+      },
+      "entitlements": {
+        "com.apple.developer.usernotifications.time-sensitive": true
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -35,14 +41,8 @@
           "imageWidth": 76
         }
       ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "Ménage a besoin d'accéder à tes photos pour t'aider à trier et supprimer celles que tu ne veux plus. Rien n'est envoyé.",
-          "savePhotosPermission": false
-        }
-      ],
-      "expo-secure-store"
+      "expo-secure-store",
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true,

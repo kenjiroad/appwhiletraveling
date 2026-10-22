@@ -1,117 +1,113 @@
-import * as MediaLibrary from 'expo-media-library/legacy';
-import { router, useFocusEffect } from 'expo-router';
+import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { formatStorage, getMonthsWithPhotos, type Month } from '@/lib/photos';
+import { ChoiceRow } from '@/components/choice-row';
+import { TimeStepper } from '@/components/time-stepper';
+import { scheduleAlarms } from '@/lib/alarm';
+import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
+import { getSettings, getStreak, isTodayCompleted, saveSettings, type Settings } from '@/lib/storage';
 import { colors, radius } from '@/lib/theme';
-import { getDeletedTotal } from '@/lib/usage';
 
 export default function HomeScreen() {
-  const [permission, requestPermission] = MediaLibrary.usePermissions({ granularPermissions: ['photo'] });
-  const [months, setMonths] = useState<Month[] | null>(null);
-  const [deletedTotal, setDeletedTotal] = useState(0);
-
-  const granted = permission?.granted ?? false;
+  const [settings, setSettings] = useState(getSettings);
+  const [streak, setStreak] = useState(getStreak);
+  const [doneToday, setDoneToday] = useState(isTodayCompleted);
 
   useFocusEffect(
     useCallback(() => {
-      setDeletedTotal(getDeletedTotal());
-      if (granted) getMonthsWithPhotos().then(setMonths);
-    }, [granted])
+      setStreak(getStreak());
+      setDoneToday(isTodayCompleted());
+      // Re-plan on every visit so the notification window keeps rolling forward.
+      const current = getSettings();
+      if (current) scheduleAlarms(current);
+    }, [])
   );
 
-  if (!permission) return <View style={styles.screen} />;
+  if (!settings) return <Redirect href="/onboarding" />;
 
-  if (!granted) {
-    return (
-      <SafeAreaView style={[styles.screen, styles.onboarding]}>
-        <Text style={styles.emoji}>🧹</Text>
-        <Text style={styles.title}>Ton iPhone est plein ?</Text>
-        <Text style={styles.subtitle}>
-          Swipe tes photos comme sur Tinder.{'\n'}À gauche : supprimer. À droite : garder.{'\n'}
-          Libère des Go en quelques minutes.
-        </Text>
-        <Pressable style={styles.primaryButton} onPress={requestPermission}>
-          <Text style={styles.primaryButtonText}>Commencer le ménage</Text>
-        </Pressable>
-        <Text style={styles.hint}>Tes photos restent sur ton téléphone. Rien n’est envoyé.</Text>
-      </SafeAreaView>
-    );
-  }
+  const update = (patch: Partial<Settings>) => {
+    const next = { ...settings, ...patch };
+    setSettings(next);
+    saveSettings(next);
+    scheduleAlarms(next);
+  };
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
-      <FlatList
-        data={months ?? []}
-        keyExtractor={(m) => m.key}
-        contentContainerStyle={styles.list}
-        ListHeaderComponent={
-          <View>
-            <Text style={styles.title}>Ménage</Text>
-            <View style={styles.statCard}>
-              <Text style={styles.statValue}>{formatStorage(deletedTotal)}</Text>
-              <Text style={styles.statLabel}>
-                libérés · {deletedTotal} photo{deletedTotal > 1 ? 's' : ''} supprimée{deletedTotal > 1 ? 's' : ''}
-              </Text>
-            </View>
-            <Text style={styles.sectionTitle}>Choisis un mois à trier</Text>
-            {!months && <ActivityIndicator color={colors.text} style={{ marginTop: 24 }} />}
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.header}>
+          <Text style={styles.title}>Debout</Text>
+          <View style={styles.streak}>
+            <Text style={styles.streakText}>🔥 {streak}</Text>
           </View>
-        }
-        renderItem={({ item }) => (
-          <Pressable
-            style={styles.monthRow}
-            onPress={() =>
-              router.push({
-                pathname: '/swipe',
-                params: { start: item.start, end: item.end, label: item.label },
-              })
-            }>
-            <Text style={styles.monthLabel}>{item.label}</Text>
-            <Text style={styles.monthCount}>{item.count} photos ›</Text>
-          </Pressable>
-        )}
-      />
+        </View>
+
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Réveil</Text>
+            <Switch
+              value={settings.enabled}
+              onValueChange={(enabled) => update({ enabled })}
+              trackColor={{ true: colors.accent }}
+            />
+          </View>
+          <TimeStepper hour={settings.hour} minute={settings.minute} onChange={(hour, minute) => update({ hour, minute })} />
+          <Text style={styles.status}>
+            {doneToday ? '✅ Défi du jour réussi' : 'Le réveil s’arrête quand ton défi est fait.'}
+          </Text>
+        </View>
+
+        <Text style={styles.sectionTitle}>Ton défi</Text>
+        <ChoiceRow
+          value={settings.exercise}
+          onChange={(exercise) => update({ exercise })}
+          options={[
+            { value: 'pushup', label: `${EXERCISE_LABELS.pushup.emoji} Pompes` },
+            { value: 'squat', label: `${EXERCISE_LABELS.squat.emoji} Squats` },
+          ]}
+        />
+        <View style={{ height: 10 }} />
+        <ChoiceRow
+          value={settings.reps}
+          onChange={(reps) => update({ reps })}
+          options={REP_OPTIONS.map((n) => ({ value: n, label: String(n) }))}
+        />
+
+        <Pressable style={styles.primaryButton} onPress={() => router.push('/challenge')}>
+          <Text style={styles.primaryButtonText}>Tester le défi maintenant</Text>
+        </Pressable>
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  onboarding: { justifyContent: 'center', alignItems: 'center', padding: 28 },
-  emoji: { fontSize: 72, marginBottom: 16 },
-  title: { color: colors.text, fontSize: 34, fontWeight: '800', marginBottom: 12 },
-  subtitle: { color: colors.textMuted, fontSize: 17, lineHeight: 25, textAlign: 'center', marginBottom: 32 },
-  primaryButton: {
-    backgroundColor: colors.accent,
-    paddingVertical: 18,
-    alignSelf: 'stretch',
-    borderRadius: radius.md,
-    alignItems: 'center',
-  },
-  primaryButtonText: { color: colors.text, fontSize: 18, fontWeight: '700' },
-  hint: { color: colors.textMuted, fontSize: 13, marginTop: 16 },
-  list: { padding: 20, gap: 10 },
-  statCard: {
+  content: { padding: 20, gap: 12 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 },
+  title: { color: colors.text, fontSize: 34, fontWeight: '800' },
+  streak: { backgroundColor: colors.card, borderRadius: radius.md, paddingHorizontal: 14, paddingVertical: 8 },
+  streakText: { color: colors.text, fontSize: 18, fontWeight: '800' },
+  card: {
     backgroundColor: colors.card,
     borderColor: colors.cardBorder,
     borderWidth: 1,
     borderRadius: radius.lg,
     padding: 20,
-    marginBottom: 24,
+    gap: 16,
   },
-  statValue: { color: colors.keep, fontSize: 40, fontWeight: '800' },
-  statLabel: { color: colors.textMuted, fontSize: 15, marginTop: 4 },
-  sectionTitle: { color: colors.text, fontSize: 20, fontWeight: '700', marginBottom: 6 },
-  monthRow: {
-    backgroundColor: colors.card,
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  cardTitle: { color: colors.text, fontSize: 20, fontWeight: '700' },
+  status: { color: colors.textMuted, fontSize: 15, textAlign: 'center' },
+  sectionTitle: { color: colors.text, fontSize: 20, fontWeight: '700', marginTop: 12 },
+  primaryButton: {
+    backgroundColor: colors.accent,
+    paddingVertical: 18,
     borderRadius: radius.md,
-    padding: 18,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
   },
-  monthLabel: { color: colors.text, fontSize: 17, fontWeight: '600' },
-  monthCount: { color: colors.textMuted, fontSize: 16 },
+  primaryButtonText: { color: colors.text, fontSize: 18, fontWeight: '700' },
 });

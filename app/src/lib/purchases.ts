@@ -3,15 +3,15 @@
 // functions, so only this file changes when purchases go live.
 
 export type Plan = {
-  id: 'weekly' | 'yearly';
+  id: 'monthly' | 'yearly';
   title: string;
   price: string;
   detail: string;
 };
 
 export const PLANS: Plan[] = [
-  { id: 'yearly', title: 'Annuel', price: '29,99 €/an', detail: 'Soit 0,58 €/semaine' },
-  { id: 'weekly', title: 'Hebdomadaire', price: '4,99 €/semaine', detail: '3 jours gratuits' },
+  { id: 'yearly', title: 'Annuel', price: '29,99 €/an', detail: '3 jours gratuits · soit 2,50 €/mois' },
+  { id: 'monthly', title: 'Mensuel', price: '7,99 €/mois', detail: 'Sans engagement' },
 ];
 
 let pro = false;

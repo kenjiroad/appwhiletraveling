@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { PLANS, purchase, restore, type Plan } from '@/lib/purchases';
 import { colors, radius } from '@/lib/theme';
 
-const BENEFITS = ['Swipes illimités', 'Tous tes mois et toutes tes années', 'Libère des Go en quelques minutes'];
+const BENEFITS = ['Réveil par défi tous les matins', 'Pompes et squats comptés par l’IA', 'Ta série de jours et tes stats'];
 
 export default function PaywallScreen() {
   const [selected, setSelected] = useState<Plan['id']>('yearly');
@@ -21,8 +21,8 @@ export default function PaywallScreen() {
         <Text style={styles.closeText}>✕</Text>
       </Pressable>
 
-      <Text style={styles.emoji}>🧹✨</Text>
-      <Text style={styles.title}>Ménage Pro</Text>
+      <Text style={styles.emoji}>⏰💪</Text>
+      <Text style={styles.title}>Debout Pro</Text>
       {BENEFITS.map((b) => (
         <Text key={b} style={styles.benefit}>
           ✓ {b}
@@ -45,7 +45,7 @@ export default function PaywallScreen() {
       ))}
 
       <Pressable style={styles.cta} onPress={buy}>
-        <Text style={styles.ctaText}>{selected === 'weekly' ? 'Essayer gratuitement' : 'Continuer'}</Text>
+        <Text style={styles.ctaText}>{selected === 'yearly' ? 'Essayer 3 jours gratuits' : 'Continuer'}</Text>
       </Pressable>
       <Pressable onPress={restore} style={styles.restore}>
         <Text style={styles.restoreText}>Restaurer mes achats · Annulable à tout moment</Text>

@@ -1,8 +1,7 @@
-# Ménage 🧹 — nettoie tes photos en swipant
+# Debout ⏰💪 — le réveil qui ne s'arrête que quand tu bouges
 
-Première app iOS, construite en voyageant (direction Berlin). Le principe : tu swipes tes photos comme sur Tinder. À gauche, tu supprimes ; à droite, tu gardes. Tu libères des Go en quelques minutes.
-Elle reprend le modèle de **Swipewipe** (racheté par le français MWM), 100 % en français, sans serveur,
-et on la fait connaître par du contenu TikTok organique.
+Première app iOS, construite en voyageant. Le réveil sonne, et pour l'arrêter il faut faire ses pompes ou ses squats devant la
+caméra. L'IA (Apple Vision, sur le téléphone) compte les répétitions. Pas de bouton « répéter ».
 
 ## Lancer l'app
 
@@ -10,7 +9,8 @@ et on la fait connaître par du contenu TikTok organique.
 cd app && npm install && npx expo start
 ```
 
-Installe **Expo Go** sur ton iPhone, puis scanne le QR code.
+Dans **Expo Go**, le défi passe en mode démo (tu tapes l'écran à chaque répétition). Pour la vraie caméra,
+il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 
 ## Les étapes (à lire dans l'ordre)
 
@@ -20,5 +20,7 @@ Installe **Expo Go** sur ton iPhone, puis scanne le QR code.
 3. [Stack technique](docs/03-stack-technique.md)
 4. [Feuille de route](docs/04-feuille-de-route.md) — version Cordée
 5. [Nouvelles idées](docs/05-nouvelles-idees.md) — apps qui se distribuent seules
-6. [Veille sur X](docs/06-veille-x.md) — ce que font les créateurs d'apps en 2026
-7. [L'app en 1 jour : Ménage](docs/07-app-en-1-jour.md) — **l'app actuelle** et les étapes jusqu'à l'argent
+6. [Veille sur X](docs/06-veille-x.md)
+7. [L'app en 1 jour : Ménage](docs/07-app-en-1-jour.md) — abandonnée
+8. [Partir de la douleur](docs/08-recherche-douleurs-et-choix.md) — comment on a choisi Debout
+9. [Debout V1](docs/09-debout-v1.md) — **l'app actuelle**, comment la tester, prochaines étapes
