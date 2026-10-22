@@ -22,19 +22,19 @@ route, apps qui se distribuent seules, veille X, essai « Ménage » (abandonné
 
 | Date | Quoi | Pourquoi | Coût |
 |---|---|---|---|
+| 22/10 | Apple Developer Program | obligatoire pour l'App Store (validation en attente) | 99 € / an |
 | 22/10 | Higgsfield · Nano Banana Pro | 16 images de mascotte (2 pistes + 8 niveaux + 6 poses) | 32 crédits |
 | 22/10 | Higgsfield · détourage | 14 images détourées | 14 crédits |
-| — | Abonnement Higgsfield Plus | déjà payé, sert aussi à d'autres projets | à confirmer |
-| — | Abonnement Claude | recherche, code, design | à confirmer |
+| — | Abonnement Higgsfield Plus | sert aussi à d'autres projets | 59 $ / mois |
+| — | Abonnement Claude | sert aussi à d'autres projets | 100 € / mois |
 
-**Total payé spécialement pour Debout : 0 €.** 46 crédits Higgsfield utilisés (source : historique des
-transactions Higgsfield).
+**Payé spécialement pour Debout : 99 €** (Apple). 46 crédits Higgsfield utilisés (source : historique des
+transactions), soit ≈ 2,30 $ (59 $ ÷ 1 200 crédits par mois ≈ 0,05 $ le crédit).
 
 ### Prévu
 
 | Quand | Quoi | Coût |
 |---|---|---|
-| Jour 2 | Apple Developer Program | 99 € / an |
 | Jour 2 | Expo / EAS | 0 € (offre gratuite, builds limités par mois) |
 | Plus tard | Supabase (comptes, ligue) | 0 € au départ |
 | Plus tard | RevenueCat (abonnements) | 0 € jusqu'à 2 500 $ de revenus / mois |

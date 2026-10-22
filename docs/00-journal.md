@@ -78,7 +78,7 @@ partout dans l'app avec des animations (respire, saute à chaque pompe, silhouet
 DA « Aube » + mascotte validées. On passe à la technique.
 
 ## Carnet de bord + finances ✅ (22/10/2026)
-Page « jour par jour » + tout ce que l'app coûte (0 € payé pour Debout, 46 crédits Higgsfield ; Apple 99 €/an prévu).
+Page « jour par jour » + tout ce que l'app coûte (Apple 99 €/an payé, 46 crédits Higgsfield ≈ 2,30 $, outils 100 € + 59 $ par mois).
 → Détails : [14-carnet-de-bord.md](14-carnet-de-bord.md)
 
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
