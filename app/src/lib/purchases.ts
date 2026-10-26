@@ -1,3 +1,4 @@
+import { useSyncExternalStore } from 'react';
 import { Platform } from 'react-native';
 import Purchases, { PURCHASES_ERROR_CODE, type CustomerInfo, type PurchasesPackage } from 'react-native-purchases';
 
@@ -8,6 +9,12 @@ import { ensureUserId } from '@/lib/supabase';
 // whole flow can still be tried: every screen goes through the functions below.
 const apiKey = process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY;
 export const isPurchasesConfigured = Platform.OS === 'ios' && Boolean(apiKey);
+
+/**
+ * Hard paywall (decided 26/10/2026): once purchases are live, the app only works with a
+ * subscription or during the free trial. In demo mode nothing is locked.
+ */
+export const requiresSubscription = isPurchasesConfigured;
 
 /** The RevenueCat entitlement both plans unlock. */
 const ENTITLEMENT = 'pro';
@@ -28,12 +35,33 @@ export const PLANS: Plan[] = [
 const TRIAL_UNITS: Record<string, string> = { DAY: 'jours', WEEK: 'semaines', MONTH: 'mois' };
 
 let pro = false;
+let known = false; // false until RevenueCat has answered once
 let configured = false;
+const listeners = new Set<() => void>();
 
 const hasPro = (info: CustomerInfo) => info.entitlements.active[ENTITLEMENT] != null;
 
+function setPro(value: boolean) {
+  pro = value;
+  known = true;
+  listeners.forEach((listener) => listener());
+}
+
 export function isPro() {
   return pro;
+}
+
+const subscribe = (listener: () => void) => {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+};
+const proSnapshot = () => (!requiresSubscription ? true : known ? pro : null);
+
+/** True when the app is unlocked, false when the paywall must show, null while still checking. */
+export function useProStatus(): boolean | null {
+  return useSyncExternalStore(subscribe, proSnapshot, proSnapshot);
 }
 
 /** Called once at launch. Links purchases to the Supabase account when there is one. */
@@ -42,14 +70,13 @@ export async function initPurchases() {
   configured = true;
   try {
     Purchases.configure({ apiKey: apiKey! });
-    Purchases.addCustomerInfoUpdateListener((info) => {
-      pro = hasPro(info);
-    });
+    Purchases.addCustomerInfoUpdateListener((info) => setPro(hasPro(info)));
     const userId = await ensureUserId();
     const info = userId ? (await Purchases.logIn(userId)).customerInfo : await Purchases.getCustomerInfo();
-    pro = hasPro(info);
+    setPro(hasPro(info));
   } catch {
-    // Offline or store unavailable: the paywall retries when it opens.
+    // Offline or store unavailable: show the paywall, where buying or restoring retries.
+    setPro(false);
   }
 }
 
@@ -84,14 +111,14 @@ export async function loadPlans(): Promise<Plan[]> {
 /** True once subscribed, false if the buyer cancelled. Other errors are thrown for the paywall to show. */
 export async function purchase(planId: Plan['id']): Promise<boolean> {
   if (!isPurchasesConfigured) {
-    pro = true;
+    setPro(true);
     return true;
   }
   const aPackage = (await getPackages())[planId];
   if (!aPackage) throw new Error('Cette offre n’est pas disponible pour le moment.');
   try {
     const { customerInfo } = await Purchases.purchasePackage(aPackage);
-    pro = hasPro(customerInfo);
+    setPro(hasPro(customerInfo));
     return pro;
   } catch (error) {
     if ((error as { code?: string }).code === PURCHASES_ERROR_CODE.PURCHASE_CANCELLED_ERROR) return false;
@@ -101,6 +128,6 @@ export async function purchase(planId: Plan['id']): Promise<boolean> {
 
 export async function restore(): Promise<boolean> {
   if (!isPurchasesConfigured) return pro;
-  pro = hasPro(await Purchases.restorePurchases());
+  setPro(hasPro(await Purchases.restorePurchases()));
   return pro;
 }

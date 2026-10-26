@@ -94,6 +94,7 @@ Sur iOS 26, Debout sonne comme l'app Horloge, même en silencieux. « Mes pompes
 ## Abonnements (RevenueCat) — code prêt ✅ (26/10/2026)
 Vrais achats via RevenueCat : prix de l'App Store, achat, restauration, lien avec le compte Supabase.
 Sans clé, achats factices comme avant. Reste à Kenji : App Store Connect + RevenueCat (voir doc).
+Décision : paywall obligatoire (essai 3 jours puis abonnement, comme Erly).
 → Détails : [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md)
 
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)

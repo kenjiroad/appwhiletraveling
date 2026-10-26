@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 
 import { syncNow } from '@/lib/sync';
 import { colors, fonts } from '@/lib/theme';
-import { initPurchases } from '@/lib/purchases';
+import { initPurchases, requiresSubscription } from '@/lib/purchases';
 import { useAlarmResponse } from '@/lib/use-alarm-response';
 
 SplashScreen.preventAutoHideAsync();
@@ -63,7 +63,7 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="onboarding" options={{ gestureEnabled: false }} />
         <Stack.Screen name="challenge" options={{ presentation: 'fullScreenModal', gestureEnabled: false }} />
-        <Stack.Screen name="paywall" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="paywall" options={{ presentation: 'modal', gestureEnabled: !requiresSubscription }} />
         <Stack.Screen name="settings" options={{ presentation: 'modal' }} />
       </Stack>
     </ThemeProvider>

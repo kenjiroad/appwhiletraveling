@@ -8,7 +8,7 @@ import { Aurora } from '@/components/aurora';
 import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, PrimaryButton, Serif } from '@/components/ui';
 import { MASCOT_LEVELS } from '@/lib/mascot';
-import { loadPlans, PLANS, purchase, restore, type Plan } from '@/lib/purchases';
+import { loadPlans, PLANS, purchase, requiresSubscription, restore, useProStatus, type Plan } from '@/lib/purchases';
 import { colors, fonts, radius } from '@/lib/theme';
 
 const BENEFITS = [
@@ -22,6 +22,11 @@ export default function PaywallScreen() {
   const [selected, setSelected] = useState<Plan['id']>('yearly');
   const [plans, setPlans] = useState(PLANS);
   const [busy, setBusy] = useState(false);
+  // With the hard paywall there is no "later": the app opens once the trial has started.
+  const pro = useProStatus();
+  const canClose = !requiresSubscription || pro === true;
+
+  const close = () => (router.canGoBack() ? router.back() : router.replace('/'));
 
   // Swaps in the App Store prices, in the buyer's currency, once they load.
   useEffect(() => {
@@ -32,7 +37,7 @@ export default function PaywallScreen() {
     if (busy) return;
     setBusy(true);
     try {
-      if (await purchase(selected)) router.back();
+      if (await purchase(selected)) close();
     } catch (error) {
       Alert.alert('Achat impossible', error instanceof Error ? error.message : 'Réessaie dans un instant.');
     } finally {
@@ -42,7 +47,7 @@ export default function PaywallScreen() {
 
   const restorePurchases = async () => {
     try {
-      if (await restore()) router.back();
+      if (await restore()) close();
       else Alert.alert('Aucun abonnement trouvé', 'Aucun achat à restaurer sur ce compte Apple.');
     } catch {
       Alert.alert('Restauration impossible', 'Réessaie dans un instant.');
@@ -53,9 +58,13 @@ export default function PaywallScreen() {
     <View style={styles.screen}>
       <Aurora warmth={0.7} />
       <SafeAreaView style={styles.safe}>
-        <Pressable onPress={() => router.back()} hitSlop={12} style={styles.close}>
-          <Text style={styles.closeText}>Plus tard</Text>
-        </Pressable>
+        {canClose ? (
+          <Pressable onPress={close} hitSlop={12} style={styles.close}>
+            <Text style={styles.closeText}>Plus tard</Text>
+          </Pressable>
+        ) : (
+          <View style={styles.closePlaceholder} />
+        )}
 
         <Animated.View entering={FadeInDown.duration(500)}>
           <Mascot source={MASCOT_LEVELS[7]} size={150} idle="float" />
@@ -106,6 +115,7 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.night },
   safe: { flex: 1, padding: 24 },
   close: { alignSelf: 'flex-end' },
+  closePlaceholder: { height: 18 },
   closeText: { color: colors.textMuted, fontFamily: fonts.medium, fontSize: 15 },
   benefits: { gap: 12, marginTop: 20 },
   benefit: { flexDirection: 'row', alignItems: 'center', gap: 12 },

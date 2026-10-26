@@ -22,11 +22,14 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 22/10/2026 — DA « néon » rejetée (« trop Discord ») → DA premium « Aube » + animations (`docs/12`). Gamification gardée.
 - 22/10/2026 — Mascotte : marmotte 3D (piste A), 8 niveaux + 6 poses, dans `app/assets/mascot/` (`docs/13`).
 - 22/10/2026 — DA « Aube » + mascotte **validées** par Kenji.
+- 26/10/2026 — Paywall **obligatoire** (option A, comme Erly) : essai 3 jours puis abonnement (`docs/17`).
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)
 
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
-- 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois. Ce que l'abonnement débloque : à décider (`docs/17`).
+- 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
+- 🟡 Liens Conditions d'utilisation + Politique de confidentialité à rédiger avant l'envoi à Apple.
+- 🟡 Statut pour vendre (micro-entreprise ?) : à vérifier avec un comptable.
 - 🟡 Code Swift jamais compilé (comptage + AlarmKit) : à vérifier au premier build EAS (Xcode 26 requis pour AlarmKit).
 - 🟡 La ligue utilise des joueurs fictifs tant que le projet Supabase n'est pas créé (code prêt : `docs/15`). Sign in with Apple : plus tard.

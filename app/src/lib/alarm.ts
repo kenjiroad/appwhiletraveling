@@ -96,6 +96,13 @@ export async function scheduleAlarms(settings: Settings) {
   }
 }
 
+/** Removes every planned alarm, e.g. when the subscription has ended. */
+export async function cancelAlarms() {
+  if (!supported) return;
+  await Notifications.cancelAllScheduledNotificationsAsync();
+  cancelAllAlarmKit();
+}
+
 /** True from the alarm time until an hour later, as long as today's challenge isn't done. */
 export function isAlarmDue(settings: Settings | null, now = new Date()) {
   if (!settings?.enabled || isTodayCompleted()) return false;

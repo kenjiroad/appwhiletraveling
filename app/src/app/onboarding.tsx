@@ -10,6 +10,7 @@ import { Mascot } from '@/components/mascot';
 import { TimeStepper } from '@/components/time-stepper';
 import { Body, Eyebrow, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
 import { requestAlarmPermissionAsync, scheduleAlarms } from '@/lib/alarm';
+import { requiresSubscription } from '@/lib/purchases';
 import { EXERCISE_LABELS, REP_OPTIONS } from '@/lib/exercises';
 import { MASCOT_POSES } from '@/lib/mascot';
 import { DEFAULT_SETTINGS, saveSettings, type Settings } from '@/lib/storage';
@@ -30,9 +31,14 @@ export default function OnboardingScreen() {
     await requestCameraPermissionAsync();
     saveSettings(settings);
     syncNow();
-    await scheduleAlarms(settings);
-    router.replace('/');
-    router.push('/paywall');
+    if (!requiresSubscription) {
+      await scheduleAlarms(settings);
+      router.replace('/');
+      router.push('/paywall');
+    } else {
+      // Hard paywall: the alarms are planned by the home screen once the trial has started.
+      router.replace('/paywall');
+    }
   };
 
   const next = () => (stepIndex < STEPS.length - 1 ? setStep(STEPS[stepIndex + 1]) : finish());

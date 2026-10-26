@@ -46,10 +46,36 @@ Gratuit jusqu'à 2 500 $ de revenus par mois.
 Sur l'iPhone : Réglages → App Store → **Compte Sandbox** (un compte de test créé dans App Store Connect →
 Utilisateurs et accès → Sandbox). Les achats de test sont gratuits.
 
-## À décider (🟡)
+## Décision : paywall obligatoire (option A, 26/10/2026)
 
-- **Qu'est-ce que l'abonnement débloque ?** Aujourd'hui le paywall s'affiche après l'onboarding, mais
-  « Plus tard » laisse tout utiliser gratuitement. Options : paywall obligatoire (comme Erly, essai de 3 jours
-  puis payant), ou version gratuite limitée (ex. pompes seulement, pas de ligue).
+Comme Erly : après l'onboarding, il faut lancer l'essai gratuit de 3 jours (ou payer) pour utiliser l'app.
+Pas de bouton « Plus tard ». Si l'abonnement s'arrête, l'app renvoie au paywall et le réveil ne sonne plus.
+En mode démo (sans clé RevenueCat), rien n'est bloqué. Code : `useProStatus()` dans `purchases.ts`,
+redirection dans `app/src/app/(tabs)/_layout.tsx`.
+
+**Obligatoire avant d'envoyer à Apple** : des liens « Conditions d'utilisation » et « Politique de
+confidentialité » sur le paywall et dans la fiche App Store (règle Apple pour les abonnements). À rédiger.
+
+## Pourquoi RevenueCat et pas Stripe ?
+
+- Apple **oblige** à vendre les abonnements d'une app iPhone par ses achats intégrés (règle 3.1.1). Stripe
+  ne peut pas remplacer ça dans l'app.
+- RevenueCat n'est pas un moyen de paiement : c'est Apple qui encaisse. RevenueCat gère tout autour
+  (essai, renouvellements, « est abonné ? », statistiques). Alternatives équivalentes : Adapty, Superwall, ou
+  StoreKit directement (plus de code).
+- Plus tard, possible : une page de paiement **web** avec Stripe (« web-to-app »), autorisée en Europe sous
+  conditions et frais Apple, et aux États-Unis. Pas pour la V1.
+
+## Compte bancaire et statut
+
+- Le compte Apple Developer **individuel** reçoit les paiements sur ton compte bancaire personnel ; Apple
+  encaisse et reverse la TVA européenne à ta place.
+- Pour vendre régulièrement en France, il faut un statut : la **micro-entreprise** est le plus simple
+  (gratuit, en ligne). À vérifier avec un comptable ou l'URSSAF.
+- En compte individuel, ton **nom réel** apparaît comme vendeur sur l'App Store. Avec une société (numéro
+  D-U-N-S), c'est le nom de la société.
+
+## Reste à vérifier (🟡)
+
 - Le code Swift n'est pas concerné, mais le SDK RevenueCat n'a été testé que sur le web (achats factices) :
   à vérifier dans le build.
