@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 
 import { syncNow } from '@/lib/sync';
 import { colors, fonts } from '@/lib/theme';
+import { initPurchases } from '@/lib/purchases';
 import { useAlarmResponse } from '@/lib/use-alarm-response';
 
 SplashScreen.preventAutoHideAsync();
@@ -45,6 +46,7 @@ export default function RootLayout() {
   // Creates the anonymous account on first launch and resends any session saved while offline.
   useEffect(() => {
     syncNow();
+    initPurchases();
   }, []);
 
   const ready = fontsLoaded || fontError != null;

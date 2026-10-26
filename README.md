@@ -31,3 +31,4 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 14. [Carnet de bord](docs/14-carnet-de-bord.md) — jour par jour + finances
 15. [Comptes + vraie ligue](docs/15-comptes-et-ligue.md) — Supabase, ce que Kenji doit configurer
 16. [Vrai réveil (AlarmKit)](docs/16-reveil-alarmkit.md) — sonne même en silencieux
+17. [Abonnements (RevenueCat)](docs/17-abonnements-revenuecat.md) — achats réels, ce que Kenji doit configurer

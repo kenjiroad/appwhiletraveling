@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
-import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -8,7 +8,7 @@ import { Aurora } from '@/components/aurora';
 import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, PrimaryButton, Serif } from '@/components/ui';
 import { MASCOT_LEVELS } from '@/lib/mascot';
-import { PLANS, purchase, restore, type Plan } from '@/lib/purchases';
+import { loadPlans, PLANS, purchase, restore, type Plan } from '@/lib/purchases';
 import { colors, fonts, radius } from '@/lib/theme';
 
 const BENEFITS = [
@@ -20,9 +20,33 @@ const BENEFITS = [
 
 export default function PaywallScreen() {
   const [selected, setSelected] = useState<Plan['id']>('yearly');
+  const [plans, setPlans] = useState(PLANS);
+  const [busy, setBusy] = useState(false);
+
+  // Swaps in the App Store prices, in the buyer's currency, once they load.
+  useEffect(() => {
+    loadPlans().then(setPlans);
+  }, []);
 
   const buy = async () => {
-    if (await purchase(selected)) router.back();
+    if (busy) return;
+    setBusy(true);
+    try {
+      if (await purchase(selected)) router.back();
+    } catch (error) {
+      Alert.alert('Achat impossible', error instanceof Error ? error.message : 'Réessaie dans un instant.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const restorePurchases = async () => {
+    try {
+      if (await restore()) router.back();
+      else Alert.alert('Aucun abonnement trouvé', 'Aucun achat à restaurer sur ce compte Apple.');
+    } catch {
+      Alert.alert('Restauration impossible', 'Réessaie dans un instant.');
+    }
   };
 
   return (
@@ -51,7 +75,7 @@ export default function PaywallScreen() {
         <View style={{ flex: 1 }} />
 
         <Animated.View entering={FadeInDown.delay(300).duration(500)}>
-          {PLANS.map((plan) => {
+          {plans.map((plan) => {
             const isSelected = selected === plan.id;
             return (
               <Pressable key={plan.id} onPress={() => setSelected(plan.id)} style={[styles.plan, isSelected && styles.planSelected]}>
@@ -69,7 +93,7 @@ export default function PaywallScreen() {
           })}
 
           <PrimaryButton label={selected === 'yearly' ? 'Essayer 3 jours gratuits' : 'Continuer'} breathing onPress={buy} />
-          <Pressable onPress={restore} style={styles.restore}>
+          <Pressable onPress={restorePurchases} style={styles.restore}>
             <Text style={styles.restoreText}>Restaurer mes achats · Annulable à tout moment</Text>
           </Pressable>
         </Animated.View>

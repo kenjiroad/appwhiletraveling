@@ -91,4 +91,9 @@ Sur iOS 26, Debout sonne comme l'app Horloge, même en silencieux. « Mes pompes
 « Arrêter » ne coupe que 2 minutes. Notifications gardées en secours. À tester au premier build.
 → Détails : [16-reveil-alarmkit.md](16-reveil-alarmkit.md)
 
+## Abonnements (RevenueCat) — code prêt ✅ (26/10/2026)
+Vrais achats via RevenueCat : prix de l'App Store, achat, restauration, lien avec le compte Supabase.
+Sans clé, achats factices comme avant. Reste à Kenji : App Store Connect + RevenueCat (voir doc).
+→ Détails : [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
