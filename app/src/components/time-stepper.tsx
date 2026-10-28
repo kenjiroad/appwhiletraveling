@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { formatTime } from '@/lib/exercises';
 import { colors, fonts, radius } from '@/lib/theme';
@@ -12,7 +13,30 @@ type Props = {
 
 const MINUTE_STEP = 5;
 
+/** On the phone: the iOS wheel, to pick the exact minute. In the browser preview: +/- buttons. */
 export function TimeStepper({ hour, minute, onChange, size = 72 }: Props) {
+  if (Platform.OS !== 'web') {
+    return (
+      <View style={styles.wrapper}>
+        <Text style={[styles.time, { fontSize: size, lineHeight: size * 1.05 }]}>{formatTime(hour, minute)}</Text>
+        <DateTimePicker
+          value={new Date(2000, 0, 1, hour, minute)}
+          mode="time"
+          display="spinner"
+          is24Hour
+          locale="fr-FR"
+          themeVariant="dark"
+          textColor={colors.text}
+          onChange={(_, date) => date && onChange(date.getHours(), date.getMinutes())}
+          style={styles.wheel}
+        />
+      </View>
+    );
+  }
+  return <StepperButtons hour={hour} minute={minute} onChange={onChange} size={size} />;
+}
+
+function StepperButtons({ hour, minute, onChange, size = 72 }: Props) {
   const shift = (minutes: number) => {
     const total = (hour * 60 + minute + minutes + 24 * 60) % (24 * 60);
     onChange(Math.floor(total / 60), total % 60);
@@ -41,6 +65,7 @@ function StepButton({ label, onPress }: { label: string; onPress: () => void }) 
 
 const styles = StyleSheet.create({
   wrapper: { alignItems: 'center', gap: 12 },
+  wheel: { alignSelf: 'stretch', height: 170 },
   row: { flexDirection: 'row', gap: 8 },
   time: { color: colors.text, fontFamily: fonts.serif, letterSpacing: -1 },
   step: {

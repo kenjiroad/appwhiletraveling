@@ -7,6 +7,7 @@ type DeboutAlarmModule = {
   scheduleAsync(timestamps: number[], title: string): Promise<void>;
   cancelBetween(start: number, end: number): void;
   cancelAll(): void;
+  scheduledCount(): number;
 };
 
 const nativeModule = requireOptionalNativeModule<DeboutAlarmModule>('DeboutAlarm');
@@ -33,4 +34,8 @@ export function cancelAlarmKitBetween(start: Date, end: Date) {
 
 export function cancelAllAlarmKit() {
   if (isAlarmKitSupported) nativeModule!.cancelAll();
+}
+
+export function getAlarmKitScheduledCount() {
+  return isAlarmKitSupported ? nativeModule!.scheduledCount() : 0;
 }

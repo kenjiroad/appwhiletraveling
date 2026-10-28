@@ -19,6 +19,13 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
   private var lastAnalysisTime: CFTimeInterval = 0
   private var isBodyVisible = false
 
+  // The raw camera image is sideways compared to the phone held upright. Vision finds people best
+  // when they look "upright", so we try the possible orientations and keep the one that sees you
+  // best: from the side you look lying down, from the front you look upright.
+  private let orientations: [CGImagePropertyOrientation] = [.up, .right, .left]
+  private var lockedOrientation: CGImagePropertyOrientation?
+  private var framesWithoutBody = 0
+
   // Analysing ~12 frames per second is plenty to catch every rep and keeps the phone cool.
   private let minFrameInterval: CFTimeInterval = 1.0 / 12.0
 
@@ -96,22 +103,42 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
     else { return }
     lastAnalysisTime = now
 
-    // Joint angles don't depend on image rotation or mirroring, so the raw buffer orientation is fine.
-    let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: .up, options: [:])
-    try? handler.perform([poseRequest])
+    let width = CGFloat(CVPixelBufferGetWidth(pixelBuffer))
+    let height = CGFloat(CVPixelBufferGetHeight(pixelBuffer))
 
-    let aspectRatio = CGFloat(CVPixelBufferGetWidth(pixelBuffer)) / CGFloat(CVPixelBufferGetHeight(pixelBuffer))
-    let angle = poseRequest.results?.first.flatMap {
-      counter.exercise.jointAngle(in: $0, aspectRatio: aspectRatio)
+    var best: (observation: VNHumanBodyPoseObservation, orientation: CGImagePropertyOrientation, quality: Float)?
+    for orientation in lockedOrientation.map({ [$0] }) ?? orientations {
+      let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: orientation, options: [:])
+      try? handler.perform([poseRequest])
+      guard let observation = poseRequest.results?.first else { continue }
+      let quality = Exercise.quality(of: observation)
+      if best == nil || quality > best!.quality {
+        best = (observation, orientation, quality)
+      }
     }
 
-    let visible = angle != nil
+    var sample = PoseSample()
+    if let best {
+      // Vision returns points in the rotated image: portrait for .left / .right.
+      let rotated = best.orientation == .left || best.orientation == .right
+      let aspectRatio = rotated ? height / width : width / height
+      sample = counter.exercise.sample(from: best.observation, aspectRatio: aspectRatio)
+      if lockedOrientation == nil, best.quality > 0.5, sample.isBodyVisible {
+        lockedOrientation = best.orientation
+      }
+    }
+
+    // Lost you for ~2 seconds (you moved the phone?): look in every orientation again.
+    framesWithoutBody = sample.isBodyVisible ? 0 : framesWithoutBody + 1
+    if framesWithoutBody > 24 { lockedOrientation = nil }
+
+    let visible = sample.isBodyVisible
     if visible != isBodyVisible {
       isBodyVisible = visible
       DispatchQueue.main.async { self.onBodyVisibilityChange(["visible": visible]) }
     }
 
-    if let angle, counter.process(angle: angle) {
+    if counter.process(sample, at: now) {
       let count = counter.count
       DispatchQueue.main.async { self.onRep(["count": count]) }
     }

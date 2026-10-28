@@ -102,4 +102,9 @@ iPhone enregistré, premier build lancé. Expo relié au projet (`e3e7b9e6-…`)
 devient une mise à jour à distance, ou un nouveau build si le code natif change. Reste à Kenji : relier GitHub sur expo.dev.
 → Détails : [18-mises-a-jour-automatiques.md](18-mises-a-jour-automatiques.md)
 
+## Premier test sur iPhone + corrections ✅ (28/10/2026)
+Build réussi (le Swift compile). Retours de Kenji corrigés : retour arrière dans l'onboarding, roue iOS pour l'heure,
+diagnostic + test du réveil, pompes comptées aussi de face.
+→ Détails : [20-retours-premier-test.md](20-retours-premier-test.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)

@@ -9,8 +9,12 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       Réglages → **Profil téléchargé** → **Installer** (attendre l'heure de sécurité si demandée).
 - [x] **Premier build (QR code n°2)** ✅ 28/10 — réussi, app installée : `npx eas-cli build --profile preview --platform ios` → **Y** à tout →
       20 min → scanner le QR code → **Installer**. Raté ? expo.dev → projet debout → **Builds**.
-- [ ] Si l'app ne s'ouvre pas : Réglages → Confidentialité et sécurité → **Mode développeur**.
-- [ ] Tester : onboarding, défi avec la vraie caméra, un réveil 2 minutes plus tard → dire à Claude ce qui marche.
+- [x] Mode développeur activé ✅ 28/10
+- [x] Premier test fait ✅ 28/10 (retours corrigés : voir [20-retours-premier-test.md](20-retours-premier-test.md))
+- [ ] Installer le **nouveau build** (corrections caméra, réveil, roue de l'heure).
+- [ ] Réglages → **Vérifier le réveil** : envoyer une capture à Claude, puis **Tester dans 1 minute** (téléphone verrouillé).
+- [ ] Pompes **de face** : dire si ça compte bien.
+- [ ] Préciser le « petit défaut » de la première page (capture).
 
 ## Ensuite : les mises à jour automatiques
 

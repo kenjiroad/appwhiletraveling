@@ -48,6 +48,13 @@ public final class DeboutAlarmModule: Module {
       #endif
     }
 
+    Function("scheduledCount") { () -> Int in
+      #if canImport(AlarmKit)
+      if #available(iOS 26.0, *) { return DeboutAlarmScheduler.scheduledCount }
+      #endif
+      return 0
+    }
+
     Function("cancelAll") {
       #if canImport(AlarmKit)
       if #available(iOS 26.0, *) { DeboutAlarmScheduler.cancelAll() }
@@ -72,6 +79,11 @@ enum DeboutAlarmScheduler {
 
   // Dawn orange from the app theme (#FF7A45).
   private static let tint = Color(red: 1, green: 0.478, blue: 0.271)
+
+  /// Alarms AlarmKit really has planned (not just the ones we asked for).
+  static var scheduledCount: Int {
+    ((try? AlarmManager.shared.alarms) ?? []).count
+  }
 
   static func requestAuthorization() async throws -> Bool {
     let manager = AlarmManager.shared

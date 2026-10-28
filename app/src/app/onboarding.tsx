@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { FadeInDown, FadeOutUp } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -42,16 +42,27 @@ export default function OnboardingScreen() {
   };
 
   const next = () => (stepIndex < STEPS.length - 1 ? setStep(STEPS[stepIndex + 1]) : finish());
+  const back = () => stepIndex > 0 && setStep(STEPS[stepIndex - 1]);
   const enter = (i: number) => FadeInDown.delay(80 + i * 90).duration(550);
 
   return (
     <View style={styles.screen}>
       <Aurora warmth={stepIndex / (STEPS.length - 1)} />
       <SafeAreaView style={styles.safe}>
-        <View style={styles.dots}>
-          {STEPS.map((s, i) => (
-            <View key={s} style={[styles.dot, i <= stepIndex && styles.dotActive]} />
-          ))}
+        <View style={styles.header}>
+          <Pressable
+            onPress={back}
+            hitSlop={12}
+            disabled={stepIndex === 0}
+            style={[styles.back, stepIndex === 0 && styles.hidden]}
+            accessibilityLabel="Étape précédente">
+            <Text style={styles.backText}>‹</Text>
+          </Pressable>
+          <View style={styles.dots}>
+            {STEPS.map((s, i) => (
+              <View key={s} style={[styles.dot, i <= stepIndex && styles.dotActive]} />
+            ))}
+          </View>
         </View>
 
         <KeyboardAvoidingView style={styles.body} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
@@ -137,7 +148,7 @@ export default function OnboardingScreen() {
                     <TimeStepper
                       hour={settings.hour}
                       minute={settings.minute}
-                      size={96}
+                      size={72}
                       onChange={(hour, minute) => setSettings({ ...settings, hour, minute })}
                     />
                   </Glass>
@@ -184,7 +195,11 @@ export default function OnboardingScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.night },
   safe: { flex: 1, padding: 24 },
-  dots: { flexDirection: 'row', gap: 6 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 14 },
+  back: { width: 28, height: 28, alignItems: 'center', justifyContent: 'center' },
+  hidden: { opacity: 0 },
+  backText: { color: colors.text, fontFamily: fonts.medium, fontSize: 34, lineHeight: 36, marginTop: -4 },
+  dots: { flex: 1, flexDirection: 'row', gap: 6 },
   dot: { flex: 1, height: 3, borderRadius: 2, backgroundColor: 'rgba(255,255,255,0.12)' },
   dotActive: { backgroundColor: colors.gold },
   body: { flex: 1, justifyContent: 'center' },

@@ -7,7 +7,9 @@ import { dayKey, isTodayCompleted, type Settings } from '@/lib/storage';
 import {
   cancelAlarmKitBetween,
   cancelAllAlarmKit,
+  getAlarmKitScheduledCount,
   isAlarmKitAuthorized,
+  isAlarmKitSupported,
   requestAlarmKitAuthorizationAsync,
   scheduleAlarmKitAsync,
 } from '../../modules/debout-alarm';
@@ -57,42 +59,70 @@ function upcomingDates(settings: Settings, days: number, perDay: number, minutes
   return dates;
 }
 
-export async function scheduleAlarms(settings: Settings) {
+export type AlarmStatus = {
+  /** How the alarm will ring: like the Clock app (AlarmKit), as notifications, or not at all. */
+  mode: 'alarmkit' | 'notifications' | 'off';
+  /** Rings planned in advance. */
+  planned: number;
+  /** Why AlarmKit isn't used, when it should be. */
+  problem?: string;
+};
+
+let lastProblem: string | undefined;
+
+/** Shown in the settings, to understand why an alarm didn't ring. */
+export async function getAlarmStatus(settings: Settings | null): Promise<AlarmStatus> {
+  if (!supported || !settings?.enabled) return { mode: 'off', planned: 0 };
+  if (isAlarmKitAuthorized() && !lastProblem) return { mode: 'alarmkit', planned: getAlarmKitScheduledCount() };
+  const planned = (await Notifications.getAllScheduledNotificationsAsync()).length;
+  const problem =
+    lastProblem ??
+    (isAlarmKitSupported ? 'Réveil iOS non autorisé : Réglages → Debout → Alarmes.' : 'Réveil iOS indisponible (iOS 26 requis).');
+  return { mode: planned > 0 ? 'notifications' : 'off', planned, problem };
+}
+
+/**
+ * Plans the next alarms. `testDate` adds one extra ring (the "test in 1 minute" button).
+ * If AlarmKit fails for any reason, notifications take over so the alarm still goes off.
+ */
+export async function scheduleAlarms(settings: Settings, testDate?: Date) {
   if (!supported) return;
   await Notifications.cancelAllScheduledNotificationsAsync();
   cancelAllAlarmKit();
-  if (!settings.enabled) return;
+  if (!settings.enabled && !testDate) return;
 
   const label = EXERCISE_LABELS[settings.exercise];
+  const title = `Debout ! ${settings.reps} ${label.plural}`;
 
   if (isAlarmKitAuthorized()) {
-    const dates = upcomingDates(settings, ALARMKIT_DAYS_AHEAD, ALARMKIT_RINGS_PER_DAY, ALARMKIT_MINUTES_BETWEEN_RINGS);
-    await scheduleAlarmKitAsync(dates, `Debout ! ${settings.reps} ${label.plural}`);
-    return;
+    const dates = settings.enabled
+      ? upcomingDates(settings, ALARMKIT_DAYS_AHEAD, ALARMKIT_RINGS_PER_DAY, ALARMKIT_MINUTES_BETWEEN_RINGS)
+      : [];
+    if (testDate) dates.push(testDate);
+    try {
+      await scheduleAlarmKitAsync(dates, title);
+      lastProblem = undefined;
+      return;
+    } catch (error) {
+      lastProblem = `Réveil iOS en erreur : ${error instanceof Error ? error.message : String(error)}`;
+    }
   }
 
-  const now = new Date();
-  const skipToday = isTodayCompleted();
-
-  for (let day = 0; day < DAYS_AHEAD; day++) {
-    if (day === 0 && skipToday) continue;
-
-    for (let i = 0; i < REMINDERS_PER_DAY; i++) {
-      const date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + day, settings.hour, settings.minute + i);
-      if (date <= now) continue;
-
-      await Notifications.scheduleNotificationAsync({
-        identifier: `alarm-${dayKey(date)}-${i}`,
-        content: {
-          title: i === 0 ? '⏰ Debout !' : 'Toujours au lit ? 👀',
-          body: `${settings.reps} ${label.plural} pour arrêter le réveil.`,
-          sound: true,
-          interruptionLevel: 'timeSensitive',
-          data: { url: '/challenge' },
-        },
-        trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date },
-      });
-    }
+  const dates = settings.enabled ? upcomingDates(settings, DAYS_AHEAD, REMINDERS_PER_DAY, 1) : [];
+  if (testDate) dates.push(testDate);
+  for (const [i, date] of dates.entries()) {
+    const first = date.getHours() === settings.hour && date.getMinutes() === settings.minute;
+    await Notifications.scheduleNotificationAsync({
+      identifier: `alarm-${dayKey(date)}-${i}`,
+      content: {
+        title: first || date === testDate ? '⏰ Debout !' : 'Toujours au lit ? 👀',
+        body: `${settings.reps} ${label.plural} pour arrêter le réveil.`,
+        sound: true,
+        interruptionLevel: 'timeSensitive',
+        data: { url: '/challenge' },
+      },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DATE, date },
+    });
   }
 }
 
