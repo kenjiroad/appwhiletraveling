@@ -32,5 +32,5 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
 - 🟡 Liens Conditions d'utilisation + Politique de confidentialité à rédiger avant l'envoi à Apple.
 - 🟡 Statut pour vendre (micro-entreprise ?) : à vérifier avec un comptable.
-- 🟡 Code Swift jamais compilé (comptage + AlarmKit) : à vérifier au premier build EAS (Xcode 26 requis pour AlarmKit).
+- 🟡 Code Swift compilé au 1er build EAS (28/10) ✅ ; comptage des pompes + AlarmKit encore à tester sur l'iPhone.
 - 🟡 La ligue utilise des joueurs fictifs tant que le projet Supabase n'est pas créé (code prêt : `docs/15`). Sign in with Apple : plus tard.
