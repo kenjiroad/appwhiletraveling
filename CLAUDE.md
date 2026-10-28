@@ -5,6 +5,7 @@ squats**, comptés par l'IA de la caméra (Apple Vision, sur le téléphone). Ma
 Construite en voyageant, sans Mac : Expo + EAS Build.
 
 - App : `app/` (Expo SDK 58, Expo Router, TypeScript). Module natif de comptage : `app/modules/rep-counter/`.
+- Liste de ce que Kenji doit faire : `docs/A-FAIRE-KENJI.md` (à tenir à jour et à lui rappeler).
 - Étapes et décisions : `docs/00-journal.md` (une ligne par étape). Design & marketing : `docs/11-design-marketing-debout.md`.
 - Tout écrire en français, simplement. Kenji débute : expliquer les termes techniques.
 
