@@ -4,7 +4,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 
 ## Maintenant : l'app sur ton iPhone
 
-- [ ] **Enregistrer l'iPhone (QR code n°1)** : dans le dossier `app`, `npx eas-cli device:create` → **Website**
+- [x] **Enregistrer l’iPhone (QR code n°1)** ✅ 28/10 : dans le dossier `app`, `npx eas-cli device:create` → **Website**
       → scanner avec l'appareil photo → Safari → **Download Provisioning Profile** → **Autoriser** →
       Réglages → **Profil téléchargé** → **Installer** (attendre l'heure de sécurité si demandée).
 - [ ] **Premier build (QR code n°2)** : `npx eas-cli build --profile preview --platform ios` → **Y** à tout →
