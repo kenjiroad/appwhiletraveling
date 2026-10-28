@@ -108,3 +108,8 @@ diagnostic + test du réveil, pompes comptées aussi de face.
 → Détails : [20-retours-premier-test.md](20-retours-premier-test.md)
 
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
+
+## Analyse des concurrents — faite ✅ (28/10/2026)
+Erly, Alarmy, BedOut (français), Clucky, Risly, PushClock, Gym Clock, IronWake… + Duolingo, Finch, Opal, Fabulous, Ladder.
+À proposer à Kenji (rien de lancé) : joker de série, carte de partage en image, sortie de secours, vérif après réveil, rappel du coucher.
+→ Détails : [19-concurrents.md](19-concurrents.md)
