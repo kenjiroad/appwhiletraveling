@@ -97,4 +97,9 @@ Sans clé, achats factices comme avant. Reste à Kenji : App Store Connect + Rev
 Décision : paywall obligatoire (essai 3 jours puis abonnement, comme Erly).
 → Détails : [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md)
 
+## Mises à jour automatiques — configuré ✅ (28/10/2026)
+iPhone enregistré, premier build lancé. Expo relié au projet (`e3e7b9e6-…`) : chaque envoi sur GitHub
+devient une mise à jour à distance, ou un nouveau build si le code natif change. Reste à Kenji : relier GitHub sur expo.dev.
+→ Détails : [18-mises-a-jour-automatiques.md](18-mises-a-jour-automatiques.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)

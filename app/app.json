@@ -48,6 +48,18 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "owner": "kenjiroad",
+    "runtimeVersion": {
+      "policy": "fingerprint"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e3e7b9e6-2d83-40c0-80b4-55348f25b4f4"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e3e7b9e6-2d83-40c0-80b4-55348f25b4f4"
+      }
     }
   }
 }

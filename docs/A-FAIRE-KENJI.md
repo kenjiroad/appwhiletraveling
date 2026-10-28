@@ -7,15 +7,18 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] **Enregistrer l’iPhone (QR code n°1)** ✅ 28/10 : dans le dossier `app`, `npx eas-cli device:create` → **Website**
       → scanner avec l'appareil photo → Safari → **Download Provisioning Profile** → **Autoriser** →
       Réglages → **Profil téléchargé** → **Installer** (attendre l'heure de sécurité si demandée).
-- [ ] **Premier build (QR code n°2)** : `npx eas-cli build --profile preview --platform ios` → **Y** à tout →
+- [~] **Premier build (QR code n°2)** — lancé le 28/10 : `npx eas-cli build --profile preview --platform ios` → **Y** à tout →
       20 min → scanner le QR code → **Installer**. Raté ? expo.dev → projet debout → **Builds**.
 - [ ] Si l'app ne s'ouvre pas : Réglages → Confidentialité et sécurité → **Mode développeur**.
 - [ ] Tester : onboarding, défi avec la vraie caméra, un réveil 2 minutes plus tard → dire à Claude ce qui marche.
 
 ## Ensuite : les mises à jour automatiques
 
-- [ ] Envoyer à Claude le **Project ID** (expo.dev → projet debout ; pas secret).
-- [ ] expo.dev → projet → Settings → **GitHub** → connecter `appwhiletraveling`, dossier `app`.
+- [x] Envoyer à Claude le **Project ID** ✅ 28/10
+- [ ] expo.dev → projet debout → **Project settings** → **GitHub** → connecter `kenjiroad/appwhiletraveling`,
+      **Base directory** : `app`.
+- [ ] Installer le build automatique qui suivra (expo.dev → Builds). Ensuite : plus rien à faire, les mises à jour
+      arrivent toutes seules au lancement de l'app.
 
 ## Sécurité (urgent)
 

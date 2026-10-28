@@ -1,0 +1,39 @@
+# Runs on every push to the working branch.
+# Native code unchanged (same fingerprint as an existing build): sends an over-the-air update,
+# the installed app picks it up on its next launch. Native code changed: builds a new app instead.
+name: Preview automatique
+
+on:
+  push:
+    branches: ['claude/compassionate-goldberg-gfgu0j']
+
+jobs:
+  fingerprint:
+    name: Empreinte du code natif
+    type: fingerprint
+
+  get_ios_build:
+    name: Build existant ?
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+      profile: preview
+
+  build_ios:
+    name: Nouveau build iOS
+    needs: [get_ios_build]
+    if: ${{ !needs.get_ios_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: preview
+
+  update_ios:
+    name: Mise à jour sans réinstaller
+    needs: [get_ios_build]
+    if: ${{ needs.get_ios_build.outputs.build_id }}
+    type: update
+    params:
+      branch: preview
+      platform: ios
