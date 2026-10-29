@@ -4,10 +4,13 @@ type DeboutAlarmModule = {
   isSupported(): boolean;
   isAuthorized(): boolean;
   requestAuthorizationAsync(): Promise<boolean>;
-  scheduleAsync(timestamps: number[], title: string): Promise<void>;
+  scheduleAsync(timestamps: number[], titles: string[]): Promise<void>;
   cancelBetween(start: number, end: number): void;
   cancelAll(): void;
   scheduledCount(): number;
+  areLiveActivitiesEnabled(): boolean;
+  startSleepActivity(alarmTimestamp: number, challenge: string): boolean;
+  endSleepActivity(): void;
 };
 
 const nativeModule = requireOptionalNativeModule<DeboutAlarmModule>('DeboutAlarm');
@@ -24,8 +27,12 @@ export async function requestAlarmKitAuthorizationAsync() {
   return isAlarmKitSupported ? nativeModule!.requestAuthorizationAsync() : false;
 }
 
-export async function scheduleAlarmKitAsync(dates: Date[], title: string) {
-  if (isAlarmKitSupported) await nativeModule!.scheduleAsync(dates.map((d) => d.getTime()), title);
+export async function scheduleAlarmKitAsync(rings: { date: Date; title: string }[]) {
+  if (!isAlarmKitSupported) return;
+  await nativeModule!.scheduleAsync(
+    rings.map((r) => r.date.getTime()),
+    rings.map((r) => r.title)
+  );
 }
 
 export function cancelAlarmKitBetween(start: Date, end: Date) {
@@ -38,4 +45,16 @@ export function cancelAllAlarmKit() {
 
 export function getAlarmKitScheduledCount() {
   return isAlarmKitSupported ? nativeModule!.scheduledCount() : 0;
+}
+
+// Live Activities only exist in a real build (not Expo Go or the web).
+export const isSleepActivitySupported = nativeModule?.areLiveActivitiesEnabled != null;
+
+export function startSleepActivity(alarm: Date, challenge: string) {
+  if (!nativeModule?.startSleepActivity) return false;
+  return nativeModule.startSleepActivity(alarm.getTime(), challenge);
+}
+
+export function endSleepActivity() {
+  nativeModule?.endSleepActivity?.();
 }

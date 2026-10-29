@@ -34,11 +34,26 @@ public final class DeboutAlarmModule: Module {
       return false
     }
 
-    /// Replaces every planned alarm by one alarm per timestamp (milliseconds since 1970).
-    AsyncFunction("scheduleAsync") { (timestamps: [Double], title: String) async throws in
+    /// Replaces every planned alarm by one alarm per timestamp (milliseconds since 1970), each with its title.
+    AsyncFunction("scheduleAsync") { (timestamps: [Double], titles: [String]) async throws in
       #if canImport(AlarmKit)
-      if #available(iOS 26.0, *) { try await DeboutAlarmScheduler.schedule(timestamps: timestamps, title: title) }
+      if #available(iOS 26.0, *) { try await DeboutAlarmScheduler.schedule(timestamps: timestamps, titles: titles) }
       #endif
+    }
+
+    // --- Lock screen "sleep" Live Activity (see app/targets/sleep) ---
+
+    Function("areLiveActivitiesEnabled") { () -> Bool in
+      SleepActivityController.isEnabled
+    }
+
+    /// Shows the sleeping marmot and the countdown to the alarm on the lock screen and in the Dynamic Island.
+    Function("startSleepActivity") { (alarmTimestamp: Double, challenge: String) throws -> Bool in
+      try SleepActivityController.start(alarm: Date(timeIntervalSince1970: alarmTimestamp / 1000), challenge: challenge)
+    }
+
+    Function("endSleepActivity") {
+      SleepActivityController.endAll()
     }
 
     /// Cancels the planned alarms between two timestamps, e.g. the rest of today once the challenge is done.
@@ -95,14 +110,15 @@ enum DeboutAlarmScheduler {
     }
   }
 
-  static func schedule(timestamps: [Double], title: String) async throws {
+  static func schedule(timestamps: [Double], titles: [String]) async throws {
     cancelAll()
     let manager = AlarmManager.shared
     guard manager.authorizationState == .authorized else { return }
 
     var planned: [String: Double] = [:]
-    for timestamp in timestamps {
+    for (index, timestamp) in timestamps.enumerated() {
       let id = UUID()
+      let title = index < titles.count ? titles[index] : "Debout !"
       let alert = AlarmPresentation.Alert(
         title: LocalizedStringResource(stringLiteral: title),
         stopButton: AlarmButton(text: "Arrêter", textColor: .white, systemImageName: "xmark"),

@@ -1,27 +1,38 @@
 import { Redirect, router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import * as Haptics from 'expo-haptics';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
 import { Mascot } from '@/components/mascot';
-import { Body, Eyebrow, Glass, Label, Pill, PrimaryButton, Serif } from '@/components/ui';
+import { Body, Eyebrow, GhostButton, Glass, Label, Pill, PrimaryButton, Serif } from '@/components/ui';
 import { WeekDots } from '@/components/week-dots';
 import { scheduleAlarms } from '@/lib/alarm';
 import { EXERCISE_LABELS, formatTime } from '@/lib/exercises';
 import { MASCOT_LEVELS } from '@/lib/mascot';
 import { getXp, rankFor } from '@/lib/progress';
-import { getSettings, getStreak, isTodayCompleted } from '@/lib/storage';
+import { canSayGoodnight, sayGoodnight, type GoodnightResult } from '@/lib/sleep';
+import { getJokerCount, getSettings, getStreak, isTodayCompleted } from '@/lib/storage';
 import { colors, fonts } from '@/lib/theme';
 
 function load() {
-  return { settings: getSettings(), streak: getStreak(), doneToday: isTodayCompleted(), xp: getXp() };
+  const settings = getSettings();
+  return {
+    settings,
+    streak: getStreak(),
+    jokers: getJokerCount(),
+    doneToday: isTodayCompleted(),
+    xp: getXp(),
+    bedtime: canSayGoodnight(settings),
+  };
 }
 
 export default function AlarmScreen() {
   const [data, setData] = useState(load);
   const [hop, setHop] = useState(0);
+  const [goodnight, setGoodnight] = useState<GoodnightResult | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -32,8 +43,14 @@ export default function AlarmScreen() {
     }, [])
   );
 
-  const { settings, streak, doneToday, xp } = data;
+  const { settings, streak, jokers, doneToday, xp, bedtime } = data;
   if (!settings) return <Redirect href="/onboarding" />;
+
+  const onGoodnight = () => {
+    setGoodnight(sayGoodnight(settings));
+    setHop((h) => h + 1);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  };
 
   const { rank, index } = rankFor(xp);
   const today = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -69,6 +86,7 @@ export default function AlarmScreen() {
               <Eyebrow>Cette semaine</Eyebrow>
               <Label>
                 <Serif style={styles.streak}>{streak}</Serif> jour{streak > 1 ? 's' : ''} de suite
+                {jokers > 0 ? ` · 🛡 ${jokers} joker${jokers > 1 ? 's' : ''}` : ''}
               </Label>
             </View>
             <WeekDots />
@@ -78,6 +96,18 @@ export default function AlarmScreen() {
         <View style={{ flex: 1 }} />
 
         <Animated.View entering={FadeInDown.delay(360).duration(600)} style={styles.cta}>
+          {bedtime &&
+            (goodnight ? (
+              <Body style={styles.done}>
+                {goodnight === 'started'
+                  ? 'Bonne nuit 🌙 Ta marmotte veille sur ton écran verrouillé.'
+                  : goodnight === 'disabled'
+                    ? 'Active les « Activités en direct » de Debout dans Réglages pour voir ta marmotte la nuit.'
+                    : 'La marmotte de nuit s’affiche dans l’app installée sur ton iPhone.'}
+              </Body>
+            ) : (
+              <GhostButton label="Bonne nuit 🌙" onPress={onGoodnight} />
+            ))}
           <PrimaryButton
             label={doneToday ? 'Refaire une série bonus' : 'Lancer le défi'}
             breathing={!doneToday}

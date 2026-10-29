@@ -35,3 +35,4 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 18. [Mises à jour automatiques](docs/18-mises-a-jour-automatiques.md) — GitHub → Expo → iPhone, sans Terminal
 19. [Concurrents](docs/19-concurrents.md) — ce qu'ils ont de plus, idées pour faire revenir les gens
 20. [Retours du premier test](docs/20-retours-premier-test.md) — corrections après le test sur iPhone
+21. [Rétention + marmotte de nuit](docs/21-retention-et-nuit.md) — joker, story, écran verrouillé

@@ -10,6 +10,12 @@ export type Settings = {
   exercise: Exercise;
   reps: number;
   name?: string;
+  /** "Toujours debout ?": one more ring 5 minutes after the challenge, in case you went back to bed. */
+  wakeCheck?: boolean;
+  /** Evening notification telling you it's time to sleep. */
+  bedtimeReminder?: boolean;
+  /** Sleep you aim for, in minutes: bedtime = alarm time minus this. */
+  sleepGoalMinutes?: number;
 };
 
 // SecureStore has no web implementation; the browser preview keeps data in localStorage.
@@ -24,10 +30,23 @@ const store =
 const SETTINGS_KEY = 'settings';
 const HISTORY_KEY = 'history';
 const PENDING_SYNC_KEY = 'pending-sync';
+const JOKERS_KEY = 'jokers';
+const WAKE_CHECK_KEY = 'wake-check';
 
 export type DayRecord = { reps: number; done: boolean };
 
-export const DEFAULT_SETTINGS: Settings = { hour: 7, minute: 0, enabled: true, exercise: 'pushup', reps: 15 };
+export const DEFAULT_SETTINGS: Settings = {
+  hour: 7,
+  minute: 0,
+  enabled: true,
+  exercise: 'pushup',
+  reps: 15,
+  wakeCheck: true,
+  bedtimeReminder: true,
+  sleepGoalMinutes: 8 * 60,
+};
+
+export const SLEEP_GOAL_OPTIONS = [7 * 60, 7.5 * 60, 8 * 60, 8.5 * 60, 9 * 60];
 
 function readJson<T>(key: string, fallback: T): T {
   const raw = store.getItem(key);
@@ -65,6 +84,7 @@ export function recordSession(reps: number, done: boolean) {
   history[dayKey()] = { reps: today.reps + reps, done: today.done || done };
   store.setItem(HISTORY_KEY, JSON.stringify(history));
   markDayPending(dayKey());
+  if (done && !today.done) earnJokerIfDue();
 }
 
 /** Days whose totals still have to be sent to the server (kept until a sync succeeds). */
@@ -85,18 +105,136 @@ export function isTodayCompleted() {
   return getHistory()[dayKey()]?.done ?? false;
 }
 
-/** Consecutive completed days ending today (or yesterday, if today isn't done yet). */
-export function getStreak() {
-  const history = getHistory();
-  const cursor = new Date();
-  if (!history[dayKey(cursor)]?.done) cursor.setDate(cursor.getDate() - 1);
+/** Done, or excused with the emergency exit: either way the alarm leaves you alone today. */
+export function isTodayHandled() {
+  return isTodayCompleted() || getJokers().excusedDays.includes(dayKey());
+}
 
+// --- Jokers -------------------------------------------------------------------------------
+// A joker protects the streak for one missed morning (like Duolingo's streak freeze).
+// You start with one and earn one every 7 days in a row, up to 2.
+
+export const MAX_JOKERS = 2;
+export const DAYS_PER_JOKER = 7;
+
+type JokerState = {
+  available: number;
+  /** Missed days a joker covered: they keep the streak alive without adding to it. */
+  protectedDays: string[];
+  /** Days skipped with the emergency exit (sick, injured…). */
+  excusedDays: string[];
+  /** Last day already checked for a missed morning. */
+  settledUntil?: string;
+};
+
+function getJokers(): JokerState {
+  return readJson<JokerState>(JOKERS_KEY, { available: 1, protectedDays: [], excusedDays: [] });
+}
+
+function saveJokers(state: JokerState) {
+  store.setItem(JOKERS_KEY, JSON.stringify(state));
+}
+
+export function getJokerCount() {
+  settleMissedDays();
+  return getJokers().available;
+}
+
+export function isProtectedDay(day: string) {
+  return getJokers().protectedDays.includes(day);
+}
+
+/** Streak ending on `cursor` (included), protected days bridging without counting. */
+function streakEndingOn(cursor: Date, history: Record<string, DayRecord>, protectedDays: string[]) {
+  const day = new Date(cursor);
   let streak = 0;
-  while (history[dayKey(cursor)]?.done) {
-    streak += 1;
-    cursor.setDate(cursor.getDate() - 1);
+  for (;;) {
+    const key = dayKey(day);
+    if (history[key]?.done) streak += 1;
+    else if (!protectedDays.includes(key)) break;
+    day.setDate(day.getDate() - 1);
   }
   return streak;
+}
+
+/** Spends a joker on each missed morning since the last check, as long as there was a streak to save. */
+function settleMissedDays() {
+  const state = getJokers();
+  const history = getHistory();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const until = dayKey(yesterday);
+  if (state.settledUntil && state.settledUntil >= until) return;
+
+  // First run: only look back two weeks.
+  const cursor = state.settledUntil ? new Date(`${state.settledUntil}T12:00:00`) : new Date(yesterday);
+  if (!state.settledUntil) cursor.setDate(cursor.getDate() - 14);
+  cursor.setDate(cursor.getDate() + 1);
+
+  while (dayKey(cursor) <= until) {
+    const key = dayKey(cursor);
+    const missed = !history[key]?.done && !state.protectedDays.includes(key);
+    if (missed && state.available > 0) {
+      const before = new Date(cursor);
+      before.setDate(before.getDate() - 1);
+      if (streakEndingOn(before, history, state.protectedDays) > 0) {
+        state.available -= 1;
+        state.protectedDays.push(key);
+      }
+    }
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  state.settledUntil = until;
+  saveJokers(state);
+}
+
+function earnJokerIfDue() {
+  const streak = getStreak();
+  if (streak > 0 && streak % DAYS_PER_JOKER === 0) {
+    const state = getJokers();
+    state.available = Math.min(MAX_JOKERS, state.available + 1);
+    saveJokers(state);
+  }
+}
+
+/**
+ * Emergency exit (sick, injured…): today's alarm stops without completing the day.
+ * Spends a joker so the streak survives, if there is one. Returns whether a joker was used.
+ */
+export function excuseToday() {
+  settleMissedDays();
+  const state = getJokers();
+  const today = dayKey();
+  if (!state.excusedDays.includes(today)) state.excusedDays.push(today);
+  const usedJoker = state.available > 0 && !state.protectedDays.includes(today);
+  if (usedJoker) {
+    state.available -= 1;
+    state.protectedDays.push(today);
+  }
+  saveJokers(state);
+  return usedJoker;
+}
+
+/** Consecutive completed days ending today (or yesterday, if today isn't done yet). Jokers bridge missed days. */
+export function getStreak() {
+  settleMissedDays();
+  const history = getHistory();
+  const { protectedDays } = getJokers();
+  const cursor = new Date();
+  if (!history[dayKey(cursor)]?.done && !protectedDays.includes(dayKey(cursor))) cursor.setDate(cursor.getDate() - 1);
+  return streakEndingOn(cursor, history, protectedDays);
+}
+
+// --- "Toujours debout ?" ------------------------------------------------------------------
+
+/** When the follow-up ring after the challenge is due, if any. */
+export function getWakeCheck(): Date | null {
+  const at = readJson<number | null>(WAKE_CHECK_KEY, null);
+  return at && at > Date.now() ? new Date(at) : null;
+}
+
+export function setWakeCheck(at: Date | null) {
+  store.setItem(WAKE_CHECK_KEY, JSON.stringify(at ? at.getTime() : null));
 }
 
 export function getBestStreak() {

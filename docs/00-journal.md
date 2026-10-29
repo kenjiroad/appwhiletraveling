@@ -107,6 +107,12 @@ Build réussi (le Swift compile). Retours de Kenji corrigés : retour arrière d
 diagnostic + test du réveil, pompes comptées aussi de face.
 → Détails : [20-retours-premier-test.md](20-retours-premier-test.md)
 
+## Rétention + marmotte de nuit — code prêt ✅ (29/10/2026)
+Joker de série, story à partager, « Toujours debout ? », sortie de secours, rappel du coucher et Activité en direct
+(la marmotte qui dort sur l'écran verrouillé avec le compte à rebours). Écran toujours allumé pendant le défi.
+Blocage des apps : étape 3.
+→ Détails : [21-retention-et-nuit.md](21-retention-et-nuit.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)

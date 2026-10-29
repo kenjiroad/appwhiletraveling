@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { ZoomIn } from 'react-native-reanimated';
 
-import { dayKey, getHistory } from '@/lib/storage';
+import { dayKey, getHistory, isProtectedDay } from '@/lib/storage';
 import { colors, fonts } from '@/lib/theme';
 
 const LETTERS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
@@ -19,11 +19,14 @@ export function WeekDots() {
         const date = new Date(monday);
         date.setDate(monday.getDate() + i);
         const done = history[dayKey(date)]?.done ?? false;
+        // A missed morning saved by a joker: a shield instead of a sun.
+        const joker = !done && isProtectedDay(dayKey(date));
         const isToday = dayKey(date) === dayKey(today);
         return (
           <View key={i} style={styles.day}>
             <View style={[styles.dot, isToday && styles.today]}>
               {done && <Animated.View entering={ZoomIn.delay(i * 60).springify()} style={styles.sun} />}
+              {joker && <Text style={styles.joker}>🛡</Text>}
             </View>
             <Text style={[styles.letter, isToday && { color: colors.text }]}>{letter}</Text>
           </View>
@@ -45,6 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   today: { borderWidth: 1.5, borderColor: colors.gold },
+  joker: { fontSize: 14 },
   sun: {
     width: 18,
     height: 18,

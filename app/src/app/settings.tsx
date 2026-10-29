@@ -9,7 +9,8 @@ import { TimeStepper } from '@/components/time-stepper';
 import { Body, Eyebrow, GhostButton, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
 import { getAlarmStatus, scheduleAlarms, type AlarmStatus } from '@/lib/alarm';
 import { REP_OPTIONS } from '@/lib/exercises';
-import { DEFAULT_SETTINGS, getSettings, saveSettings, type Settings } from '@/lib/storage';
+import { bedtimeFor } from '@/lib/alarm';
+import { DEFAULT_SETTINGS, getSettings, saveSettings, SLEEP_GOAL_OPTIONS, type Settings } from '@/lib/storage';
 import { colors } from '@/lib/theme';
 
 export default function SettingsScreen() {
@@ -80,6 +81,45 @@ export default function SettingsScreen() {
             onChange={(reps) => update({ reps })}
             options={REP_OPTIONS.map((n) => ({ value: n, label: String(n) }))}
           />
+
+          <Eyebrow>Le soir et après le réveil</Eyebrow>
+          <Glass style={{ gap: 16 }}>
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Label>Rappel du coucher</Label>
+                <Body>
+                  {(() => {
+                    const b = bedtimeFor(settings);
+                    return `Chaque soir à ${String(b.hour).padStart(2, '0')}:${String(b.minute).padStart(2, '0')}`;
+                  })()}
+                </Body>
+              </View>
+              <Switch
+                value={settings.bedtimeReminder !== false}
+                onValueChange={(bedtimeReminder) => update({ bedtimeReminder })}
+                trackColor={{ true: colors.sun, false: 'rgba(255,255,255,0.2)' }}
+              />
+            </View>
+            <ChoiceRow
+              value={settings.sleepGoalMinutes ?? DEFAULT_SETTINGS.sleepGoalMinutes!}
+              onChange={(sleepGoalMinutes) => update({ sleepGoalMinutes })}
+              options={SLEEP_GOAL_OPTIONS.map((m) => ({
+                value: m,
+                label: `${Math.floor(m / 60)}h${m % 60 ? String(m % 60) : ''}`,
+              }))}
+            />
+            <View style={styles.row}>
+              <View style={{ flex: 1 }}>
+                <Label>« Toujours debout ? »</Label>
+                <Body>Une sonnerie 5 min après le défi, au cas où tu te recouches.</Body>
+              </View>
+              <Switch
+                value={settings.wakeCheck !== false}
+                onValueChange={(wakeCheck) => update({ wakeCheck })}
+                trackColor={{ true: colors.sun, false: 'rgba(255,255,255,0.2)' }}
+              />
+            </View>
+          </Glass>
 
           <Eyebrow>Vérifier le réveil</Eyebrow>
           <Glass style={{ gap: 10 }}>

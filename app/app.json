@@ -14,7 +14,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "Debout utilise la caméra pour compter tes pompes et tes squats. Tout est analysé sur ton téléphone : aucune image n’est envoyée ni enregistrée.",
         "NSAlarmKitUsageDescription": "Debout sonne comme un vrai réveil, même en mode silencieux, jusqu’à ce que tu aies fait tes pompes.",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSSupportsLiveActivities": true
       },
       "entitlements": {
         "com.apple.developer.usernotifications.time-sensitive": true
@@ -44,7 +45,8 @@
         }
       ],
       "expo-secure-store",
-      "expo-notifications"
+      "expo-notifications",
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": true,

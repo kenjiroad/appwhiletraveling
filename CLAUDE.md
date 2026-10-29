@@ -24,6 +24,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 22/10/2026 — Mascotte : marmotte 3D (piste A), 8 niveaux + 6 poses, dans `app/assets/mascot/` (`docs/13`).
 - 22/10/2026 — DA « Aube » + mascotte **validées** par Kenji.
 - 26/10/2026 — Paywall **obligatoire** (option A, comme Erly) : essai 3 jours puis abonnement (`docs/17`).
+- 29/10/2026 — Feu vert : joker de série, story à partager, « Toujours debout ? », sortie de secours, rappel du coucher + Activité en direct « sommeil » (`docs/21`). Blocage des apps = étape 3.
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)
@@ -32,5 +33,5 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
 - 🟡 Liens Conditions d'utilisation + Politique de confidentialité à rédiger avant l'envoi à Apple.
 - 🟡 Statut pour vendre (micro-entreprise ?) : à vérifier avec un comptable.
-- 🟡 Code Swift compilé au 1er build EAS (28/10) ✅ ; comptage des pompes + AlarmKit encore à tester sur l'iPhone.
+- 🟡 Code Swift compilé au 1er build EAS (28/10) ✅. Extension « sommeil » (Live Activity) jamais compilée ; Apple Team ID à ajouter dans `app.json`.
 - 🟡 La ligue utilise des joueurs fictifs tant que le projet Supabase n'est pas créé (code prêt : `docs/15`). Sign in with Apple : plus tard.

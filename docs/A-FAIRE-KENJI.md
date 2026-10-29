@@ -17,6 +17,19 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Pompes de face : ça marche ✅ 29/10
 - [ ] Préciser le « petit défaut » de la première page (capture).
 
+## Pour le prochain build (joker, story, marmotte de nuit)
+
+- [ ] Envoyer à Claude ton **Apple Team ID** (pas secret) : developer.apple.com/account → **Membership details**
+      → Team ID (10 caractères, ex. `AB12CD34EF`).
+- [ ] Puis nouveau build depuis le Terminal (nouveau ZIP → `cd …/app` → `npm install` →
+      `npx eas-cli build --profile preview --platform ios`) : Apple redemande ton identifiant pour la nouvelle extension.
+- [ ] Tester : « Bonne nuit 🌙 » le soir + écran verrouillé, story après le défi, « Toujours debout ? », « Malade ou blessé ? ».
+
+## Étape 3 : bloquer les apps (Temps d'écran)
+
+- [ ] Demander à Apple l'autorisation « Family Controls » (formulaire sur le site Apple Developer, délai de
+      plusieurs jours) : Claude te guidera le moment venu.
+
 ## Ensuite : les mises à jour automatiques
 
 - [x] Envoyer à Claude le **Project ID** ✅ 28/10

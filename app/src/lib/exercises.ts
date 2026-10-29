@@ -5,7 +5,7 @@ export const EXERCISE_LABELS: Record<Exercise, { singular: string; plural: strin
     singular: 'pompe',
     plural: 'pompes',
     emoji: '💪',
-    tip: 'Pose ton téléphone au sol, à 1 m devant toi, de profil si possible.',
+    tip: 'Pose ton téléphone au sol, à 1 m de toi, de face ou de profil.',
   },
   squat: {
     singular: 'squat',
