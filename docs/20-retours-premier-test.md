@@ -11,6 +11,13 @@ Kenji a installé le premier build (preview) et testé l'app. Ses retours et ce 
 | Le réveil n'a pas sonné | 1) Si le réveil iOS (AlarmKit) échoue, les notifications prennent le relais au lieu de rien. 2) Nouveau bloc **« Vérifier le réveil »** dans les réglages : mode utilisé, nombre de sonneries programmées, message si problème. 3) Bouton **« Tester le réveil dans 1 minute »** |
 | Les pompes ne comptent que de profil | L'IA essaie maintenant plusieurs orientations de l'image et garde la meilleure, et compte aussi **la descente des épaules** (de face) en plus de l'angle du coude (de profil). Un même mouvement vu par les deux méthodes ne compte qu'une fois. Squats : pareil avec les hanches |
 
+## Deuxième test (29/10)
+
+| Retour de Kenji | Correction |
+|---|---|
+| Pompes de face : ça marche bien | — |
+| L'écran se met en veille pendant les pompes | L'écran reste allumé pendant tout le défi (`useKeepAwake` dans `challenge.tsx`) |
+
 ## À vérifier sur l'iPhone
 
 - Ces changements touchent le code natif (caméra, réveil, roue) : il faut **un nouveau build**.

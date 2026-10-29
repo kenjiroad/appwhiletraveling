@@ -1,4 +1,5 @@
 import * as Haptics from 'expo-haptics';
+import { useKeepAwake } from 'expo-keep-awake';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
@@ -55,6 +56,8 @@ function CountUp({ value, style }: { value: number; style: object }) {
 }
 
 export default function ChallengeScreen() {
+  // Nobody touches the screen during push-ups: without this, the iPhone dims and locks mid-set.
+  useKeepAwake();
   const insets = useSafeAreaInsets();
   const [settings] = useState(() => getSettings() ?? DEFAULT_SETTINGS);
   const [count, setCount] = useState(0);
