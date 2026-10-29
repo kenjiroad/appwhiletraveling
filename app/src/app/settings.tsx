@@ -1,13 +1,13 @@
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { Linking, ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
 import { ChoiceRow } from '@/components/choice-row';
 import { TimeStepper } from '@/components/time-stepper';
 import { Body, Eyebrow, GhostButton, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
-import { getAlarmStatus, scheduleAlarms, type AlarmStatus } from '@/lib/alarm';
+import { getAlarmStatus, requestAlarmPermissionAsync, scheduleAlarms, type AlarmStatus } from '@/lib/alarm';
 import { REP_OPTIONS } from '@/lib/exercises';
 import { bedtimeFor } from '@/lib/alarm';
 import { DEFAULT_SETTINGS, getSettings, saveSettings, SLEEP_GOAL_OPTIONS, type Settings } from '@/lib/storage';
@@ -135,6 +135,17 @@ export default function SettingsScreen() {
             {status?.mode === 'notifications' && (
               <Body>En mode notifications, le mode silencieux coupe le son.</Body>
             )}
+            {status?.fix === 'request' && (
+              <GhostButton
+                label="Autoriser le réveil iOS"
+                onPress={async () => {
+                  await requestAlarmPermissionAsync();
+                  await scheduleAlarms(settings);
+                  refreshStatus(settings);
+                }}
+              />
+            )}
+            {status?.fix === 'settings' && <GhostButton label="Ouvrir les réglages de l’iPhone" onPress={() => Linking.openSettings()} />}
             <GhostButton
               label={testPlanned ? 'Test prévu dans 1 minute : verrouille ton téléphone' : 'Tester le réveil dans 1 minute'}
               onPress={testAlarm}

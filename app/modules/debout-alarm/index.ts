@@ -3,6 +3,7 @@ import { requireOptionalNativeModule } from 'expo';
 type DeboutAlarmModule = {
   isSupported(): boolean;
   isAuthorized(): boolean;
+  authorizationState?(): string;
   requestAuthorizationAsync(): Promise<boolean>;
   scheduleAsync(timestamps: number[], titles: string[]): Promise<void>;
   cancelBetween(start: number, end: number): void;
@@ -21,6 +22,12 @@ export const isAlarmKitSupported = nativeModule?.isSupported() ?? false;
 
 export function isAlarmKitAuthorized() {
   return isAlarmKitSupported && nativeModule!.isAuthorized();
+}
+
+/** "authorized", "denied", "notDetermined", or "unsupported" (older iOS, Expo Go, web, or an old build). */
+export function getAlarmKitAuthorizationState() {
+  if (!isAlarmKitSupported) return 'unsupported';
+  return nativeModule!.authorizationState?.() ?? (nativeModule!.isAuthorized() ? 'authorized' : 'notDetermined');
 }
 
 export async function requestAlarmKitAuthorizationAsync() {

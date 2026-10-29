@@ -7,9 +7,9 @@ import { DEFAULT_SETTINGS, dayKey, getWakeCheck, isTodayHandled, type Settings }
 import {
   cancelAlarmKitBetween,
   cancelAllAlarmKit,
+  getAlarmKitAuthorizationState,
   getAlarmKitScheduledCount,
   isAlarmKitAuthorized,
-  isAlarmKitSupported,
   requestAlarmKitAuthorizationAsync,
   scheduleAlarmKitAsync,
 } from '../../modules/debout-alarm';
@@ -30,6 +30,12 @@ const ALARM_WINDOW_MINUTES = 60;
 
 // Local notifications don't exist on web; the browser preview just skips the alarm.
 const supported = Platform.OS !== 'web';
+
+/** Asks for the AlarmKit permission if it was never asked (e.g. onboarding done on an older build). */
+export async function ensureAlarmPermissionAsync() {
+  if (getAlarmKitAuthorizationState() !== 'notDetermined') return false;
+  return requestAlarmKitAuthorizationAsync();
+}
 
 export async function requestAlarmPermissionAsync() {
   if (!supported) return false;
@@ -66,6 +72,8 @@ export type AlarmStatus = {
   planned: number;
   /** Why AlarmKit isn't used, when it should be. */
   problem?: string;
+  /** What fixes it: ask for the permission, or open the iPhone settings. */
+  fix?: 'request' | 'settings';
 };
 
 let lastProblem: string | undefined;
@@ -73,12 +81,21 @@ let lastProblem: string | undefined;
 /** Shown in the settings, to understand why an alarm didn't ring. */
 export async function getAlarmStatus(settings: Settings | null): Promise<AlarmStatus> {
   if (!supported || !settings?.enabled) return { mode: 'off', planned: 0 };
-  if (isAlarmKitAuthorized() && !lastProblem) return { mode: 'alarmkit', planned: getAlarmKitScheduledCount() };
-  const planned = (await Notifications.getAllScheduledNotificationsAsync()).length;
-  const problem =
-    lastProblem ??
-    (isAlarmKitSupported ? 'Réveil iOS non autorisé : Réglages → Debout → Alarmes.' : 'Réveil iOS indisponible (iOS 26 requis).');
-  return { mode: planned > 0 ? 'notifications' : 'off', planned, problem };
+  const state = getAlarmKitAuthorizationState();
+  if (state === 'authorized' && !lastProblem) {
+    const planned = getAlarmKitScheduledCount();
+    return planned > 0
+      ? { mode: 'alarmkit', planned }
+      : { mode: 'off', planned: 0, problem: 'Réveil iOS autorisé, mais aucune sonnerie programmée. Touche « Tester ».' };
+  }
+  const planned = (await Notifications.getAllScheduledNotificationsAsync()).filter((n) => n.identifier !== 'bedtime').length;
+  const mode = planned > 0 ? 'notifications' : 'off';
+  if (lastProblem) return { mode, planned, problem: lastProblem };
+  if (state === 'notDetermined')
+    return { mode, planned, problem: 'Le réveil iOS n’a pas encore été autorisé.', fix: 'request' };
+  if (state === 'denied')
+    return { mode, planned, problem: 'Le réveil iOS est refusé : Réglages → Debout → Alarmes.', fix: 'settings' };
+  return { mode, planned, problem: 'Réveil iOS indisponible : il faut iOS 26 et la dernière version de l’app.' };
 }
 
 type Ring = { date: Date; title: string };

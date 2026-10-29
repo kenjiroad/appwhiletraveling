@@ -28,3 +28,11 @@ Kenji a installé le premier build (preview) et testé l'app. Ses retours et ce 
 ## Pas encore compris
 
 - Le « petit défaut » sur la première page : à préciser par Kenji (capture).
+
+## Troisième test (29/10) : l'alarme n'a pas sonné
+
+En attente de la capture « Vérifier le réveil ». Renforcements faits sans attendre :
+- l'app redemande l'autorisation « réveil iOS » au lancement si elle n'a jamais été demandée (cas d'un onboarding
+  fait sur un ancien build) ;
+- diagnostic plus précis (autorisé / refusé / pas encore demandé / iOS trop ancien) avec un bouton pour corriger ;
+- plan B natif : si iOS refuse le bouton « Mes pompes », l'alarme sonne quand même avec « Arrêter » seul.

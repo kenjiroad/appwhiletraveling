@@ -19,8 +19,8 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 
 ## Pour le prochain build (joker, story, marmotte de nuit)
 
-- [ ] Envoyer à Claude ton **Apple Team ID** (pas secret) : developer.apple.com/account → **Membership details**
-      → Team ID (10 caractères, ex. `AB12CD34EF`).
+- [ ] Réglages → **Vérifier le réveil** : capture à Claude (pour comprendre pourquoi l'alarme n'a pas sonné).
+- [ ] (Facultatif) **Apple Team ID** : developer.apple.com/account → **Membership details** → Team ID.
 - [ ] Puis nouveau build depuis le Terminal (nouveau ZIP → `cd …/app` → `npm install` →
       `npx eas-cli build --profile preview --platform ios`) : Apple redemande ton identifiant pour la nouvelle extension.
 - [ ] Tester : « Bonne nuit 🌙 » le soir + écran verrouillé, story après le défi, « Toujours debout ? », « Malade ou blessé ? ».
@@ -30,7 +30,12 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [ ] Demander à Apple l'autorisation « Family Controls » (formulaire sur le site Apple Developer, délai de
       plusieurs jours) : Claude te guidera le moment venu.
 
-## Ensuite : les mises à jour automatiques
+## Ensuite : les mises à jour automatiques (Claude build tout seul)
+
+- [ ] Créer un jeton Expo : expo.dev → Account settings → **Access tokens** → Create. Le mettre dans les réglages
+      de l'environnement Claude sous le nom `EXPO_TOKEN` (jamais dans le chat).
+- [ ] Autoriser les domaines `expo.dev`, `api.expo.dev`, `u.expo.dev`, `storage.googleapis.com`
+      (Network access → Allowed domains).
 
 - [x] Envoyer à Claude le **Project ID** ✅ 28/10
 - [x] GitHub connecté sur expo.dev ✅ 28/10 (à vérifier : **Base directory** = `app`)

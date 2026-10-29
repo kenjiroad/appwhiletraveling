@@ -27,6 +27,21 @@ public final class DeboutAlarmModule: Module {
       return false
     }
 
+    /// "authorized", "denied", "notDetermined" or "unsupported": shown in the settings to explain a silent alarm.
+    Function("authorizationState") { () -> String in
+      #if canImport(AlarmKit)
+      if #available(iOS 26.0, *) {
+        switch AlarmManager.shared.authorizationState {
+        case .authorized: return "authorized"
+        case .denied: return "denied"
+        case .notDetermined: return "notDetermined"
+        @unknown default: return "unknown"
+        }
+      }
+      #endif
+      return "unsupported"
+    }
+
     Function("isAuthorized") { () -> Bool in
       #if canImport(AlarmKit)
       if #available(iOS 26.0, *) { return AlarmManager.shared.authorizationState == .authorized }
@@ -119,25 +134,40 @@ enum DeboutAlarmScheduler {
     for (index, timestamp) in timestamps.enumerated() {
       let id = UUID()
       let title = index < titles.count ? titles[index] : "Debout !"
-      let alert = AlarmPresentation.Alert(
-        title: LocalizedStringResource(stringLiteral: title),
-        stopButton: AlarmButton(text: "Arrêter", textColor: .white, systemImageName: "xmark"),
-        secondaryButton: AlarmButton(text: "Mes pompes", textColor: .white, systemImageName: "figure.strengthtraining.functional"),
-        secondaryButtonBehavior: .custom
-      )
-      let attributes = AlarmAttributes<DeboutAlarmMetadata>(
-        presentation: AlarmPresentation(alert: alert),
-        tintColor: tint
-      )
-      let configuration = AlarmManager.AlarmConfiguration<DeboutAlarmMetadata>(
-        schedule: .fixed(Date(timeIntervalSince1970: timestamp / 1000)),
-        attributes: attributes,
-        secondaryIntent: OpenChallengeIntent(alarmID: id.uuidString)
-      )
-      _ = try await manager.schedule(id: id, configuration: configuration)
+      let date = Date(timeIntervalSince1970: timestamp / 1000)
+      do {
+        try await schedule(id: id, date: date, title: title, withChallengeButton: true)
+      } catch {
+        // Plan B: if iOS refuses the "Mes pompes" button (its App Intent), ring with "Arrêter" only.
+        try await schedule(id: id, date: date, title: title, withChallengeButton: false)
+      }
       planned[id.uuidString] = timestamp
     }
     store = planned
+  }
+
+  private static func schedule(id: UUID, date: Date, title: String, withChallengeButton: Bool) async throws {
+    let stop = AlarmButton(text: "Arrêter", textColor: .white, systemImageName: "xmark")
+    let alert = withChallengeButton
+      ? AlarmPresentation.Alert(
+        title: LocalizedStringResource(stringLiteral: title),
+        stopButton: stop,
+        secondaryButton: AlarmButton(text: "Mes pompes", textColor: .white, systemImageName: "figure.strengthtraining.functional"),
+        secondaryButtonBehavior: .custom
+      )
+      : AlarmPresentation.Alert(title: LocalizedStringResource(stringLiteral: title), stopButton: stop)
+    let attributes = AlarmAttributes<DeboutAlarmMetadata>(
+      presentation: AlarmPresentation(alert: alert),
+      metadata: DeboutAlarmMetadata(),
+      tintColor: tint
+    )
+    let configuration = AlarmManager.AlarmConfiguration<DeboutAlarmMetadata>(
+      schedule: .fixed(date),
+      attributes: attributes,
+      secondaryIntent: withChallengeButton ? OpenChallengeIntent(alarmID: id.uuidString) : nil,
+      sound: .default
+    )
+    _ = try await AlarmManager.shared.schedule(id: id, configuration: configuration)
   }
 
   static func cancel(where shouldCancel: (Double) -> Bool) {

@@ -38,3 +38,19 @@ Plus de ZIP ni de Terminal pour Kenji. Claude envoie le code sur GitHub → Expo
 
 - Offre gratuite d'Expo : builds et mises à jour limités par mois (voir expo.dev → Billing).
 - La règle suit la branche de travail actuelle ; à changer pour `main` le jour où on fusionne.
+
+## Mise à jour du 29/10 : ce qui bloquait, et le plan
+
+- Les builds lancés depuis expo.dev partaient en profil **production**, qui demande une validation Apple
+  interactive (identifiant + code) : impossible sans Terminal.
+- **Plan retenu : Claude lance lui-même les builds et les mises à jour** depuis sa session, avec un jeton Expo.
+  - Kenji crée un jeton sur expo.dev → Account settings → **Access tokens** → Create, et le met dans les réglages
+    de l'environnement Claude (menu de l'environnement → **Edit** → Network secrets / variables) sous le nom
+    `EXPO_TOKEN`. Jamais dans le chat.
+  - Domaines à autoriser dans **Network access → Allowed domains** : `expo.dev`, `api.expo.dev`, `u.expo.dev`,
+    `storage.googleapis.com` (envoi du code vers les serveurs d'Expo).
+  - Ensuite : petit changement → Claude envoie une **mise à jour à distance** (`eas update`), l'app la prend au
+    prochain lancement ; gros changement → Claude lance le **build** (`eas build --non-interactive`) et lit
+    lui-même les erreurs. Kenji n'a plus qu'à toucher « Install ».
+- Limite : quand on ajoute une nouvelle extension (comme la marmotte de nuit), Apple veut une fois l'identifiant
+  de Kenji → un build depuis le Terminal, ce jour-là seulement.

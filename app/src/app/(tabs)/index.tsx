@@ -9,7 +9,7 @@ import { Aurora } from '@/components/aurora';
 import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, GhostButton, Glass, Label, Pill, PrimaryButton, Serif } from '@/components/ui';
 import { WeekDots } from '@/components/week-dots';
-import { scheduleAlarms } from '@/lib/alarm';
+import { ensureAlarmPermissionAsync, scheduleAlarms } from '@/lib/alarm';
 import { EXERCISE_LABELS, formatTime } from '@/lib/exercises';
 import { MASCOT_LEVELS } from '@/lib/mascot';
 import { getXp, rankFor } from '@/lib/progress';
@@ -38,8 +38,10 @@ export default function AlarmScreen() {
     useCallback(() => {
       const next = load();
       setData(next);
-      // Re-plan on every visit so the notification window keeps rolling forward.
-      if (next.settings) scheduleAlarms(next.settings);
+      // Re-plan on every visit so the notification window keeps rolling forward. The AlarmKit
+      // permission is asked here too, in case onboarding happened before the alarm existed.
+      const settings = next.settings;
+      if (settings) ensureAlarmPermissionAsync().finally(() => scheduleAlarms(settings));
     }, [])
   );
 
