@@ -12,7 +12,11 @@ avance pendant la nuit, comme la voiture Uber. Il veut aussi une notification du
 - Le **trajet de la nuit** : 🌙 → ☀︎, une barre qui se remplit toute seule, et **la marmotte qui avance** dessus.
 - En bas : heure du coucher à gauche, le défi (« 15 pompes ») à droite.
 - À l'heure du réveil : « Debout ! 15 pompes pour arrêter le réveil », marmotte réveillée, barre aux couleurs de l'aube.
-- 🟡 À ajuster avec les références de Kenji (captures Uber / Flighty / Dribbble).
+- **Mise à jour du 01/11 d'après la référence Dribbble de Kenji** (« Live activity tracking », Maxim Podavalkin) :
+  badge de l'app à gauche + titre en gras « Debout dans 7 h 42 min », sous-titre « Réveil à 07:00 · 15 pompes »,
+  grosse marmotte qui déborde à droite (comme le bateau), ligne de la nuit grise derrière la marmotte et dorée
+  devant, avec un arrêt à chaque **cycle de sommeil** (90 min) comme des stations, soleil au bout ; en bas
+  « 8 H DE NUIT · 3 CYCLES DE SOMMEIL · 07:00 ».
 
 ## Comment la marmotte avance
 

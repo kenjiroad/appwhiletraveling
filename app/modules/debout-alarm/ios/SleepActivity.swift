@@ -10,7 +10,8 @@ struct DeboutSleepAttributes: ActivityAttributes {
     var alarmAt: Double
     /// When you said good night: the start of the night track (Unix seconds).
     var bedtimeAt: Double
-    /// Where the marmot is on the night track, 0…1. Negative when no server moves it: it then waits at the end.
+    /// Where the marmot is on the night track, 0…1. Negative until a first update: the widget then places it
+    /// where the night was when it drew the view.
     var progress: Double
   }
 
@@ -54,7 +55,6 @@ enum SleepActivityController {
   static func refreshProgress() {
     for activity in Activity<DeboutSleepAttributes>.activities {
       var state = activity.content.state
-      guard state.progress >= 0 else { continue }
       let span = max(state.alarmAt - state.bedtimeAt, 1)
       state.progress = min(1, max(0, (Date().timeIntervalSince1970 - state.bedtimeAt) / span))
       let content = ActivityContent(state: state, staleDate: Date(timeIntervalSince1970: state.alarmAt))
