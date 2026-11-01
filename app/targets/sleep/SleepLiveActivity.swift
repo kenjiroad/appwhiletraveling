@@ -114,12 +114,13 @@ struct LockScreenView: View {
       HStack(alignment: .top, spacing: 12) {
         AppBadge().frame(width: 46, height: 46)
         Headline(context: context, size: 22)
+          .padding(.trailing, 64) // room for the big marmot
         Spacer(minLength: 0)
       }
       .overlay(alignment: .topTrailing) {
         Marmot(awake: context.isStale)
-          .frame(width: 118, height: 118)
-          .offset(x: 34, y: -30)
+          .frame(width: 96, height: 96)
+          .offset(x: 30, y: -28)
       }
 
       NightLine(state: context.state, awake: context.isStale)

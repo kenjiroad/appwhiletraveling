@@ -18,6 +18,8 @@ avance pendant la nuit, comme la voiture Uber. Il veut aussi une notification du
   devant, avec un arrêt à chaque **cycle de sommeil** (90 min) comme des stations, soleil au bout ; en bas
   « 8 H DE NUIT · 3 CYCLES DE SOMMEIL · 07:00 ».
 
+![Aperçu (maquette web, pas une capture iPhone)](images/apercu-ecran-verrouille.png)
+
 ## Comment la marmotte avance
 
 Apple ne laisse bouger tout seuls que les comptes à rebours et la barre. Pour déplacer la marmotte, il faut lui
