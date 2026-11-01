@@ -13,6 +13,9 @@ public final class DeboutAlarmModule: Module {
   public func definition() -> ModuleDefinition {
     Name("DeboutAlarm")
 
+    // The sleep activity's push token, for the server that moves the marmot during the night.
+    Events("onSleepActivityToken")
+
     Function("isSupported") { () -> Bool in
       #if canImport(AlarmKit)
       if #available(iOS 26.0, *) { return true }
@@ -63,8 +66,18 @@ public final class DeboutAlarmModule: Module {
     }
 
     /// Shows the sleeping marmot and the countdown to the alarm on the lock screen and in the Dynamic Island.
-    Function("startSleepActivity") { (alarmTimestamp: Double, challenge: String) throws -> Bool in
-      try SleepActivityController.start(alarm: Date(timeIntervalSince1970: alarmTimestamp / 1000), challenge: challenge)
+    Function("startSleepActivity") { (alarmTimestamp: Double, challenge: String, withPush: Bool) throws -> Bool in
+      try SleepActivityController.start(
+        alarm: Date(timeIntervalSince1970: alarmTimestamp / 1000),
+        challenge: challenge,
+        withPush: withPush
+      ) { [weak self] token in
+        self?.sendEvent("onSleepActivityToken", ["token": token])
+      }
+    }
+
+    Function("refreshSleepActivity") {
+      SleepActivityController.refreshProgress()
     }
 
     Function("endSleepActivity") {

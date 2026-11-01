@@ -1,4 +1,4 @@
-import { requireOptionalNativeModule } from 'expo';
+import { requireOptionalNativeModule, type EventSubscription } from 'expo';
 
 type DeboutAlarmModule = {
   isSupported(): boolean;
@@ -10,8 +10,10 @@ type DeboutAlarmModule = {
   cancelAll(): void;
   scheduledCount(): number;
   areLiveActivitiesEnabled(): boolean;
-  startSleepActivity(alarmTimestamp: number, challenge: string): boolean;
+  startSleepActivity(alarmTimestamp: number, challenge: string, withPush: boolean): boolean;
+  refreshSleepActivity?(): void;
   endSleepActivity(): void;
+  addListener?(event: 'onSleepActivityToken', listener: (event: { token: string }) => void): EventSubscription;
 };
 
 const nativeModule = requireOptionalNativeModule<DeboutAlarmModule>('DeboutAlarm');
@@ -57,9 +59,19 @@ export function getAlarmKitScheduledCount() {
 // Live Activities only exist in a real build (not Expo Go or the web).
 export const isSleepActivitySupported = nativeModule?.areLiveActivitiesEnabled != null;
 
-export function startSleepActivity(alarm: Date, challenge: string) {
+/** `withPush`: ask iOS for a push token so the server can move the marmot along the night. */
+export function startSleepActivity(alarm: Date, challenge: string, withPush: boolean) {
   if (!nativeModule?.startSleepActivity) return false;
-  return nativeModule.startSleepActivity(alarm.getTime(), challenge);
+  return nativeModule.startSleepActivity(alarm.getTime(), challenge, withPush);
+}
+
+/** Puts the marmot where the night is now (when the app opens at 3 a.m., say). */
+export function refreshSleepActivity() {
+  nativeModule?.refreshSleepActivity?.();
+}
+
+export function addSleepActivityTokenListener(listener: (token: string) => void) {
+  return nativeModule?.addListener?.('onSleepActivityToken', (event) => listener(event.token)) ?? null;
 }
 
 export function endSleepActivity() {

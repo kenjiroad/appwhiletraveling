@@ -15,6 +15,7 @@ import { useEffect } from 'react';
 import { syncNow } from '@/lib/sync';
 import { colors, fonts } from '@/lib/theme';
 import { initPurchases, requiresSubscription } from '@/lib/purchases';
+import { startSleepActivitySync } from '@/lib/sleep';
 import { useAlarmResponse } from '@/lib/use-alarm-response';
 
 SplashScreen.preventAutoHideAsync();
@@ -47,6 +48,7 @@ export default function RootLayout() {
   useEffect(() => {
     syncNow();
     initPurchases();
+    return startSleepActivitySync();
   }, []);
 
   const ready = fontsLoaded || fontError != null;

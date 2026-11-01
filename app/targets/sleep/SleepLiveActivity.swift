@@ -5,8 +5,9 @@ import WidgetKit
 /// Same struct as `app/modules/debout-alarm/ios/SleepActivity.swift`: ActivityKit matches them by name.
 struct DeboutSleepAttributes: ActivityAttributes {
   public struct ContentState: Codable, Hashable {
-    var alarmDate: Date
-    var bedtimeDate: Date
+    var alarmAt: Double
+    var bedtimeAt: Double
+    var progress: Double
   }
 
   var challenge: String
@@ -23,113 +24,160 @@ struct DeboutWidgets: WidgetBundle {
 private enum Aube {
   static let night = Color(red: 0.04, green: 0.04, blue: 0.10)
   static let text = Color(red: 0.96, green: 0.95, blue: 0.92)
-  static let muted = Color(red: 0.96, green: 0.95, blue: 0.92).opacity(0.6)
+  static let muted = Color(red: 0.96, green: 0.95, blue: 0.92).opacity(0.55)
+  static let track = Color.white.opacity(0.14)
   static let gold = Color(red: 1.0, green: 0.77, blue: 0.42)
-  static let sun = Color(red: 1.0, green: 0.48, blue: 0.27)
+  static let rose = Color(red: 1.0, green: 0.37, blue: 0.54)
+  static let violet = Color(red: 0.42, green: 0.36, blue: 1.0)
+}
+
+private extension DeboutSleepAttributes.ContentState {
+  var alarm: Date { Date(timeIntervalSince1970: alarmAt) }
+  var bedtime: Date { Date(timeIntervalSince1970: min(bedtimeAt, alarmAt - 1)) }
 }
 
 struct SleepLiveActivity: Widget {
   var body: some WidgetConfiguration {
     ActivityConfiguration(for: DeboutSleepAttributes.self) { context in
-      SleepLockScreenView(context: context)
+      LockScreenView(context: context)
         .activityBackgroundTint(Aube.night)
         .activitySystemActionForegroundColor(Aube.text)
     } dynamicIsland: { context in
       DynamicIsland {
         DynamicIslandExpandedRegion(.leading) {
-          Marmot(awake: context.isStale).frame(width: 54, height: 54)
+          HStack(spacing: 8) {
+            Marmot(awake: context.isStale).frame(width: 36, height: 36)
+            Text("Debout").font(.system(size: 15, weight: .semibold)).foregroundStyle(Aube.text)
+          }
         }
         DynamicIslandExpandedRegion(.trailing) {
           if context.isStale {
-            Text("Debout !").font(.system(.title3, design: .serif).italic()).foregroundStyle(Aube.gold)
+            Text("Debout !").font(.system(size: 20, weight: .bold, design: .rounded)).foregroundStyle(Aube.gold)
           } else {
-            Countdown(to: context.state.alarmDate)
-              .font(.system(.title3, design: .rounded).weight(.semibold))
+            Text(context.state.alarm, style: .relative)
+              .font(.system(size: 20, weight: .bold, design: .rounded))
               .foregroundStyle(Aube.gold)
+              .multilineTextAlignment(.trailing)
           }
         }
         DynamicIslandExpandedRegion(.bottom) {
-          if context.isStale {
-            Text("\(context.attributes.challenge) pour arrêter le réveil").font(.subheadline).foregroundStyle(Aube.muted)
-          } else {
-            SleepProgress(state: context.state)
-          }
+          NightTrack(state: context.state, awake: context.isStale).padding(.top, 6)
         }
       } compactLeading: {
         Marmot(awake: context.isStale).frame(width: 24, height: 24)
       } compactTrailing: {
         if context.isStale {
-          Text("☀︎").foregroundStyle(Aube.gold)
+          Image(systemName: "sun.max.fill").foregroundStyle(Aube.gold)
         } else {
-          Countdown(to: context.state.alarmDate).frame(maxWidth: 56).foregroundStyle(Aube.gold)
+          Text(timerInterval: Date.now...max(context.state.alarm, Date.now), countsDown: true, showsHours: true)
+            .monospacedDigit()
+            .frame(maxWidth: 56)
+            .foregroundStyle(Aube.gold)
         }
       } minimal: {
         Marmot(awake: context.isStale).frame(width: 22, height: 22)
       }
-      .keylineTint(Aube.sun)
+      .keylineTint(Aube.gold)
     }
   }
 }
 
-struct SleepLockScreenView: View {
+/// Uber-style: what matters in big (time left), the destination on the right (alarm time),
+/// and the trip underneath (the night, with the marmot travelling from the moon to the sun).
+struct LockScreenView: View {
   let context: ActivityViewContext<DeboutSleepAttributes>
 
   var body: some View {
-    HStack(spacing: 14) {
-      Marmot(awake: context.isStale).frame(width: 64, height: 64)
+    let state = context.state
+    VStack(alignment: .leading, spacing: 12) {
+      HStack(alignment: .center) {
+        Text("DEBOUT")
+          .font(.system(size: 12, weight: .bold))
+          .tracking(2)
+          .foregroundStyle(Aube.muted)
+        Spacer()
+        HStack(spacing: 4) {
+          Image(systemName: "alarm.fill").font(.system(size: 13))
+          Text(state.alarm, style: .time).font(.system(size: 15, weight: .semibold))
+        }
+        .foregroundStyle(Aube.text)
+      }
 
-      VStack(alignment: .leading, spacing: 6) {
-        if context.isStale {
+      if context.isStale {
+        VStack(alignment: .leading, spacing: 2) {
           Text("Debout !")
-            .font(.system(size: 26, design: .serif).italic())
-            .foregroundStyle(Aube.text)
+            .font(.system(size: 34, weight: .heavy, design: .rounded))
+            .foregroundStyle(Aube.gold)
           Text("\(context.attributes.challenge) pour arrêter le réveil")
-            .font(.subheadline)
+            .font(.system(size: 15, weight: .medium))
             .foregroundStyle(Aube.muted)
-        } else {
-          HStack(alignment: .firstTextBaseline, spacing: 4) {
-            Text("Réveil à").font(.subheadline).foregroundStyle(Aube.muted)
-            Text(context.state.alarmDate, style: .time)
-              .font(.system(size: 22, design: .serif).italic())
-              .foregroundStyle(Aube.text)
-          }
-          HStack(spacing: 4) {
-            Text("Encore").foregroundStyle(Aube.muted)
-            Countdown(to: context.state.alarmDate).foregroundStyle(Aube.gold).fontWeight(.semibold)
-            Text("de sommeil").foregroundStyle(Aube.muted)
-          }
-          .font(.subheadline)
-          SleepProgress(state: context.state)
+        }
+      } else {
+        VStack(alignment: .leading, spacing: 2) {
+          Text(state.alarm, style: .relative)
+            .font(.system(size: 34, weight: .heavy, design: .rounded))
+            .foregroundStyle(Aube.text)
+            .monospacedDigit()
+          Text("de sommeil avant ton défi")
+            .font(.system(size: 15, weight: .medium))
+            .foregroundStyle(Aube.muted)
         }
       }
+
+      NightTrack(state: state, awake: context.isStale)
+
+      HStack {
+        Text(state.bedtime, style: .time)
+        Spacer()
+        Text(context.attributes.challenge)
+      }
+      .font(.system(size: 12, weight: .medium))
+      .foregroundStyle(Aube.muted)
     }
     .padding(16)
   }
 }
 
-/// The night filling up until the alarm, updated live by the system.
-struct SleepProgress: View {
+/// The night as a trip: moon → sun. The bar fills by itself (system timer); the marmot sits where the
+/// server last put it (`progress`), or waits at the sun when there's no server to move it.
+struct NightTrack: View {
   let state: DeboutSleepAttributes.ContentState
+  let awake: Bool
+
+  private let height: CGFloat = 8
+  private let marmot: CGFloat = 34
 
   var body: some View {
-    let start = min(state.bedtimeDate, state.alarmDate)
-    ProgressView(timerInterval: start...state.alarmDate, countsDown: false) {
-      EmptyView()
-    } currentValueLabel: {
-      EmptyView()
+    let position = awake ? 1 : (state.progress >= 0 ? min(1, state.progress) : 1)
+    HStack(spacing: 8) {
+      Image(systemName: "moon.fill").font(.system(size: 13)).foregroundStyle(Aube.violet)
+      GeometryReader { geo in
+        let travel = max(geo.size.width - marmot, 0)
+        ZStack(alignment: .leading) {
+          Capsule().fill(Aube.track).frame(height: height)
+          if awake {
+            Capsule()
+              .fill(LinearGradient(colors: [Aube.violet, Aube.rose, Aube.gold], startPoint: .leading, endPoint: .trailing))
+              .frame(height: height)
+          } else {
+            ProgressView(timerInterval: state.bedtime...state.alarm, countsDown: false) {
+              EmptyView()
+            } currentValueLabel: {
+              EmptyView()
+            }
+            .progressViewStyle(.linear)
+            .tint(Aube.gold)
+            .scaleEffect(x: 1, y: 2, anchor: .center)
+          }
+          Marmot(awake: awake)
+            .frame(width: marmot, height: marmot)
+            .offset(x: travel * position)
+        }
+        .frame(height: geo.size.height)
+      }
+      .frame(height: marmot)
+      Image(systemName: "sun.max.fill").font(.system(size: 14)).foregroundStyle(Aube.gold)
     }
-    .tint(Aube.gold)
-  }
-}
-
-/// Hours left before the alarm, ticking live on the lock screen.
-struct Countdown: View {
-  let to: Date
-
-  var body: some View {
-    Text(timerInterval: Date.now...max(to, Date.now), countsDown: true)
-      .monospacedDigit()
-      .multilineTextAlignment(.leading)
   }
 }
 

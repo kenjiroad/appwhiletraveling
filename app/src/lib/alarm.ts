@@ -88,7 +88,9 @@ export async function getAlarmStatus(settings: Settings | null): Promise<AlarmSt
       ? { mode: 'alarmkit', planned }
       : { mode: 'off', planned: 0, problem: 'Réveil iOS autorisé, mais aucune sonnerie programmée. Touche « Tester ».' };
   }
-  const planned = (await Notifications.getAllScheduledNotificationsAsync()).filter((n) => n.identifier !== 'bedtime').length;
+  const planned = (await Notifications.getAllScheduledNotificationsAsync()).filter(
+    (n) => n.identifier !== 'bedtime' && n.identifier !== 'tomorrow-check'
+  ).length;
   const mode = planned > 0 ? 'notifications' : 'off';
   if (lastProblem) return { mode, planned, problem: lastProblem };
   if (state === 'notDetermined')
@@ -162,10 +164,39 @@ export async function scheduleAlarms(settings: Settings, testDate?: Date) {
   }
 }
 
-/** Every evening at bedtime: "C'est l'heure de dormir". Tapping it says good night to the marmot. */
+/** How long before bedtime the "your alarm for tomorrow" check arrives. */
+const TOMORROW_CHECK_MINUTES_BEFORE_BEDTIME = 60;
+
+/**
+ * Every evening: "Demain : réveil à 07:00. Tout est bon ?" one hour before bedtime (or "Pas de réveil
+ * prévu demain" at 21:00 when the alarm is off), then "C'est l'heure de dormir" at bedtime.
+ */
 async function scheduleBedtimeReminder(settings: Settings) {
-  if (!settings.enabled || settings.bedtimeReminder === false) return;
+  if (settings.bedtimeReminder === false) return;
+  const alarmTime = `${String(settings.hour).padStart(2, '0')}:${String(settings.minute).padStart(2, '0')}`;
+
+  if (!settings.enabled) {
+    await Notifications.scheduleNotificationAsync({
+      identifier: 'tomorrow-check',
+      content: { title: 'Pas de réveil prévu demain ⏰', body: 'Tu le règles maintenant ?', data: { url: '/settings' } },
+      trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour: 21, minute: 0 },
+    });
+    return;
+  }
+
   const { hour, minute } = bedtimeFor(settings);
+  const check = (((hour * 60 + minute - TOMORROW_CHECK_MINUTES_BEFORE_BEDTIME) % 1440) + 1440) % 1440;
+  const label = EXERCISE_LABELS[settings.exercise];
+  await Notifications.scheduleNotificationAsync({
+    identifier: 'tomorrow-check',
+    content: {
+      title: `Demain : réveil à ${alarmTime} ⏰`,
+      body: `${settings.reps} ${label.plural} pour l’arrêter. Tout est bon ? Touche pour changer.`,
+      data: { url: '/settings' },
+    },
+    trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour: Math.floor(check / 60), minute: check % 60 },
+  });
+
   const goal = (settings.sleepGoalMinutes ?? DEFAULT_SETTINGS.sleepGoalMinutes!) / 60;
   await Notifications.scheduleNotificationAsync({
     identifier: 'bedtime',

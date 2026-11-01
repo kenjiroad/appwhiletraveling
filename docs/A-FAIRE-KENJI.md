@@ -20,10 +20,18 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 ## Pour le prochain build (joker, story, marmotte de nuit)
 
 - [ ] Réglages → **Vérifier le réveil** : capture à Claude (pour comprendre pourquoi l'alarme n'a pas sonné).
-- [ ] (Facultatif) **Apple Team ID** : developer.apple.com/account → **Membership details** → Team ID.
+- [ ] **Apple Team ID** : developer.apple.com/account → **Membership details** → Team ID (pas secret, en texte).
+      ⚠️ Le fichier `AuthKey_….p8` envoyé le 01/11 n'était pas le Team ID mais une clé de push : supprimée ✅.
 - [ ] Puis nouveau build depuis le Terminal (nouveau ZIP → `cd …/app` → `npm install` →
       `npx eas-cli build --profile preview --platform ios`) : Apple redemande ton identifiant pour la nouvelle extension.
 - [ ] Tester : « Bonne nuit 🌙 » le soir + écran verrouillé, story après le défi, « Toujours debout ? », « Malade ou blessé ? ».
+
+## La marmotte qui avance la nuit (voir [22-marmotte-qui-avance.md](22-marmotte-qui-avance.md))
+
+- [ ] Envoyer à Claude 2-3 **références** d'écran verrouillé (Uber, Flighty, Dribbble) + capture de la version actuelle.
+- [ ] Créer le projet **Supabase** (10 min, [15-comptes-et-ligue.md](15-comptes-et-ligue.md)) + coller `0002_sleep_activities.sql`.
+- [ ] Créer une **nouvelle clé de push Apple** (l'ancienne a été supprimée) et la mettre dans les secrets Supabase.
+- [ ] Déployer la fonction `sleep-tick` + tâche Cron toutes les 10 min (ou laisser Claude le faire).
 
 ## Étape 3 : bloquer les apps (Temps d'écran)
 

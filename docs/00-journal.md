@@ -113,6 +113,11 @@ Joker de série, story à partager, « Toujours debout ? », sortie de secours, 
 Blocage des apps : étape 3.
 → Détails : [21-retention-et-nuit.md](21-retention-et-nuit.md)
 
+## Marmotte qui avance (façon Uber) + rappel « réveil de demain » — code prêt ✅ (01/11/2026)
+Nouveau design de l'écran verrouillé, la marmotte avance le long de la nuit grâce au serveur (toutes les 10 min),
+notification du soir « Demain : réveil à 07:00 ». Reste à brancher : Supabase + nouvelle clé de push.
+→ Détails : [22-marmotte-qui-avance.md](22-marmotte-qui-avance.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)

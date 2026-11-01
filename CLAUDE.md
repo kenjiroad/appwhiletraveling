@@ -25,9 +25,12 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 22/10/2026 — DA « Aube » + mascotte **validées** par Kenji.
 - 26/10/2026 — Paywall **obligatoire** (option A, comme Erly) : essai 3 jours puis abonnement (`docs/17`).
 - 29/10/2026 — Feu vert : joker de série, story à partager, « Toujours debout ? », sortie de secours, rappel du coucher + Activité en direct « sommeil » (`docs/21`). Blocage des apps = étape 3.
+- 01/11/2026 — Écran verrouillé façon Uber, marmotte qui avance la nuit via Supabase + APNs, rappel du soir « réveil de demain » (`docs/22`).
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)
+
+- 🟡 Ne jamais lire ni recopier une clé privée envoyée par Kenji : lui faire révoquer et la ranger dans les secrets (Expo, Supabase).
 
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
 - 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
