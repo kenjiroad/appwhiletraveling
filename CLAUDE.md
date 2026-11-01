@@ -14,6 +14,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - **Ne rien lancer sans le feu vert de Kenji** quand il s'agit d'une nouvelle direction (il l'a demandé le 22/10/2026).
 - Chaque étape terminée est écrite dans `docs/` et ajoutée au journal.
 - Ne jamais présenter un chiffre inventé comme une prévision ; sourcer les chiffres de marché.
+- Secrets : si Kenji envoie une clé privée ou un jeton dans le chat, ne pas la recopier ; lui faire révoquer et la ranger dans les secrets (Expo, Supabase, environnement Claude).
 - TrustMRR : API seulement pour des tendances par catégorie (leurs conditions interdisent de chercher des apps à copier).
 
 ## Décisions
@@ -29,8 +30,6 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)
-
-- 🟡 Ne jamais lire ni recopier une clé privée envoyée par Kenji : lui faire révoquer et la ranger dans les secrets (Expo, Supabase).
 
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
 - 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
