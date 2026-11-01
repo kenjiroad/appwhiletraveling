@@ -17,6 +17,12 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Pompes de face : ça marche ✅ 29/10
 - [ ] Préciser le « petit défaut » de la première page (capture).
 
+## Dans l'ordre (01/11) : logo → Supabase → un seul build
+
+- [ ] **Choisir le logo** : A, B, C ou D (`design/marque/logo/planche-logos.png`) → Claude l'intègre.
+- [ ] **Supabase** (15 min) : projet + 2 fichiers SQL + connexion anonyme + 2 variables sur expo.dev.
+- [ ] **Un seul build** ensuite, qui contient tout (logo, comptes, marmotte de nuit…).
+
 ## Pour le prochain build (joker, story, marmotte de nuit)
 
 - [ ] Réglages → **Vérifier le réveil** : capture à Claude (pour comprendre pourquoi l'alarme n'a pas sonné).
