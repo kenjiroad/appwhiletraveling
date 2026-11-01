@@ -19,7 +19,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 
 ## Dans l'ordre (01/11) : logo → Supabase → un seul build
 
-- [ ] **Choisir le logo** : A, B, C ou D (`design/marque/logo/planche-logos.png`) → Claude l'intègre.
+- [x] **Logo choisi : C** ✅ 01/11 (version C2 intégrée ; dire « C1 » pour changer, voir `design/marque/logo/planche-c.png`).
 - [ ] **Supabase** (15 min) : projet + 2 fichiers SQL + connexion anonyme + 2 variables sur expo.dev.
 - [ ] **Un seul build** ensuite, qui contient tout (logo, comptes, marmotte de nuit…).
 

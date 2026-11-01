@@ -53,3 +53,11 @@ Vidéos : [parcours complet](images/debout-demo.mp4) · [le défi seul](images/d
   animations des shots. Les animations de l'app viennent de mes connaissances des patterns courants (respiration,
   squash & stretch, cascade, compteur qui défile).
 - La mascotte est générée par IA : vérifier les conditions d'utilisation commerciale de Higgsfield avant le lancement.
+
+## Le logo de l'app (01/11/2026)
+
+4 pistes générées (A marmotte + soleil, B soleil minimal, C réveil un œil ouvert, D lettre D) :
+`design/marque/logo/planche-logos.png`. Kenji choisit **C**. Refaite avec notre vraie marmotte en référence
+(2 versions, `planche-c.png`) : **C2** intégrée (fond nuit violette → aube rose, halo de soleil).
+Utilisée pour l'icône de l'app (`app/assets/images/icon.png`), le badge de l'écran verrouillé et l'écran de
+démarrage (marmotte qui se réveille sur fond nuit). Coût : 6 images × 2 crédits = 12 crédits Higgsfield.

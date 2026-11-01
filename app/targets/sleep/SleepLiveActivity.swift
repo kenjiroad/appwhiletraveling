@@ -230,17 +230,14 @@ struct Footer: View {
   }
 }
 
-/// The Debout badge: dawn gradient and a rising sun, like an app icon.
+/// The Debout app icon (the waking marmot), rounded like on the home screen.
 struct AppBadge: View {
   var body: some View {
     GeometryReader { geo in
-      RoundedRectangle(cornerRadius: geo.size.width * 0.26, style: .continuous)
-        .fill(LinearGradient(colors: [Aube.violet, Aube.rose, Aube.gold], startPoint: .topLeading, endPoint: .bottomTrailing))
-        .overlay(
-          Image(systemName: "sun.horizon.fill")
-            .font(.system(size: geo.size.width * 0.5, weight: .bold))
-            .foregroundStyle(.white)
-        )
+      Image("app-icon")
+        .resizable()
+        .scaledToFill()
+        .clipShape(RoundedRectangle(cornerRadius: geo.size.width * 0.23, style: .continuous))
     }
   }
 }

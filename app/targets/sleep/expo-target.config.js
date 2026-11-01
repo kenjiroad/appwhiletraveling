@@ -11,5 +11,6 @@ module.exports = {
   images: {
     'marmotte-dort': './images/marmotte-dort.png',
     'marmotte-reveil': './images/marmotte-reveil.png',
+    'app-icon': './images/app-icon.png',
   },
 };

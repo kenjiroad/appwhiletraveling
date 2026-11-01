@@ -118,6 +118,11 @@ Nouveau design de l'écran verrouillé, la marmotte avance le long de la nuit gr
 notification du soir « Demain : réveil à 07:00 ». Reste à brancher : Supabase + nouvelle clé de push.
 → Détails : [22-marmotte-qui-avance.md](22-marmotte-qui-avance.md)
 
+## Logo de l'app ✅ (01/11/2026)
+Piste C (la marmotte qui se réveille, un œil ouvert) choisie par Kenji, refaite avec notre marmotte : icône, badge
+de l'écran verrouillé, écran de démarrage.
+→ Détails : [13-mascotte.md](13-mascotte.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)
