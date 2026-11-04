@@ -36,7 +36,7 @@ export function Mascot({ source, size, idle = 'breathe', hopKey = 0, silhouette 
 
   useEffect(() => {
     if (hopKey === 0) return;
-    hop.value = withSequence(withTiming(1, { duration: 120, easing: Easing.out(Easing.quad) }), withSpring(0, { damping: 7, stiffness: 180 }));
+    hop.value = withSequence(withTiming(1, { duration: 120, easing: Easing.out(Easing.quad) }), withSpring(0, { mass: 1, damping: 10, stiffness: 260 }));
   }, [hopKey, hop]);
 
   const animatedStyle = useAnimatedStyle(() => {

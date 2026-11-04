@@ -129,6 +129,11 @@ ligue Supabase, nom « Debout ». Kit App Store (textes, questionnaires, 5 captu
 dans le paywall, « Supprimer mon compte ».
 → Détails : [23-app-store.md](23-app-store.md)
 
+## Passe design (skills Impeccable + Emil Kowalski) + pompes fantômes ✅ (04/11/2026)
+Skills installés dans `.claude/skills/`. Audit complet (`24-audit-design.md`) ; les 6 corrections prioritaires sont
+faites (animations, victoire, paywall, clavier, contrastes, mode sombre). Comptage : les mains doivent rester au sol.
+→ Détails : [24-audit-design.md](24-audit-design.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)

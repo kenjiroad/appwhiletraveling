@@ -56,22 +56,28 @@ function usePressScale() {
   const style = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
   return {
     style,
-    onPressIn: () => scale.set(withSpring(0.95, { damping: 15, stiffness: 300 })),
-    onPressOut: () => scale.set(withSpring(1, { damping: 12, stiffness: 200 })),
+    // Reanimated 4 springs default to mass 4 (slow and wobbly): always set mass 1.
+    onPressIn: () => scale.set(withTiming(0.97, { duration: 100, easing: Easing.out(Easing.quad) })),
+    onPressOut: () => scale.set(withSpring(1, { mass: 1, damping: 20, stiffness: 400 })),
   };
 }
 
 /** Sunrise pill. `breathing` adds a slow pulsing glow to draw the eye to the one action that matters. */
+/** `tone="dawn"`: for light, sunrise backgrounds (the victory screen), where the sun gradient would melt in. */
+type Tone = 'night' | 'dawn';
+
 export function PrimaryButton({
   label,
   onPress,
   breathing = false,
   style,
+  tone = 'night',
 }: {
   label: string;
   onPress: () => void;
   breathing?: boolean;
   style?: StyleProp<ViewStyle>;
+  tone?: Tone;
 }) {
   const press = usePressScale();
   const glow = useSharedValue(0);
@@ -84,8 +90,28 @@ export function PrimaryButton({
     shadowRadius: 14 + glow.value * 14,
   }));
 
+  if (tone === 'dawn') {
+    return (
+      <AnimatedPressable
+        onPress={onPress}
+        onPressIn={press.onPressIn}
+        onPressOut={press.onPressOut}
+        accessibilityRole="button"
+        style={[press.style, style]}>
+        <View style={[styles.primary, styles.primaryDawn]}>
+          <Text style={[styles.primaryText, { color: colors.text }]}>{label}</Text>
+        </View>
+      </AnimatedPressable>
+    );
+  }
+
   return (
-    <AnimatedPressable onPress={onPress} onPressIn={press.onPressIn} onPressOut={press.onPressOut} style={[press.style, style]}>
+    <AnimatedPressable
+      onPress={onPress}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      accessibilityRole="button"
+      style={[press.style, style]}>
       <Animated.View style={[styles.primaryShadow, glowStyle]}>
         <LinearGradient colors={gradients.sun} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.primary}>
           <Text style={styles.primaryText}>{label}</Text>
@@ -95,11 +121,16 @@ export function PrimaryButton({
   );
 }
 
-export function GhostButton({ label, onPress }: { label: string; onPress: () => void }) {
+export function GhostButton({ label, onPress, tone = 'night' }: { label: string; onPress: () => void; tone?: Tone }) {
   const press = usePressScale();
   return (
-    <AnimatedPressable onPress={onPress} onPressIn={press.onPressIn} onPressOut={press.onPressOut} style={[styles.ghost, press.style]}>
-      <Text style={styles.ghostText}>{label}</Text>
+    <AnimatedPressable
+      onPress={onPress}
+      onPressIn={press.onPressIn}
+      onPressOut={press.onPressOut}
+      accessibilityRole="button"
+      style={[styles.ghost, tone === 'dawn' && styles.ghostDawn, press.style]}>
+      <Text style={[styles.ghostText, tone === 'dawn' && { color: colors.onSun }]}>{label}</Text>
     </AnimatedPressable>
   );
 }
@@ -129,6 +160,14 @@ export function Pill({ children, style }: { children: ReactNode; style?: StylePr
 }
 
 const styles = StyleSheet.create({
+  primaryDawn: {
+    backgroundColor: colors.night,
+    shadowColor: colors.night,
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 8 },
+  },
+  ghostDawn: { backgroundColor: 'rgba(255,255,255,0.35)', borderColor: 'rgba(255,255,255,0.6)' },
   serif: { color: colors.text, fontFamily: fonts.serif, fontSize: 44, lineHeight: 50, letterSpacing: -0.5 },
   eyebrow: { color: colors.textMuted, fontFamily: fonts.semibold, fontSize: 12, letterSpacing: 2, textTransform: 'uppercase' },
   label: { color: colors.text, fontFamily: fonts.semibold, fontSize: 17 },

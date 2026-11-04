@@ -91,7 +91,7 @@ export default function ChallengeScreen() {
   const pop = useSharedValue(1);
   useEffect(() => {
     dawn.value = withTiming(progress, { duration: 700, easing: Easing.out(Easing.cubic) });
-    if (count > 0) pop.value = withSequence(withTiming(1.18, { duration: 90 }), withSpring(1, { damping: 9, stiffness: 220 }));
+    if (count > 0) pop.value = withSequence(withTiming(1.12, { duration: 80, easing: Easing.out(Easing.quad) }), withSpring(1, { mass: 1, damping: 12, stiffness: 300 }));
   }, [count, progress, dawn, pop]);
 
   const dawnStyle = useAnimatedStyle(() => ({ opacity: dawn.value }));
@@ -162,7 +162,7 @@ export default function ChallengeScreen() {
         <LinearGradient colors={gradients.dawn} style={StyleSheet.absoluteFill} />
         <SafeAreaView style={styles.result}>
           <View style={styles.resultTop}>
-            <Animated.View entering={ZoomIn.springify().damping(12)}>
+            <Animated.View entering={ZoomIn.springify().mass(1).damping(14).stiffness(220)}>
               <Mascot
                 source={result.rankUp ? MASCOT_LEVELS[index] : MASCOT_POSES.victory}
                 size={210}
@@ -179,7 +179,7 @@ export default function ChallengeScreen() {
           </View>
 
           <Animated.View entering={FadeInDown.delay(500).duration(600)}>
-            <Glass style={{ gap: 12 }}>
+            <Glass style={styles.resultCard}>
               {result.rankUp ? (
                 <>
                   <Serif style={{ fontSize: 34, lineHeight: 38 }}>Tu deviens {result.rankUp.name}.</Serif>
@@ -198,8 +198,8 @@ export default function ChallengeScreen() {
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(700).duration(600)} style={{ gap: 12 }}>
-            <GhostButton label="Partager ma story" onPress={() => setSharing(true)} />
-            <PrimaryButton label="Commencer ma journée" onPress={() => router.back()} />
+            <GhostButton label="Partager ma story" tone="dawn" onPress={() => setSharing(true)} />
+            <PrimaryButton label="Commencer ma journée" tone="dawn" onPress={() => router.back()} />
           </Animated.View>
         </SafeAreaView>
 
@@ -324,5 +324,6 @@ const styles = StyleSheet.create({
   xp: { fontSize: 44, lineHeight: 50, color: '#FFF4E0' },
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between' },
   rankLabel: { color: colors.text, fontFamily: fonts.semibold, fontSize: 16 },
-  rankMuted: { color: 'rgba(255,255,255,0.75)', fontFamily: fonts.medium, fontSize: 15 },
+  rankMuted: { color: 'rgba(255,255,255,0.9)', fontFamily: fonts.medium, fontSize: 15 },
+  resultCard: { gap: 12, backgroundColor: 'rgba(10,11,26,0.35)', borderColor: 'rgba(255,255,255,0.25)' },
 });

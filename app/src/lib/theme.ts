@@ -4,7 +4,7 @@ export const colors = {
   nightHigh: '#14132E',
   text: '#F6F1EA',
   textMuted: 'rgba(246,241,234,0.58)',
-  textFaint: 'rgba(246,241,234,0.32)',
+  textFaint: 'rgba(246,241,234,0.48)',
   glass: 'rgba(255,255,255,0.06)',
   glassBorder: 'rgba(255,255,255,0.12)',
   sun: '#FF7A45',

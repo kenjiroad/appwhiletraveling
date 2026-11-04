@@ -6,6 +6,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 
 - App : `app/` (Expo SDK 58, Expo Router, TypeScript). Module natif de comptage : `app/modules/rep-counter/`.
 - Liste de ce que Kenji doit faire : `docs/A-FAIRE-KENJI.md` (à tenir à jour et à lui rappeler).
+- Skills design du projet : `.claude/skills/impeccable`, `emil-improve-animations`, `emil-animate` (Reanimated 4 : toujours `mass: 1` dans les ressorts).
 - Étapes et décisions : `docs/00-journal.md` (une ligne par étape). Design & marketing : `docs/11-design-marketing-debout.md`.
 - Tout écrire en français, simplement. Kenji débute : expliquer les termes techniques.
 
@@ -33,7 +34,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 ## À confirmer (🟡)
 
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
-- 🟡 Liens Conditions d'utilisation + Politique de confidentialité à rédiger avant l'envoi à Apple.
+- 🟡 Page légale (`docs/legal/`) à mettre en ligne sur Netlify sous `debout-app.netlify.app` (sinon changer `app/src/lib/links.ts`).
 - 🟡 Statut pour vendre (micro-entreprise ?) : à vérifier avec un comptable.
 - 🟡 Code Swift compilé au 1er build EAS (28/10) ✅. Extension « sommeil » (Live Activity) jamais compilée ; Apple Team ID à ajouter dans `app.json`.
 - 🟡 La ligue utilise des joueurs fictifs tant que le projet Supabase n'est pas créé (code prêt : `docs/15`). Sign in with Apple : plus tard.

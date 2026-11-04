@@ -30,7 +30,7 @@ export default function EvolutionScreen() {
           <Eyebrow>Ton évolution</Eyebrow>
 
           <View style={styles.hero}>
-            <Animated.View entering={ZoomIn.springify().damping(13)}>
+            <Animated.View entering={ZoomIn.springify().mass(1).damping(16).stiffness(220)}>
               <Mascot source={MASCOT_LEVELS[index]} size={220} idle="float" />
             </Animated.View>
             <Animated.View entering={FadeInDown.delay(150).duration(600)} style={{ alignItems: 'center' }}>

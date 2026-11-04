@@ -61,7 +61,7 @@ export default function LeagueScreen() {
               const place = players.indexOf(p) + 1;
               const height = place === 1 ? 128 : place === 2 ? 96 : 72;
               return (
-                <Animated.View key={`${place}-${p.name}`} entering={FadeInUp.delay(150 + i * 120).springify().damping(14)} style={styles.podiumColumn}>
+                <Animated.View key={`${place}-${p.name}`} entering={FadeInUp.delay(150 + i * 120).springify().mass(1).damping(16).stiffness(180)} style={styles.podiumColumn}>
                   <Avatar player={p} size={place === 1 ? 58 : 48} />
                   <Label numberOfLines={1} style={{ fontSize: 15, marginTop: 6 }}>
                     {p.isMe ? 'Toi' : p.name}
