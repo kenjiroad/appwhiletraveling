@@ -12,7 +12,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       `debout_pro_monthly` 7,99 €/mois (voir [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md))
 - [ ] RevenueCat + clé publique `appl_…` dans expo.dev → Environment variables
 - [x] Supabase : projet « Debout App » créé, SQL lancé, connexion anonyme activée ✅ 04/11
-- [ ] 2 variables Supabase dans expo.dev (`EXPO_PUBLIC_SUPABASE_URL`, `EXPO_PUBLIC_SUPABASE_ANON_KEY`)
+- [x] 2 variables Supabase dans expo.dev ✅ 04/11 (`EXPO_PUBLIC_SUPABASE_ANON_KEY` = la *publishable key*)
 - [x] Page légale en ligne sur Netlify ✅ 04/11 (adresse à confirmer : `debout-app`) ([23-app-store.md](23-app-store.md) §7) — avant le build
 - [ ] Build Store : `npx eas-cli build --profile production --platform ios --auto-submit`
 - [ ] TestFlight : tester réveil, défi, achat (compte Sandbox)
