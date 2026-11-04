@@ -56,3 +56,15 @@ export function ensureUserId(): Promise<string | null> {
   })();
   return pendingUserId;
 }
+
+/** Deletes the account and everything linked to it on the server (Apple requires it in the app). */
+export async function deleteAccount() {
+  if (!supabase) return;
+  const { data } = await supabase.auth.getSession();
+  if (data.session) {
+    const { error } = await supabase.rpc('delete_my_account');
+    if (error) throw error;
+  }
+  await supabase.auth.signOut();
+  pendingUserId = null;
+}

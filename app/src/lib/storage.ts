@@ -24,8 +24,9 @@ const store =
     ? {
         getItem: (key: string) => globalThis.localStorage?.getItem(key) ?? null,
         setItem: (key: string, value: string) => globalThis.localStorage?.setItem(key, value),
+        removeItem: (key: string) => globalThis.localStorage?.removeItem(key),
       }
-    : { getItem: SecureStore.getItem, setItem: SecureStore.setItem };
+    : { getItem: SecureStore.getItem, setItem: SecureStore.setItem, removeItem: SecureStore.deleteItemAsync };
 
 const SETTINGS_KEY = 'settings';
 const HISTORY_KEY = 'history';
@@ -56,6 +57,11 @@ function readJson<T>(key: string, fallback: T): T {
   } catch {
     return fallback;
   }
+}
+
+/** Forgets everything stored on this phone (used by "Supprimer mon compte"). */
+export function clearLocalData() {
+  for (const key of [SETTINGS_KEY, HISTORY_KEY, PENDING_SYNC_KEY, JOKERS_KEY, WAKE_CHECK_KEY]) store.removeItem(key);
 }
 
 export function getSettings(): Settings | null {

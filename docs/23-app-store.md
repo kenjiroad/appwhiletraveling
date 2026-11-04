@@ -171,15 +171,20 @@ Compte de démonstration : **non requis** (pas d'identifiant).
 ## 7. Héberger la page légale
 
 Apple veut une adresse web publique pour la politique de confidentialité et le support. Le plus simple :
-1. Aller sur **app.netlify.com/drop** (gratuit, sans configuration).
-2. Glisser le dossier `docs/legal/` dans la page : Netlify donne une adresse du type `https://xxxx.netlify.app`.
-3. Utiliser `https://xxxx.netlify.app/#confidentialite`, `…/#conditions` et `…/#support` dans App Store Connect,
-   la description et le paywall.
+1. Créer un compte gratuit sur **netlify.com** (sinon la page disparaît au bout d'une heure).
+2. Aller sur **app.netlify.com/drop** et glisser le dossier `docs/legal/` (dans le ZIP) dans la page.
+3. Dans **Site configuration → Change site name**, mettre **`debout-app`** : l'adresse devient
+   `https://debout-app.netlify.app`, celle que l'app utilise déjà (`app/src/lib/links.ts`).
+   Si ce nom est pris, en choisir un autre et l'indiquer à Claude (ou mettre la variable `EXPO_PUBLIC_LEGAL_URL`
+   sur expo.dev) **avant le build**.
+4. Utiliser `…/#confidentialite`, `…/#conditions` et `…/#support` dans App Store Connect et la description.
 
 ## 8. Ce qui manque encore avant d'envoyer (🟡)
 
-- Les **liens** Conditions / Confidentialité **dans le paywall** de l'app (règle Apple pour les abonnements).
-- Un moyen de **supprimer ses données** depuis l'app (Apple l'exige pour les apps qui créent un compte, même
-  anonyme) ; en attendant, la page légale indique comment le demander par e-mail.
+- ✅ 04/11 : liens Conditions / Confidentialité dans le paywall et les réglages, texte de renouvellement
+  automatique, et bouton **« Supprimer mon compte »** dans les réglages (fichier SQL
+  `0003_delete_account.sql` à coller aussi dans Supabase).
+- Une courte **vidéo de démo** (enregistrement d'écran : réveil → pompes → victoire) à joindre dans les notes
+  pour Apple, au cas où le vérificateur ne fait pas de pompes.
 - Le projet Supabase, la clé RevenueCat et les abonnements créés dans App Store Connect.
 - Vérifier les conditions d'usage commercial des images Higgsfield (mascotte, logo).

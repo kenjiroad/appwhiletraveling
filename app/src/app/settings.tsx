@@ -1,17 +1,20 @@
 import { router } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-import { Linking, ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { Alert, Linking, Pressable, ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
 import { ChoiceRow } from '@/components/choice-row';
 import { TimeStepper } from '@/components/time-stepper';
 import { Body, Eyebrow, GhostButton, Glass, Label, PrimaryButton, Serif } from '@/components/ui';
-import { getAlarmStatus, requestAlarmPermissionAsync, scheduleAlarms, type AlarmStatus } from '@/lib/alarm';
+import { cancelAlarms, getAlarmStatus, requestAlarmPermissionAsync, scheduleAlarms, type AlarmStatus } from '@/lib/alarm';
+import { PRIVACY_URL, SUPPORT_URL, TERMS_URL } from '@/lib/links';
+import { endGoodnight } from '@/lib/sleep';
+import { deleteAccount } from '@/lib/supabase';
 import { REP_OPTIONS } from '@/lib/exercises';
 import { bedtimeFor } from '@/lib/alarm';
-import { DEFAULT_SETTINGS, getSettings, saveSettings, SLEEP_GOAL_OPTIONS, type Settings } from '@/lib/storage';
-import { colors } from '@/lib/theme';
+import { clearLocalData, DEFAULT_SETTINGS, getSettings, saveSettings, SLEEP_GOAL_OPTIONS, type Settings } from '@/lib/storage';
+import { colors, fonts } from '@/lib/theme';
 
 export default function SettingsScreen() {
   const [settings, setSettings] = useState<Settings>(() => getSettings() ?? DEFAULT_SETTINGS);
@@ -41,6 +44,31 @@ export default function SettingsScreen() {
       refreshStatus(next);
     }, 600);
   };
+
+  const confirmDelete = () =>
+    Alert.alert(
+      'Supprimer ton compte ?',
+      'Ton pseudo, tes séances, ta série et ta place dans la ligue seront effacés pour de bon. Ton abonnement éventuel se résilie dans les réglages Apple.',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Supprimer',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteAccount();
+            } catch {
+              Alert.alert('Suppression impossible', 'Vérifie ta connexion et réessaie.');
+              return;
+            }
+            await cancelAlarms();
+            endGoodnight();
+            clearLocalData();
+            router.replace('/onboarding');
+          },
+        },
+      ]
+    );
 
   const testAlarm = async () => {
     await scheduleAlarms(settings, new Date(Date.now() + 60_000));
@@ -153,6 +181,21 @@ export default function SettingsScreen() {
           </Glass>
 
           <PrimaryButton label="Terminé" onPress={() => router.back()} style={{ marginTop: 20 }} />
+
+          <View style={styles.footer}>
+            <Text style={styles.footerLink} onPress={() => Linking.openURL(SUPPORT_URL)}>
+              Aide
+            </Text>
+            <Text style={styles.footerLink} onPress={() => Linking.openURL(TERMS_URL)}>
+              Conditions
+            </Text>
+            <Text style={styles.footerLink} onPress={() => Linking.openURL(PRIVACY_URL)}>
+              Confidentialité
+            </Text>
+          </View>
+          <Pressable onPress={confirmDelete} hitSlop={8} style={{ alignSelf: 'center' }}>
+            <Text style={styles.delete}>Supprimer mon compte</Text>
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     </View>
@@ -163,4 +206,7 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.night },
   content: { padding: 22, gap: 16 },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  footer: { flexDirection: 'row', justifyContent: 'center', gap: 20, marginTop: 8 },
+  footerLink: { color: colors.textMuted, fontFamily: fonts.medium, fontSize: 14, textDecorationLine: 'underline' },
+  delete: { color: colors.rose, fontFamily: fonts.medium, fontSize: 14, paddingVertical: 8 },
 });

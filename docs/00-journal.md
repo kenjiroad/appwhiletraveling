@@ -123,6 +123,12 @@ Piste C (la marmotte qui se réveille, un œil ouvert) choisie par Kenji, refait
 de l'écran verrouillé, écran de démarrage.
 → Détails : [13-mascotte.md](13-mascotte.md)
 
+## Préparation App Store ✅ (04/11/2026)
+Réveil validé par Kenji (il sonne, ne s'arrête qu'avec les pompes). Décisions : payant, 1 semaine gratuite, vraie
+ligue Supabase, nom « Debout ». Kit App Store (textes, questionnaires, 5 captures 6,9", page légale), liens légaux
+dans le paywall, « Supprimer mon compte ».
+→ Détails : [23-app-store.md](23-app-store.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)

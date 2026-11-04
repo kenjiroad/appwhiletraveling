@@ -1,12 +1,13 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Aurora } from '@/components/aurora';
 import { Mascot } from '@/components/mascot';
 import { Body, Eyebrow, PrimaryButton, Serif } from '@/components/ui';
+import { PRIVACY_URL, TERMS_URL } from '@/lib/links';
 import { MASCOT_LEVELS } from '@/lib/mascot';
 import { loadPlans, PLANS, purchase, requiresSubscription, restore, useProStatus, type Plan } from '@/lib/purchases';
 import { colors, fonts, radius } from '@/lib/theme';
@@ -105,6 +106,17 @@ export default function PaywallScreen() {
           <Pressable onPress={restorePurchases} style={styles.restore}>
             <Text style={styles.restoreText}>Restaurer mes achats · Annulable à tout moment</Text>
           </Pressable>
+          <Text style={styles.legal}>
+            Renouvellement automatique sauf résiliation au moins 24 h avant la fin de la période, dans les réglages de
+            ton compte Apple.{' '}
+            <Text style={styles.link} onPress={() => Linking.openURL(TERMS_URL)}>
+              Conditions
+            </Text>
+            {' · '}
+            <Text style={styles.link} onPress={() => Linking.openURL(PRIVACY_URL)}>
+              Confidentialité
+            </Text>
+          </Text>
         </Animated.View>
       </SafeAreaView>
     </View>
@@ -152,4 +164,6 @@ const styles = StyleSheet.create({
   planPrice: { color: colors.text, fontFamily: fonts.serif, fontSize: 24, marginLeft: 8, flexShrink: 0 },
   restore: { paddingVertical: 14, alignItems: 'center' },
   restoreText: { color: colors.textMuted, fontFamily: fonts.regular, fontSize: 13 },
+  legal: { color: colors.textFaint, fontFamily: fonts.regular, fontSize: 11, lineHeight: 15, textAlign: 'center' },
+  link: { color: colors.textMuted, textDecorationLine: 'underline' },
 });

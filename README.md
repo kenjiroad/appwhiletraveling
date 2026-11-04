@@ -37,3 +37,4 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 20. [Retours du premier test](docs/20-retours-premier-test.md) — corrections après le test sur iPhone
 21. [Rétention + marmotte de nuit](docs/21-retention-et-nuit.md) — joker, story, écran verrouillé
 22. [Marmotte qui avance](docs/22-marmotte-qui-avance.md) — design façon Uber, serveur, rappel du soir
+23. [App Store](docs/23-app-store.md) — fiche, captures, confidentialité, étapes de publication
