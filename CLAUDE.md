@@ -27,12 +27,12 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 26/10/2026 — Paywall **obligatoire** (option A, comme Erly) : essai 3 jours puis abonnement (`docs/17`).
 - 29/10/2026 — Feu vert : joker de série, story à partager, « Toujours debout ? », sortie de secours, rappel du coucher + Activité en direct « sommeil » (`docs/21`). Blocage des apps = étape 3.
 - 01/11/2026 — Écran verrouillé façon Uber, marmotte qui avance la nuit via Supabase + APNs, rappel du soir « réveil de demain » (`docs/22`).
+- 04/11/2026 — Lancement payant : 29,99 €/an avec **1 semaine gratuite**, 7,99 €/mois. Vraie ligue Supabase. Réveil testé : il sonne ✅. Nom : « Debout » (marmotte = mascotte).
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)
 
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
-- 🟡 Prix : 29,99 €/an (3 jours gratuits), 7,99 €/mois.
 - 🟡 Liens Conditions d'utilisation + Politique de confidentialité à rédiger avant l'envoi à Apple.
 - 🟡 Statut pour vendre (micro-entreprise ?) : à vérifier avec un comptable.
 - 🟡 Code Swift compilé au 1er build EAS (28/10) ✅. Extension « sommeil » (Live Activity) jamais compilée ; Apple Team ID à ajouter dans `app.json`.

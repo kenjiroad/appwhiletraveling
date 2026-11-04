@@ -17,7 +17,7 @@ Gratuit jusqu'à 2 500 $ de revenus par mois.
 | `app/src/app/paywall.tsx` | Affiche les vrais prix (dans la monnaie de l'acheteur), message clair si l'achat échoue, « Restaurer mes achats » |
 | `app/src/app/_layout.tsx` | Démarre RevenueCat au lancement et le relie au compte Supabase |
 
-- Abonnement « **pro** » débloqué par les deux offres : **annuel** (29,99 €, 3 jours gratuits) et **mensuel** (7,99 €). 🟡 prix à confirmer.
+- Abonnement « **pro** » débloqué par les deux offres : **annuel** (29,99 €, **1 semaine gratuite** depuis le 04/11) et **mensuel** (7,99 €). 🟡 prix à confirmer.
 - Sans la clé RevenueCat (ou sur le web, ou dans Expo Go), les achats restent **factices** : tout le parcours se teste quand même.
 
 ## Ce que Kenji doit faire (quand le premier build marche)
@@ -27,7 +27,7 @@ Gratuit jusqu'à 2 500 $ de revenus par mois.
    remplir les infos fiscales. Sans ça, Apple bloque toute vente.
 2. **Apps → +** → Nouvelle app : nom « Debout », langue Français, identifiant `fr.debout.app`.
 3. Dans l'app → **Abonnements** : créer un groupe « Debout Pro » avec deux abonnements :
-   - `debout_pro_yearly` : 1 an, 29,99 €, avec une **offre de lancement** « gratuite » de 3 jours ;
+   - `debout_pro_yearly` : 1 an, 29,99 €, avec une **offre de lancement** « gratuite » d'**1 semaine** ;
    - `debout_pro_monthly` : 1 mois, 7,99 €.
 
 **2. RevenueCat** (app.revenuecat.com, compte gratuit)
@@ -48,7 +48,7 @@ Utilisateurs et accès → Sandbox). Les achats de test sont gratuits.
 
 ## Décision : paywall obligatoire (option A, 26/10/2026)
 
-Comme Erly : après l'onboarding, il faut lancer l'essai gratuit de 3 jours (ou payer) pour utiliser l'app.
+Comme Erly : après l'onboarding, il faut lancer l'essai gratuit (1 semaine depuis le 04/11) (ou payer) pour utiliser l'app.
 Pas de bouton « Plus tard ». Si l'abonnement s'arrête, l'app renvoie au paywall et le réveil ne sonne plus.
 En mode démo (sans clé RevenueCat), rien n'est bloqué. Code : `useProStatus()` dans `purchases.ts`,
 redirection dans `app/src/app/(tabs)/_layout.tsx`.

@@ -24,15 +24,32 @@ export type Plan = {
   title: string;
   price: string;
   detail: string;
+  /** Label of the buy button: the free trial when the plan has one. */
+  cta: string;
 };
 
-// Shown until the App Store prices load (and in demo mode). 🟡 Prices still to be confirmed by Kenji.
+// Shown until the App Store prices load (and in demo mode). Decided 04/11/2026: 1 week free on the yearly plan.
 export const PLANS: Plan[] = [
-  { id: 'yearly', title: 'Annuel', price: '29,99 €/an', detail: '3 jours gratuits · soit 2,50 €/mois' },
-  { id: 'monthly', title: 'Mensuel', price: '7,99 €/mois', detail: 'Sans engagement' },
+  {
+    id: 'yearly',
+    title: 'Annuel',
+    price: '29,99 €/an',
+    detail: '1 semaine gratuite · soit 2,50 €/mois',
+    cta: 'Essayer 1 semaine gratuite',
+  },
+  { id: 'monthly', title: 'Mensuel', price: '7,99 €/mois', detail: 'Sans engagement', cta: 'Continuer' },
 ];
 
-const TRIAL_UNITS: Record<string, string> = { DAY: 'jours', WEEK: 'semaines', MONTH: 'mois' };
+/** "1 semaine", "3 jours"… from the App Store's free trial (introductory offer). */
+function trialLength(units: number, unit: string) {
+  const names: Record<string, [string, string]> = {
+    DAY: ['jour', 'jours'],
+    WEEK: ['semaine', 'semaines'],
+    MONTH: ['mois', 'mois'],
+  };
+  const [one, many] = names[unit] ?? ['jour', 'jours'];
+  return `${units} ${units > 1 ? many : one}`;
+}
 
 let pro = false;
 let known = false; // false until RevenueCat has answered once
@@ -95,12 +112,14 @@ export async function loadPlans(): Promise<Plan[]> {
       if (!product) return plan;
       if (plan.id === 'monthly') return { ...plan, price: `${product.priceString}/mois` };
       const intro = product.introPrice;
-      const trial = intro?.price === 0 ? `${intro.periodNumberOfUnits} ${TRIAL_UNITS[intro.periodUnit] ?? 'jours'} gratuits` : null;
+      const trial = intro?.price === 0 ? trialLength(intro.periodNumberOfUnits, intro.periodUnit) : null;
+      const free = trial ? `${trial} ${trial.includes('semaine') ? 'gratuite' : 'gratuits'}` : null;
       const perMonth = product.pricePerMonthString ? `soit ${product.pricePerMonthString}/mois` : null;
       return {
         ...plan,
         price: `${product.priceString}/an`,
-        detail: [trial, perMonth].filter(Boolean).join(' · ') || plan.detail,
+        detail: [free, perMonth].filter(Boolean).join(' · ') || plan.detail,
+        cta: free ? `Essayer ${free}` : 'Continuer',
       };
     });
   } catch {

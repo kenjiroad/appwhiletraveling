@@ -101,7 +101,7 @@ export default function PaywallScreen() {
             );
           })}
 
-          <PrimaryButton label={selected === 'yearly' ? 'Essayer 3 jours gratuits' : 'Continuer'} breathing onPress={buy} />
+          <PrimaryButton label={plans.find((p) => p.id === selected)?.cta ?? 'Continuer'} breathing onPress={buy} />
           <Pressable onPress={restorePurchases} style={styles.restore}>
             <Text style={styles.restoreText}>Restaurer mes achats · Annulable à tout moment</Text>
           </Pressable>
