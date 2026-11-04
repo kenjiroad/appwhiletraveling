@@ -36,3 +36,12 @@ En attente de la capture « Vérifier le réveil ». Renforcements faits sans at
   fait sur un ancien build) ;
 - diagnostic plus précis (autorisé / refusé / pas encore demandé / iOS trop ancien) avec un bouton pour corriger ;
 - plan B natif : si iOS refuse le bouton « Mes pompes », l'alarme sonne quand même avec « Arrêter » seul.
+
+## Quatrième test (04/11) : le réveil sonne ✅, mais des pompes « fantômes »
+
+Kenji : ça compte même si le téléphone bouge, si on se lève, ou si on monte et descend juste une main.
+Correction (`app/modules/rep-counter/ios/RepDetection.swift`) : avant de compter, l'app vérifie sur les 3 dernières
+secondes que **les épaules ont vraiment bougé** (au moins 0,45 × la longueur du bras) **pendant que les mains sont
+restées au sol** (elles ont bougé moins de 45 % de ce qu'ont bougé les épaules). Pour les squats : les hanches
+bougent, les pieds restent. Si le téléphone bouge, tout bouge ensemble → pas de rep. Si seul le bras bouge, les
+épaules restent → pas de rep. À tester au prochain build ; seuils à ajuster selon les retours.

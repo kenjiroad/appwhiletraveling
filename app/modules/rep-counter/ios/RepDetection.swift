@@ -12,6 +12,11 @@ struct PoseSample {
   /// Body size in the image (upper arm or torso length), so "how far it moved" doesn't depend on
   /// how close you are to the phone.
   var scale: Double?
+  /// The part that must move during a rep: shoulders (push-ups) or hips (squats).
+  var mover: CGPoint?
+  /// The part that must stay still: hands on the floor (push-ups) or feet (squats). If it moves as much as
+  /// the mover, it wasn't a rep: the phone moved, you stood up, or you just waved an arm.
+  var anchor: CGPoint?
 
   var isBodyVisible: Bool { angle != nil || height != nil }
 }
@@ -40,6 +45,9 @@ enum Exercise: String {
 
   /// How far the shoulders / hips must travel, as a fraction of `PoseSample.scale`, for a rep.
   var verticalTravel: Double { self == .pushup ? 0.6 : 0.4 }
+
+  /// Minimum travel of the mover over a whole rep (fraction of `scale`), checked before counting it.
+  var minMoverTravel: Double { self == .pushup ? 0.45 : 0.3 }
 
   private static let minConfidence: Float = 0.3
 
@@ -82,6 +90,8 @@ enum Exercise: String {
 
     switch self {
     case .pushup:
+      sample.mover = mean([.leftShoulder, .rightShoulder])
+      sample.anchor = mean([.leftWrist, .rightWrist])
       sample.height = mean([.leftShoulder, .rightShoulder]).map { Double($0.y) }
       let arms: [(Joint, Joint)] = [(.leftShoulder, .leftElbow), (.rightShoulder, .rightElbow)]
       let upperArms = arms.compactMap { pair -> Double? in
@@ -91,6 +101,8 @@ enum Exercise: String {
       sample.scale = upperArms.max()
     case .squat:
       let hips = mean([.leftHip, .rightHip])
+      sample.mover = hips
+      sample.anchor = mean([.leftAnkle, .rightAnkle])
       sample.height = hips.map { Double($0.y) }
       if let hips, let shoulders = mean([.leftShoulder, .rightShoulder]) {
         sample.scale = Double(hypot(shoulders.x - hips.x, shoulders.y - hips.y))
@@ -183,13 +195,18 @@ struct VerticalRepMachine {
   }
 }
 
-/// Combines both signals. When both catch the same rep, it only counts once.
+/// Combines both signals. When both catch the same rep, it only counts once. Before counting, checks
+/// that it was a real rep: the shoulders (or hips) travelled, while the hands (or feet) stayed put.
 struct RepStateMachine {
   let exercise: Exercise
   private(set) var count = 0
   private var angleMachine: AngleRepMachine
   private var verticalMachine: VerticalRepMachine
   private var lastRepTime: CFTimeInterval = -10
+  /// The last frames (about 3 s at 12 fps): long enough for a slow rep, short enough to forget you
+  /// walking to your spot before the first one.
+  private var window: [PoseSample] = []
+  private let maxWindow = 40
 
   /// Two reps closer than this are the same rep seen by both signals.
   private let minRepInterval: CFTimeInterval = 0.7
@@ -202,6 +219,11 @@ struct RepStateMachine {
 
   /// Feeds one frame. Returns true when it completes a rep (down then back up).
   mutating func process(_ sample: PoseSample, at time: CFTimeInterval) -> Bool {
+    if sample.isBodyVisible {
+      window.append(sample)
+      if window.count > maxWindow { window.removeFirst(window.count - maxWindow) }
+    }
+
     var completed = false
     if let angle = sample.angle, angleMachine.process(angle: angle) { completed = true }
     if let height = sample.height, let scale = sample.scale, scale > 0,
@@ -209,8 +231,39 @@ struct RepStateMachine {
       completed = true
     }
     guard completed, time - lastRepTime > minRepInterval else { return false }
+
+    let genuine = isGenuineRep(window)
+    window.removeAll()
+    guard genuine else { return false }
     lastRepTime = time
     count += 1
     return true
+  }
+
+  /// Real rep: the mover travelled far enough, and the anchor moved much less than the mover.
+  private func isGenuineRep(_ frames: [PoseSample]) -> Bool {
+    let movers = frames.compactMap(\.mover)
+    let anchors = frames.compactMap(\.anchor)
+    let scales = frames.compactMap(\.scale).sorted()
+    guard movers.count >= 4, let scale = scales.isEmpty ? nil : scales[scales.count / 2], scale > 0 else {
+      return false
+    }
+    // Hands / feet must be visible for a good part of the rep, or we can't tell a rep from a shaking phone.
+    guard Double(anchors.count) >= Double(frames.count) * 0.4 else { return false }
+
+    let moverTravel = Self.extent(movers)
+    let anchorTravel = Self.extent(anchors)
+    return moverTravel >= exercise.minMoverTravel * scale && anchorTravel <= moverTravel * 0.45
+  }
+
+  /// Size of the box that contains every position: how far a point moved over the window.
+  private static func extent(_ points: [CGPoint]) -> Double {
+    guard let first = points.first else { return 0 }
+    var minX = first.x, maxX = first.x, minY = first.y, maxY = first.y
+    for p in points {
+      minX = min(minX, p.x); maxX = max(maxX, p.x)
+      minY = min(minY, p.y); maxY = max(maxY, p.y)
+    }
+    return Double(hypot(maxX - minX, maxY - minY))
   }
 }
