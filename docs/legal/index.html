@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debout · Confidentialité, conditions et assistance</title>
+<meta name="description" content="Politique de confidentialité, conditions d'utilisation et assistance de l'app Debout, le réveil qui ne s'arrête que quand tu bouges.">
+<style>
+  :root { --night: #0A0B1A; --high: #14132E; --text: #F6F1EA; --muted: rgba(246,241,234,.68); --faint: rgba(246,241,234,.14); --gold: #FFC46B; --sun: #FF7A45; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--night); color: var(--text); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { padding-bottom: 24px; border-bottom: 1px solid var(--faint); }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .logo { width: 44px; height: 44px; border-radius: 11px; background: linear-gradient(135deg, #6B5BFF, #FF5E8A 55%, #FFC46B); }
+  h1 { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; font-size: 40px; line-height: 1.1; margin: 20px 0 8px; }
+  h2 { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 400; font-size: 30px; margin: 56px 0 8px; color: var(--gold); scroll-margin-top: 20px; }
+  h3 { font-size: 17px; margin: 28px 0 6px; }
+  p, li { color: var(--muted); }
+  strong { color: var(--text); }
+  a { color: var(--gold); }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  nav a { text-decoration: none; color: var(--text); border: 1px solid var(--faint); border-radius: 999px; padding: 6px 14px; font-size: 14px; }
+  .updated { font-size: 14px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 15px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 8px; border-top: 1px solid var(--faint); color: var(--muted); }
+  th { color: var(--text); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; border-top: 0; }
+  .table { overflow-x: auto; }
+  .card { background: var(--high); border: 1px solid var(--faint); border-radius: 16px; padding: 16px 18px; margin: 16px 0; }
+  details { border-top: 1px solid var(--faint); padding: 12px 0; }
+  summary { cursor: pointer; font-weight: 600; color: var(--text); }
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--faint); font-size: 14px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><div class="logo" aria-hidden="true"></div><strong>Debout</strong></div>
+    <h1>Confidentialité, conditions et assistance</h1>
+    <p class="updated">Dernière mise à jour : 4 novembre 2026</p>
+    <nav>
+      <a href="#confidentialite">Confidentialité</a>
+      <a href="#conditions">Conditions d’utilisation</a>
+      <a href="#support">Assistance</a>
+    </nav>
+  </header>
+
+  <!-- ===================================================================== -->
+  <h2 id="confidentialite">Politique de confidentialité</h2>
+
+  <div class="card">
+    <p><strong>En bref :</strong> la caméra est analysée sur ton iPhone et aucune image n’est jamais envoyée ni enregistrée.
+    Debout n’a ni publicité, ni pistage. On garde le strict minimum pour faire fonctionner ton compte, ta série et la ligue.</p>
+  </div>
+
+  <h3>Qui est responsable de tes données ?</h3>
+  <p>Kenji Joachim, éditeur de l’application Debout (« nous »). Contact : <a href="mailto:kjoachim31@gmail.com">kjoachim31@gmail.com</a>.</p>
+
+  <h3>La caméra</h3>
+  <p>Pendant le défi, l’app utilise la caméra frontale pour compter tes pompes ou tes squats grâce à la détection de posture
+  d’Apple (Vision). Les images sont analysées <strong>en direct, sur ton téléphone</strong>, puis immédiatement oubliées :
+  elles ne sont <strong>jamais enregistrées, jamais envoyées</strong> à nos serveurs ni à personne.</p>
+
+  <h3>Les données que nous traitons</h3>
+  <div class="table"><table>
+    <thead><tr><th>Donnée</th><th>Où elle va</th><th>Pourquoi</th><th>Combien de temps</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Réglages</strong> (heure du réveil, exercice, nombre de répétitions, objectif de sommeil)</td><td>Uniquement sur ton téléphone</td><td>Faire sonner le réveil</td><td>Jusqu’à la suppression de l’app</td></tr>
+      <tr><td><strong>Historique</strong> des matins (répétitions par jour, défi réussi), série, XP, jokers</td><td>Sur ton téléphone ; les totaux par jour sont aussi envoyés à notre serveur</td><td>Ta série, ton niveau et la ligue de la semaine</td><td>Tant que ton compte existe</td></tr>
+      <tr><td><strong>Identifiant anonyme</strong> créé automatiquement (pas d’e-mail, pas de mot de passe)</td><td>Notre serveur (Supabase)</td><td>Reconnaître ton compte</td><td>Tant que ton compte existe</td></tr>
+      <tr><td><strong>Pseudo</strong> et niveau</td><td>Notre serveur ; visibles par les autres joueurs dans la ligue</td><td>Le classement de la semaine</td><td>Tant que ton compte existe</td></tr>
+      <tr><td><strong>Horaires de la nuit</strong> (coucher, réveil) et identifiant technique de l’« Activité en direct », si tu touches « Bonne nuit »</td><td>Notre serveur</td><td>Faire avancer la marmotte sur ton écran verrouillé</td><td>Effacés une heure après l’heure du réveil</td></tr>
+      <tr><td><strong>Abonnement</strong> (achat, essai, renouvellement)</td><td>Apple et RevenueCat</td><td>Savoir si ton abonnement est actif</td><td>Selon les obligations légales et comptables</td></tr>
+    </tbody>
+  </table></div>
+  <p>Nous ne demandons ni ton nom réel, ni ton e-mail, ni ta localisation, ni tes contacts. Nous n’utilisons aucun outil de
+  publicité, de statistiques ou de pistage, et nous ne vendons aucune donnée.</p>
+
+  <h3>Sur quelle base ?</h3>
+  <p>Le traitement est nécessaire pour te fournir le service que tu as demandé (article 6.1.b du RGPD). Les notifications,
+  la caméra, le réveil et l’Activité en direct ne fonctionnent qu’avec ton autorisation, que tu peux retirer à tout moment
+  dans les Réglages de l’iPhone.</p>
+
+  <h3>Nos sous-traitants</h3>
+  <ul>
+    <li><strong>Supabase</strong> : hébergement de la base de données, serveurs situés dans l’Union européenne.</li>
+    <li><strong>RevenueCat</strong> : gestion des abonnements (États-Unis, encadré par les clauses contractuelles types de la Commission européenne).</li>
+    <li><strong>Apple</strong> : paiement des abonnements, envoi des notifications et mise à jour de l’écran verrouillé.</li>
+    <li><strong>Expo</strong> : distribution des mises à jour de l’application (aucune donnée personnelle de compte).</li>
+  </ul>
+
+  <h3>Tes droits</h3>
+  <p>Tu peux demander à accéder à tes données, les corriger, les supprimer ou les recevoir dans un format lisible, et
+  t’opposer à leur traitement. Écris à <a href="mailto:kjoachim31@gmail.com">kjoachim31@gmail.com</a> en indiquant ton
+  pseudo : nous répondons sous un mois. Supprimer l’app efface les données de ton téléphone ; pour effacer aussi ton
+  compte sur notre serveur, écris-nous. Tu peux aussi saisir la CNIL (<a href="https://www.cnil.fr">cnil.fr</a>).</p>
+
+  <h3>Âge</h3>
+  <p>Debout s’adresse aux personnes de 15 ans et plus. Si tu as moins de 15 ans, demande l’accord d’un parent.</p>
+
+  <h3>Modifications</h3>
+  <p>Si cette politique change, la date en haut de la page est mise à jour et, en cas de changement important, l’app te
+  prévient.</p>
+
+  <!-- ===================================================================== -->
+  <h2 id="conditions">Conditions d’utilisation</h2>
+
+  <h3>Le service</h3>
+  <p>Debout est un réveil qui ne s’arrête que lorsque tu as fait un défi physique (pompes ou squats), compté par la caméra
+  de ton iPhone. Les présentes conditions s’ajoutent au <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/">contrat de licence standard d’Apple</a>.</p>
+
+  <h3>Abonnement Debout Pro</h3>
+  <ul>
+    <li>Debout s’utilise avec un abonnement à renouvellement automatique : <strong>annuel (29,99 €/an)</strong> ou
+    <strong>mensuel (7,99 €/mois)</strong>, prix affichés dans l’app selon ton pays.</li>
+    <li>L’abonnement annuel commence par un <strong>essai gratuit de 3 jours</strong>. Si tu n’annules pas avant la fin
+    de l’essai, l’abonnement démarre et le premier paiement est débité.</li>
+    <li>Le paiement est débité sur ton compte Apple. L’abonnement se renouvelle automatiquement pour la même durée, sauf
+    si tu l’annules <strong>au moins 24 heures avant</strong> la fin de la période en cours.</li>
+    <li>Tu peux gérer ou annuler ton abonnement à tout moment : <strong>Réglages de l’iPhone → ton nom →
+    Abonnements → Debout</strong>. L’annulation prend effet à la fin de la période déjà payée.</li>
+    <li>Les remboursements sont gérés par Apple (<a href="https://reportaproblem.apple.com">reportaproblem.apple.com</a>).</li>
+  </ul>
+
+  <h3>⚠️ Santé et sécurité</h3>
+  <div class="card">
+    <p>Debout propose des exercices physiques simples. <strong>Ce n’est pas un avis médical.</strong> Consulte un médecin
+    avant de commencer si tu as une maladie, une blessure, une douleur, une grossesse, un problème cardiaque, de dos ou
+    d’articulations, ou si tu n’as pas fait de sport depuis longtemps. Arrête immédiatement si tu ressens une douleur,
+    un vertige ou un essoufflement anormal. Fais tes exercices dans un endroit dégagé, et utilise le bouton
+    « Malade ou blessé ? » quand tu ne peux pas faire le défi.</p>
+  </div>
+
+  <h3>Le réveil</h3>
+  <p>Nous faisons tout pour que le réveil sonne à l’heure, mais il dépend de ton iPhone (version d’iOS, autorisations,
+  batterie, mode avion…). Ne compte pas uniquement sur Debout pour un rendez-vous important.</p>
+
+  <h3>Ton pseudo et la ligue</h3>
+  <p>Ton pseudo est visible des autres joueurs. Il ne doit être ni insultant, ni haineux, ni usurper l’identité de
+  quelqu’un. Nous pouvons le modifier ou retirer un compte de la ligue en cas d’abus ou de triche.</p>
+
+  <h3>Propriété</h3>
+  <p>L’application, la marmotte, les textes et les visuels appartiennent à l’éditeur. Tu peux partager les images
+  générées par l’app (story du matin) pour un usage personnel.</p>
+
+  <h3>Responsabilité</h3>
+  <p>Debout est fourni tel quel. Dans les limites autorisées par la loi, l’éditeur n’est pas responsable des dommages
+  indirects liés à l’utilisation de l’app. Rien dans ces conditions ne limite tes droits de consommateur.</p>
+
+  <h3>Droit applicable</h3>
+  <p>Ces conditions sont soumises au droit français. En cas de litige, tu peux recourir gratuitement à un médiateur de
+  la consommation ou à la plateforme européenne de règlement en ligne des litiges.</p>
+
+  <!-- ===================================================================== -->
+  <h2 id="support">Assistance</h2>
+  <p>Une question, un bug, une idée ? Écris-nous : <a href="mailto:kjoachim31@gmail.com">kjoachim31@gmail.com</a>.
+  Réponse sous 48 heures en général.</p>
+
+  <details><summary>Le réveil n’a pas sonné</summary>
+    <p>Ouvre Debout → Réglages → <strong>Vérifier le réveil</strong>. Si « Réveil iOS » n’est pas autorisé, touche le
+    bouton pour l’autoriser (ou Réglages de l’iPhone → Debout → Alarmes). Puis touche « Tester le réveil dans 1 minute »
+    et verrouille ton téléphone. Le réveil iOS nécessite iOS 26.</p></details>
+  <details><summary>Mes pompes ne sont pas comptées</summary>
+    <p>Pose ton téléphone au sol à environ 1 m, de face ou de profil, et vérifie que tout ton corps est dans l’image,
+    avec assez de lumière. Fais des mouvements complets : descends bien, puis remonte bras tendus.</p></details>
+  <details><summary>Je suis malade ou blessé</summary>
+    <p>Pendant le défi, touche « Malade ou blessé ? » en haut à gauche : le réveil s’arrête pour la journée. Un joker
+    protège ta série s’il t’en reste.</p></details>
+  <details><summary>Comment annuler mon abonnement ?</summary>
+    <p>Réglages de l’iPhone → ton nom → Abonnements → Debout → Annuler. L’accès reste actif jusqu’à la fin de la
+    période payée.</p></details>
+  <details><summary>Comment supprimer mes données ?</summary>
+    <p>Supprime l’app pour effacer les données du téléphone, et écris-nous avec ton pseudo pour effacer ton compte sur
+    notre serveur.</p></details>
+
+  <footer>© 2026 Kenji Joachim · Debout · <a href="mailto:kjoachim31@gmail.com">kjoachim31@gmail.com</a></footer>
+</div>
+</body>
+</html>
