@@ -12,7 +12,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       `debout_pro_monthly` 7,99 €/mois (voir [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md))
 - [ ] RevenueCat + clé publique `appl_…` dans expo.dev → Environment variables
 - [ ] Supabase (vraie ligue) : coller les **3** fichiers SQL (0001, 0002, 0003) + 2 variables dans expo.dev
-- [ ] Page légale en ligne : Netlify, nom de site **`debout-app`** ([23-app-store.md](23-app-store.md) §7) — avant le build
+- [x] Page légale en ligne sur Netlify ✅ 04/11 (adresse à confirmer : `debout-app`) ([23-app-store.md](23-app-store.md) §7) — avant le build
 - [ ] Build Store : `npx eas-cli build --profile production --platform ios --auto-submit`
 - [ ] TestFlight : tester réveil, défi, achat (compte Sandbox)
 - [ ] Enregistrer une vidéo d'écran de 30 s (réveil → pompes → victoire) pour Apple
