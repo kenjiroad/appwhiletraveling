@@ -30,8 +30,8 @@ Sous l'icône sur l'écran d'accueil, l'iPhone affiche toujours « Debout » (c'
 **Sous-titre** (30 max, 28) :
 > Le réveil qui te fait bouger
 
-**Texte promotionnel** (170 max, 143 — modifiable à tout moment sans repasser par Apple) :
-> Ton réveil ne s'arrête que quand tu bouges : quelques pompes ou squats devant la caméra, l'IA compte, le soleil se lève. Essai gratuit 3 jours.
+**Texte promotionnel** (170 max, 140 — modifiable à tout moment sans repasser par Apple) :
+> Ton réveil ne s'arrête que quand tu bouges : quelques pompes ou squats devant la caméra, l'IA compte, le soleil se lève. 1 semaine gratuite.
 
 **Mots-clés** (100 max, 100 — séparés par des virgules, sans espace ; inutile de répéter les mots du nom) :
 > alarme,pompes,squats,matin,motivation,habitude,sport,lever,routine,discipline,fitness,série,coach,ia
@@ -70,8 +70,8 @@ Sous l'icône sur l'écran d'accueil, l'iPhone affiche toujours « Debout » (c'
 > La caméra est analysée directement sur ton iPhone. Aucune image n'est envoyée ni enregistrée. Pas de pub, pas de pistage.
 >
 > DEBOUT PRO
-> Debout s'utilise avec un abonnement, avec 3 jours d'essai gratuit :
-> • Annuel : 29,99 € par an
+> Debout s'utilise avec un abonnement :
+> • Annuel : 29,99 € par an, avec 1 semaine d'essai gratuit
 > • Mensuel : 7,99 € par mois
 > Le paiement est débité sur ton compte Apple à la confirmation de l'achat (à la fin de l'essai gratuit). L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours. Tu peux le gérer ou l'annuler à tout moment dans les réglages de ton compte Apple.
 >
@@ -121,7 +121,7 @@ Basé sur le code actuel (`app/src/lib/`, `app/supabase/`). À la question « Co
 >
 > No login is required: an anonymous account is created automatically. To test:
 > 1. Complete the short onboarding (any nickname, exercise, time).
-> 2. On the paywall, start the 3-day free trial with a sandbox account.
+> 2. On the paywall, start the 1-week free trial (yearly plan) with a sandbox account.
 > 3. Home → "Lancer le défi": place the phone on the floor about 1 m away, front or side view, and do the reps. If you cannot exercise, tap "Malade ou blessé ?" (top left) to stop today's alarm.
 > 4. Settings → "Tester le réveil dans 1 minute" schedules a real alarm (AlarmKit) one minute later.
 > 5. In the evening, "Bonne nuit 🌙" on the home screen starts the sleep Live Activity on the lock screen.
@@ -151,7 +151,7 @@ Compte de démonstration : **non requis** (pas d'identifiant).
 
 **C. Les abonnements** (voir aussi `17-abonnements-revenuecat.md`)
 6. **Abonnements** → groupe **Debout Pro** → 2 abonnements : `debout_pro_yearly` (1 an, 29,99 €, offre de lancement
-   gratuite 3 jours) et `debout_pro_monthly` (1 mois, 7,99 €). Pour chacun : nom affiché et description en
+   gratuite 1 semaine) et `debout_pro_monthly` (1 mois, 7,99 €). Pour chacun : nom affiché et description en
    français, et une **capture du paywall** pour la vérification (`design/app-store/`).
 7. **RevenueCat** : relier les deux abonnements, puis mettre la clé `appl_…` dans expo.dev → Environment variables
    (`EXPO_PUBLIC_REVENUECAT_IOS_KEY`). Sans elle, les achats restent factices.
