@@ -7,8 +7,9 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Le réveil sonne et ne s'arrête qu'avec les pompes ✅ 04/11
 - [x] App Store Connect → Business : accord « Applications payantes », banque (Revolut), W-8BEN, statut de commerçant DSA ✅ 04/11
 - [x] App créée : « Debout – Réveil sportif », `fr.debout.app`, SKU `debout` ✅ 04/11
-- [ ] Abonnements : groupe « Debout Pro », `debout_pro_yearly` 29,99 €/an + offre gratuite **1 semaine**,
-      `debout_pro_monthly` 7,99 €/mois (voir [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md))
+- [x] Abonnements créés ✅ 05/11 : `debout_pro_yearly` 29,99 €/an + offre gratuite **1 semaine**,
+      `debout_pro_monthly` 7,99 €/mois, capture du paywall pour Apple. Ils partiront **avec la 1re version**
+      (page de la version → « Achats intégrés et abonnements »), pas tout seuls.
 - [ ] RevenueCat + clé publique `appl_…` dans expo.dev → Environment variables
 - [x] Supabase : projet « Debout App » créé, SQL lancé, connexion anonyme activée ✅ 04/11
 - [x] 2 variables Supabase dans expo.dev ✅ 04/11 (`EXPO_PUBLIC_SUPABASE_ANON_KEY` = la *publishable key*)
