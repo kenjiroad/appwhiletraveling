@@ -34,7 +34,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 ## À confirmer (🟡)
 
 - 🟡 Vérifier les conditions d'usage commercial des images Higgsfield (mascotte) avant le lancement.
-- 🟡 Page légale (`docs/legal/`) à mettre en ligne sur Netlify sous `debout-app.netlify.app` (sinon changer `app/src/lib/links.ts`).
+- ✅ Page légale en ligne sur `https://debout-app.netlify.app` (vérifiée par Kenji le 06/11) : les liens de l'app sont bons.
 - 🟡 Statut pour vendre (micro-entreprise ?) : à vérifier avec un comptable.
 - 🟡 Code Swift compilé au 1er build EAS (28/10) ✅. Apple Team ID ajouté dans `app.json` (06/11) ✅. Extension « sommeil » (Live Activity) compilée au build Store (06/11) ✅ ; affichage à tester dans TestFlight.
 - 🟡 La ligue utilise des joueurs fictifs tant que le projet Supabase n'est pas créé (code prêt : `docs/15`). Sign in with Apple : plus tard.

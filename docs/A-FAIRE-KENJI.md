@@ -15,7 +15,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Apple Team ID donné à Claude ✅ 06/11 (mis dans `app.json`)
 - [x] Supabase : projet « Debout App » créé, SQL lancé, connexion anonyme activée ✅ 04/11
 - [x] 2 variables Supabase dans expo.dev ✅ 04/11 (`EXPO_PUBLIC_SUPABASE_ANON_KEY` = la *publishable key*)
-- [x] Page légale en ligne sur Netlify ✅ 04/11 (adresse à confirmer : `debout-app`) ([23-app-store.md](23-app-store.md) §7) — avant le build
+- [x] Page légale en ligne : `https://debout-app.netlify.app` ✅ (vérifiée le 06/11)
 - [x] Build Store réussi et envoyé chez Apple ✅ 06/11 (`npx eas-cli build --profile production --platform ios --auto-submit`)
 - [ ] TestFlight : groupe de test interne, app TestFlight sur l'iPhone, puis tester réveil, défi, achat
       (dans TestFlight les achats sont gratuits, avec ton compte Apple normal)
