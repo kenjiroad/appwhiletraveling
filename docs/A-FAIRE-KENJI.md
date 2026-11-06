@@ -11,8 +11,8 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       `debout_pro_monthly` 7,99 €/mois, capture du paywall pour Apple. Ils partiront **avec la 1re version**
       (page de la version → « Achats intégrés et abonnements »), pas tout seuls.
 - [x] RevenueCat ✅ 06/11 : projet Debout, app `fr.debout.app`, clé d'achat Apple, 2 produits, accès `debout_pro`
-- [ ] RevenueCat : offre `default` (packages Annual et Monthly → produits App Store) + clé publique `appl_…`
-      dans expo.dev → Environment variables (`EXPO_PUBLIC_REVENUECAT_IOS_KEY`)
+- [x] RevenueCat : offre `default` (Annual et Monthly) + clé `appl_…` dans expo.dev ✅ 06/11
+- [x] Apple Team ID donné à Claude ✅ 06/11 (mis dans `app.json`)
 - [x] Supabase : projet « Debout App » créé, SQL lancé, connexion anonyme activée ✅ 04/11
 - [x] 2 variables Supabase dans expo.dev ✅ 04/11 (`EXPO_PUBLIC_SUPABASE_ANON_KEY` = la *publishable key*)
 - [x] Page légale en ligne sur Netlify ✅ 04/11 (adresse à confirmer : `debout-app`) ([23-app-store.md](23-app-store.md) §7) — avant le build
@@ -45,7 +45,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 ## Pour le prochain build (joker, story, marmotte de nuit)
 
 - [ ] Réglages → **Vérifier le réveil** : capture à Claude (pour comprendre pourquoi l'alarme n'a pas sonné).
-- [ ] **Apple Team ID** : developer.apple.com/account → **Membership details** → Team ID (pas secret, en texte).
+- [x] **Apple Team ID** ✅ 06/11
       ⚠️ Le fichier `AuthKey_….p8` envoyé le 01/11 n'était pas le Team ID mais une clé de push : supprimée ✅.
 - [ ] Puis nouveau build depuis le Terminal (nouveau ZIP → `cd …/app` → `npm install` →
       `npx eas-cli build --profile preview --platform ios`) : Apple redemande ton identifiant pour la nouvelle extension.

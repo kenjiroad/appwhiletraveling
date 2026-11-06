@@ -10,6 +10,7 @@
     "ios": {
       "icon": "./assets/images/icon.png",
       "bundleIdentifier": "fr.debout.app",
+      "appleTeamId": "9T8HTGV22U",
       "supportsTablet": false,
       "infoPlist": {
         "NSCameraUsageDescription": "Debout utilise la caméra pour compter tes pompes et tes squats. Tout est analysé sur ton téléphone : aucune image n’est envoyée ni enregistrée.",
