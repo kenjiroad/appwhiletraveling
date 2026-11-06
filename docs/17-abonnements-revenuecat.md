@@ -76,6 +76,22 @@ confidentialité » sur le paywall et dans la fiche App Store (règle Apple pour
 - En compte individuel, ton **nom réel** apparaît comme vendeur sur l'App Store. Avec une société (numéro
   D-U-N-S), c'est le nom de la société.
 
+## Donner l'app gratuitement (famille, amis, créateurs)
+
+Après le lancement, deux façons, sans toucher au code :
+
+| | **Accès offert (RevenueCat)** — pour la famille | **Codes d'offre (Apple)** — pour amis, créateurs |
+|---|---|---|
+| Durée | jusqu'à **à vie** | jusqu'à **1 an**, puis l'abonnement se renouvelle au prix normal s'il n'est pas résilié |
+| Où | RevenueCat → **Customers** → la personne → **Grant entitlement** → `debout_pro` → *Lifetime* | App Store Connect → l'abonnement → **Codes d'offre** → gratuit |
+| Comment la personne l'utilise | rien à faire | App Store → photo de profil → **Utiliser une carte cadeau ou un code** |
+| Limite | perdu si elle supprime l'app (compte anonyme) : il faut le redonner | lié à son compte Apple, suit ses appareils |
+
+Pour l'accès offert : la personne lance la semaine gratuite et fait un matin ; tu trouves son prénom dans
+Supabase → **Table Editor** → `profiles` (colonne `id`) ; tu colles cet `id` dans la recherche de RevenueCat
+→ **Customers**, puis **Grant entitlement**. Elle résilie ensuite l'essai dans Réglages → son nom → Abonnements :
+l'accès offert reste.
+
 ## Reste à vérifier (🟡)
 
 - Le code Swift n'est pas concerné, mais le SDK RevenueCat n'a été testé que sur le web (achats factices) :
