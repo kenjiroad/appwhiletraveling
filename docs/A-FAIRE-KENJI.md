@@ -84,3 +84,6 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [ ] Supabase (10 min) : voir [15-comptes-et-ligue.md](15-comptes-et-ligue.md).
 - [ ] App Store Connect + RevenueCat : voir [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md).
 - [ ] Statut pour vendre (micro-entreprise ?) : demander à un comptable.
+- [ ] S'inscrire à l'**App Store Small Business Program** (developer.apple.com → Small Business Program) :
+      Apple prend 15 % au lieu de 30 % tant que tu gagnes moins d'1 million $ par an. Puis l'indiquer dans
+      RevenueCat (section « Apple Small Business Program ») pour que les chiffres soient justes.
