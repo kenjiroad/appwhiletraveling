@@ -16,8 +16,9 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Supabase : projet « Debout App » créé, SQL lancé, connexion anonyme activée ✅ 04/11
 - [x] 2 variables Supabase dans expo.dev ✅ 04/11 (`EXPO_PUBLIC_SUPABASE_ANON_KEY` = la *publishable key*)
 - [x] Page légale en ligne sur Netlify ✅ 04/11 (adresse à confirmer : `debout-app`) ([23-app-store.md](23-app-store.md) §7) — avant le build
-- [ ] Build Store : `npx eas-cli build --profile production --platform ios --auto-submit`
-- [ ] TestFlight : tester réveil, défi, achat (compte Sandbox)
+- [x] Build Store réussi et envoyé chez Apple ✅ 06/11 (`npx eas-cli build --profile production --platform ios --auto-submit`)
+- [ ] TestFlight : groupe de test interne, app TestFlight sur l'iPhone, puis tester réveil, défi, achat
+      (dans TestFlight les achats sont gratuits, avec ton compte Apple normal)
 - [ ] Enregistrer une vidéo d'écran de 30 s (réveil → pompes → victoire) pour Apple
 - [ ] Fiche App Store ([23-app-store.md](23-app-store.md), captures dans `design/app-store/`) → **Soumettre pour vérification**
 

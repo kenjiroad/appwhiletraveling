@@ -134,6 +134,12 @@ Skills installés dans `.claude/skills/`. Audit complet (`24-audit-design.md`) ;
 faites (animations, victoire, paywall, clavier, contrastes, mode sombre). Comptage : les mains doivent rester au sol.
 → Détails : [24-audit-design.md](24-audit-design.md)
 
+## Abonnements, RevenueCat et build App Store ✅ (06/11/2026)
+Abonnements créés chez Apple (29,99 €/an avec 1 semaine gratuite, 7,99 €/mois), RevenueCat relié (clé d'achat,
+produits, accès `debout_pro`, offre `default`), clé `appl_…` sur expo.dev, Apple Team ID ajouté. Premier build
+« production » réussi (extension de l'écran verrouillé comprise) et envoyé sur App Store Connect.
+→ Détails : [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md), [23-app-store.md](23-app-store.md)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)
