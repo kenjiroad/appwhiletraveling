@@ -75,12 +75,12 @@ Sous l'icône sur l'écran d'accueil, l'iPhone affiche toujours « Debout » (c'
 > • Mensuel : 7,99 € par mois
 > Le paiement est débité sur ton compte Apple à la confirmation de l'achat (à la fin de l'essai gratuit). L'abonnement se renouvelle automatiquement sauf s'il est annulé au moins 24 heures avant la fin de la période en cours. Tu peux le gérer ou l'annuler à tout moment dans les réglages de ton compte Apple.
 >
-> Conditions d'utilisation : [URL]/#conditions
-> Politique de confidentialité : [URL]/#confidentialite
+> Conditions d'utilisation : https://debout-app.netlify.app/#conditions
+> Politique de confidentialité : https://debout-app.netlify.app/#confidentialite
 >
 > Debout ne remplace pas un avis médical : si tu as une douleur, une blessure ou un problème de santé, demande l'avis d'un médecin avant de faire de l'exercice.
 
-🟡 Remplacer `[URL]` par l'adresse de la page légale une fois en ligne. Les prix sont ceux prévus (🟡 à confirmer).
+Adresse de la page légale : `https://debout-app.netlify.app` (en ligne depuis le 04/11).
 
 ## 3. Classification par âge (questionnaire d'Apple)
 
