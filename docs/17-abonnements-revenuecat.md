@@ -33,7 +33,8 @@ Gratuit jusqu'à 2 500 $ de revenus par mois.
 **2. RevenueCat** (app.revenuecat.com, compte gratuit)
 1. Créer un projet « Debout », ajouter une app **App Store** avec l'identifiant `fr.debout.app`.
 2. Suivre leur guide pour relier App Store Connect (une clé « In-App Purchase » à créer chez Apple).
-3. **Entitlements** : créer `pro` et y attacher les deux abonnements.
+3. **Entitlements** : RevenueCat en a créé un tout seul, `debout_pro` ; y attacher les deux abonnements.
+   (Depuis le 06/11, l'app accepte n'importe quel accès actif : le nom exact n'a plus d'importance.)
 4. **Offerings** : l'offre `default` avec deux « packages » : **Annual** → `debout_pro_yearly`, **Monthly** → `debout_pro_monthly`.
 5. **API keys** : copier la clé publique iOS (commence par `appl_`). Elle est faite pour être dans l'app : pas secrète.
 

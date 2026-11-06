@@ -10,7 +10,9 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Abonnements créés ✅ 05/11 : `debout_pro_yearly` 29,99 €/an + offre gratuite **1 semaine**,
       `debout_pro_monthly` 7,99 €/mois, capture du paywall pour Apple. Ils partiront **avec la 1re version**
       (page de la version → « Achats intégrés et abonnements »), pas tout seuls.
-- [ ] RevenueCat + clé publique `appl_…` dans expo.dev → Environment variables
+- [x] RevenueCat ✅ 06/11 : projet Debout, app `fr.debout.app`, clé d'achat Apple, 2 produits, accès `debout_pro`
+- [ ] RevenueCat : offre `default` (packages Annual et Monthly → produits App Store) + clé publique `appl_…`
+      dans expo.dev → Environment variables (`EXPO_PUBLIC_REVENUECAT_IOS_KEY`)
 - [x] Supabase : projet « Debout App » créé, SQL lancé, connexion anonyme activée ✅ 04/11
 - [x] 2 variables Supabase dans expo.dev ✅ 04/11 (`EXPO_PUBLIC_SUPABASE_ANON_KEY` = la *publishable key*)
 - [x] Page légale en ligne sur Netlify ✅ 04/11 (adresse à confirmer : `debout-app`) ([23-app-store.md](23-app-store.md) §7) — avant le build

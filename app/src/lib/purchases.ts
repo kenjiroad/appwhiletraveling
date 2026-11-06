@@ -16,9 +16,6 @@ export const isPurchasesConfigured = Platform.OS === 'ios' && Boolean(apiKey);
  */
 export const requiresSubscription = isPurchasesConfigured;
 
-/** The RevenueCat entitlement both plans unlock. */
-const ENTITLEMENT = 'pro';
-
 export type Plan = {
   id: 'monthly' | 'yearly';
   title: string;
@@ -56,7 +53,9 @@ let known = false; // false until RevenueCat has answered once
 let configured = false;
 const listeners = new Set<() => void>();
 
-const hasPro = (info: CustomerInfo) => info.entitlements.active[ENTITLEMENT] != null;
+// Both plans unlock the project's only entitlement (`debout_pro` in the RevenueCat dashboard). Any active
+// entitlement counts, so renaming it there can never lock out someone who paid.
+const hasPro = (info: CustomerInfo) => Object.keys(info.entitlements.active).length > 0;
 
 function setPro(value: boolean) {
   pro = value;
