@@ -124,12 +124,20 @@ export function bedtimeFor(settings: Settings) {
   return { hour: Math.floor(minutes / 60), minute: minutes % 60 };
 }
 
+/** The "test in 1 minute" ring, kept until it has rung so that re-planning doesn't erase it. */
+let pendingTest: Date | undefined;
+
 /**
  * Plans the next alarms. `testDate` adds one extra ring (the "test in 1 minute" button).
  * If AlarmKit fails for any reason, notifications take over so the alarm still goes off.
  */
-export async function scheduleAlarms(settings: Settings, testDate?: Date) {
+export async function scheduleAlarms(settings: Settings, requestedTest?: Date) {
   if (!supported) return;
+  // Leaving Settings brings the home screen back, which plans the alarms again: without this, that
+  // second plan wiped the test ring that had just been set.
+  if (requestedTest) pendingTest = requestedTest;
+  if (pendingTest && pendingTest.getTime() <= Date.now()) pendingTest = undefined;
+  const testDate = pendingTest;
   await Notifications.cancelAllScheduledNotificationsAsync();
   cancelAllAlarmKit();
   await scheduleBedtimeReminder(settings);
@@ -212,6 +220,7 @@ async function scheduleBedtimeReminder(settings: Settings) {
 
 /** Removes every planned alarm, e.g. when the subscription has ended. */
 export async function cancelAlarms() {
+  pendingTest = undefined;
   if (!supported) return;
   await Notifications.cancelAllScheduledNotificationsAsync();
   cancelAllAlarmKit();

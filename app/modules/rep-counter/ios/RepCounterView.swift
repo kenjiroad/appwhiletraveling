@@ -1,5 +1,6 @@
 import AVFoundation
 import CoreMedia
+import CoreMotion
 import ExpoModulesCore
 import UIKit
 import Vision
@@ -29,6 +30,13 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
   // Analysing ~12 frames per second is plenty to catch every rep and keeps the phone cool.
   private let minFrameInterval: CFTimeInterval = 1.0 / 12.0
 
+  // The phone's own motion sensors: when the phone moves, the whole image slides and looks like a rep.
+  // Reading them needs no permission.
+  private let motion = CMMotionManager()
+  private var lastPhoneMove: CFTimeInterval = -10
+  /// After the phone moved, wait this long (it settles) before counting again.
+  private let phoneSettleTime: CFTimeInterval = 1.0
+
   public required init(appContext: AppContext? = nil) {
     let session = AVCaptureSession()
     self.session = session
@@ -41,8 +49,10 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
 
   deinit {
     let session = self.session
+    let motion = self.motion
     videoQueue.async {
       if session.isRunning { session.stopRunning() }
+      motion.stopDeviceMotionUpdates()
     }
   }
 
@@ -63,8 +73,13 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
       if active {
         if !self.isConfigured { self.configureSession() }
         if !self.session.isRunning { self.session.startRunning() }
-      } else if self.session.isRunning {
-        self.session.stopRunning()
+        if self.motion.isDeviceMotionAvailable, !self.motion.isDeviceMotionActive {
+          self.motion.deviceMotionUpdateInterval = 1.0 / 30.0
+          self.motion.startDeviceMotionUpdates()
+        }
+      } else {
+        if self.session.isRunning { self.session.stopRunning() }
+        self.motion.stopDeviceMotionUpdates()
       }
     }
   }
@@ -102,6 +117,7 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
           let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
     else { return }
     lastAnalysisTime = now
+    if isPhoneMoving() { lastPhoneMove = now }
 
     let width = CGFloat(CVPixelBufferGetWidth(pixelBuffer))
     let height = CGFloat(CVPixelBufferGetHeight(pixelBuffer))
@@ -138,9 +154,26 @@ public final class RepCounterView: ExpoView, AVCaptureVideoDataOutputSampleBuffe
       DispatchQueue.main.async { self.onBodyVisibilityChange(["visible": visible]) }
     }
 
+    // The phone moved a moment ago: what looked like a rep was the image sliding.
+    if now - lastPhoneMove < phoneSettleTime {
+      counter.phoneMoved()
+      return
+    }
+
     if counter.process(sample, at: now) {
       let count = counter.count
       DispatchQueue.main.async { self.onRep(["count": count]) }
     }
+  }
+
+  /// True while the phone turns or is pushed. A phone lying on the floor or leaning against something stays
+  /// far below these values, even while you do your reps next to it.
+  private func isPhoneMoving() -> Bool {
+    guard let data = motion.deviceMotion else { return false }
+    let r = data.rotationRate
+    let a = data.userAcceleration
+    let rotation = (r.x * r.x + r.y * r.y + r.z * r.z).squareRoot()  // radians per second
+    let acceleration = (a.x * a.x + a.y * a.y + a.z * a.z).squareRoot()  // in g
+    return rotation > 0.3 || acceleration > 0.1
   }
 }
