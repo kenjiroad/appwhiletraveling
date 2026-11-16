@@ -140,6 +140,12 @@ produits, accès `debout_pro`, offre `default`), clé `appl_…` sur expo.dev, A
 « production » réussi (extension de l'écran verrouillé comprise) et envoyé sur App Store Connect.
 → Détails : [17-abonnements-revenuecat.md](17-abonnements-revenuecat.md), [23-app-store.md](23-app-store.md)
 
+## Premier test TestFlight + corrections ✅ (16/11/2026)
+L'offre « 1 semaine gratuite » manquait chez Apple : créée (175 pays). Pompes plus comptées depuis le 04/11 : la
+vérification « mains immobiles » refusait tout dès que l'IA perdait une main ; chaque main est maintenant suivie à
+part, et le téléphone qui bouge est détecté par le gyroscope. Le test « réveil dans 1 minute » était effacé en
+revenant à l'accueil : corrigé. Nouveau build nécessaire.
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)

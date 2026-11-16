@@ -20,7 +20,11 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Offre « 1 semaine gratuite » de l'annuel créée chez Apple (175 pays, sans fin) ✅ 16/11 — elle manquait :
       le paywall de TestFlight ne l'affichait pas
 - [x] App installée avec TestFlight (groupe « Team (Expo) ») ✅ 16/11. En test, prix en $ = pays du compte Apple.
-- [ ] TestFlight : tester l'achat (gratuit en test), le réveil, le défi, « Bonne nuit », la ligue
+- [x] 1er test TestFlight (16/11) : pompes pas comptées ❌, réveil test pas sonné ❌ → corrigés par Claude
+      (voir le journal du 16/11). Il faut un **nouveau build** (le comptage est du code iPhone).
+- [ ] Nouveau build : nouveau ZIP → `cd …/app` → `npm install` →
+      `npx eas-cli build --profile production --platform ios --auto-submit`
+- [ ] TestFlight (build 5) : tester l'achat (gratuit en test), le réveil, le défi, « Bonne nuit », la ligue
 - [ ] Enregistrer une vidéo d'écran de 30 s (réveil → pompes → victoire) pour Apple
 - [ ] Fiche App Store ([23-app-store.md](23-app-store.md), captures dans `design/app-store/`) → **Soumettre pour vérification**
 
