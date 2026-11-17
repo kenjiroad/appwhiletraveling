@@ -23,7 +23,9 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] 1er test TestFlight (16/11) : pompes pas comptées ❌, réveil test pas sonné ❌ → corrigés par Claude
       (voir le journal du 16/11). Il faut un **nouveau build** (le comptage est du code iPhone).
 - [x] Nouveau build (comptage + test du réveil corrigés) réussi et envoyé chez Apple ✅ 16/11
-- [ ] TestFlight (build 5) : tester l'achat (gratuit en test), le réveil, le défi, « Bonne nuit », la ligue
+- [x] TestFlight (build 5) : pompes comptées ✅, réveil de test qui sonne ✅ (17/11)
+- [ ] « Bonne nuit 🌙 » : rien sur l'écran verrouillé → dire à Claude si le bouton a été touché et le message affiché
+      (Réglages iPhone → Debout → Activités en direct : activé ?)
 - [ ] Enregistrer une vidéo d'écran de 30 s (réveil → pompes → victoire) pour Apple
 - [ ] Fiche App Store ([23-app-store.md](23-app-store.md), captures dans `design/app-store/`) → **Soumettre pour vérification**
 

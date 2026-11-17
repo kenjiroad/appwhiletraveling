@@ -145,6 +145,7 @@ L'offre « 1 semaine gratuite » manquait chez Apple : créée (175 pays). Pompe
 vérification « mains immobiles » refusait tout dès que l'IA perdait une main ; chaque main est maintenant suivie à
 part, et le téléphone qui bouge est détecté par le gyroscope. Le test « réveil dans 1 minute » était effacé en
 revenant à l'accueil : corrigé. Nouveau build nécessaire.
+Build 5 testé le 17/11 : les pompes sont comptées et le réveil de test sonne ✅.
 
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
