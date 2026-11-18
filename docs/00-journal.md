@@ -151,6 +151,7 @@ Build 5 testé le 17/11 : les pompes sont comptées et le réveil de test sonne 
 Après la grosse panne Apple du 17/11 (connexion impossible pour tout le monde), fiche complétée : captures 6,3"
 ajoutées (Apple les exige maintenant), textes, contact, confidentialité (4 types de données, sans pistage), nom du
 groupe d'abonnements. Version 1.0 (build 5) + abonnements envoyés : « En attente de vérification ».
+Le Mensuel était parti dans un envoi à part : version retirée puis renvoyée avec les 4 éléments ensemble.
 
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 

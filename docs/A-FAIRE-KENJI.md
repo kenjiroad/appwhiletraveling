@@ -28,7 +28,8 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       (Réglages iPhone → Debout → Activités en direct : activé ?)
 - [x] Fiche App Store remplie (captures 6,9" + 6,3" dans `design/app-store/`), confidentialité, groupe « Debout Pro » nommé
 - [x] **Envoyé à Apple** ✅ 18/11 : version 1.0 (build 5) « En attente de vérification »
-- [ ] Vérifier qu'Annuel et Mensuel sont aussi « En attente de vérification » (sinon les ajouter à l'envoi)
+- [x] Le Mensuel était resté à part : version retirée puis **renvoyée avec les 4** (version 1.0, groupe, Annuel,
+      Mensuel) ✅ 18/11
 - [ ] Attendre la réponse d'Apple (24–48 h) ; en cas de refus, envoyer le message à Claude
 
 ## Maintenant : l'app sur ton iPhone
