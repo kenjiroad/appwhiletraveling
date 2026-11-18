@@ -26,8 +26,10 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] TestFlight (build 5) : pompes comptées ✅, réveil de test qui sonne ✅ (17/11)
 - [ ] « Bonne nuit 🌙 » : rien sur l'écran verrouillé → dire à Claude si le bouton a été touché et le message affiché
       (Réglages iPhone → Debout → Activités en direct : activé ?)
-- [ ] Enregistrer une vidéo d'écran de 30 s (réveil → pompes → victoire) pour Apple
-- [ ] Fiche App Store ([23-app-store.md](23-app-store.md), captures dans `design/app-store/`) → **Soumettre pour vérification**
+- [x] Fiche App Store remplie (captures 6,9" + 6,3" dans `design/app-store/`), confidentialité, groupe « Debout Pro » nommé
+- [x] **Envoyé à Apple** ✅ 18/11 : version 1.0 (build 5) « En attente de vérification »
+- [ ] Vérifier qu'Annuel et Mensuel sont aussi « En attente de vérification » (sinon les ajouter à l'envoi)
+- [ ] Attendre la réponse d'Apple (24–48 h) ; en cas de refus, envoyer le message à Claude
 
 ## Maintenant : l'app sur ton iPhone
 
