@@ -158,6 +158,11 @@ Le parcours complet, de l'idée à l'envoi chez Apple, en 10 chapitres, avec les
 idées de contenus. Planche « évolution du design » (premier jet → néon → Aube → version finale).
 → Détails : [25-histoire-de-debout.md](25-histoire-de-debout.md), image `design/evolution-design.png`
 
+## Skill « histoire-du-projet » ✅ (18/11/2026)
+Pour chaque nouveau projet : un carnet d'histoire tenu à jour dès le jour 1, et à la demande l'histoire complète en .md
+(chapitres, vraies phrases, chiffres réels, leçons, idées de contenus) + la planche avant / après des designs.
+→ `.claude/skills/histoire-du-projet/` (à installer aussi dans le profil Claude pour tous les projets)
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)

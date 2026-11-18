@@ -7,6 +7,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - App : `app/` (Expo SDK 58, Expo Router, TypeScript). Module natif de comptage : `app/modules/rep-counter/`.
 - Liste de ce que Kenji doit faire : `docs/A-FAIRE-KENJI.md` (à tenir à jour et à lui rappeler).
 - Skills design du projet : `.claude/skills/impeccable`, `emil-improve-animations`, `emil-animate` (Reanimated 4 : toujours `mass: 1` dans les ressorts).
+- Skill `histoire-du-projet` : tenir à jour l'histoire de l'app (`docs/25-histoire-de-debout.md`) à chaque étape marquante ; à la demande, la régénérer pour le contenu.
 - Étapes et décisions : `docs/00-journal.md` (une ligne par étape). Design & marketing : `docs/11-design-marketing-debout.md`.
 - Tout écrire en français, simplement. Kenji débute : expliquer les termes techniques.
 
