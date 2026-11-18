@@ -39,3 +39,4 @@ il faut un build EAS : voir [docs/09-debout-v1.md](docs/09-debout-v1.md).
 22. [Marmotte qui avance](docs/22-marmotte-qui-avance.md) — design façon Uber, serveur, rappel du soir
 23. [App Store](docs/23-app-store.md) — fiche, captures, confidentialité, étapes de publication
 24. [Audit design](docs/24-audit-design.md) — skills Impeccable + Emil Kowalski, corrections
+25. [L'histoire de Debout](docs/25-histoire-de-debout.md) — le parcours jour par jour, pour créer du contenu

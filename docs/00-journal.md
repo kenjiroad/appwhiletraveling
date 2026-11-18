@@ -153,6 +153,11 @@ ajoutées (Apple les exige maintenant), textes, contact, confidentialité (4 typ
 groupe d'abonnements. Version 1.0 (build 5) + abonnements envoyés : « En attente de vérification ».
 Le Mensuel était parti dans un envoi à part : version retirée puis renvoyée avec les 4 éléments ensemble.
 
+## L'histoire de Debout + les designs ✅ (18/11/2026)
+Le parcours complet, de l'idée à l'envoi chez Apple, en 10 chapitres, avec les citations de Kenji, les leçons et des
+idées de contenus. Planche « évolution du design » (premier jet → néon → Aube → version finale).
+→ Détails : [25-histoire-de-debout.md](25-histoire-de-debout.md), image `design/evolution-design.png`
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)
