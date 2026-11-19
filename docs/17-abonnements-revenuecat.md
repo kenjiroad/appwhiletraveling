@@ -87,10 +87,12 @@ Après le lancement, deux façons, sans toucher au code :
 | Comment la personne l'utilise | rien à faire | App Store → photo de profil → **Utiliser une carte cadeau ou un code** |
 | Limite | perdu si elle supprime l'app (compte anonyme) : il faut le redonner | lié à son compte Apple, suit ses appareils |
 
-Pour l'accès offert : la personne lance la semaine gratuite et fait un matin ; tu trouves son prénom dans
-Supabase → **Table Editor** → `profiles` (colonne `id`) ; tu colles cet `id` dans la recherche de RevenueCat
-→ **Customers**, puis **Grant entitlement**. Elle résilie ensuite l'essai dans Réglages → son nom → Abonnements :
-l'accès offert reste.
+Pour l'accès offert (vérifié dans le code le 19/11 : le pseudo est enregistré dès la fin de l'onboarding) :
+1. La personne installe Debout, fait l'onboarding avec un pseudo reconnaissable, et s'arrête sur le paywall (sans payer).
+2. Supabase → **Table Editor** → `profiles` → la ligne de ce pseudo → copier l'`id`.
+3. RevenueCat → **Customers** → coller l'`id` dans la recherche → ouvrir la fiche → **Grant** (accès offert) →
+   `debout_pro` → **Lifetime**.
+4. La personne ferme complètement l'app et la rouvre (ou touche « Restaurer mes achats ») : le paywall disparaît.
 
 ## Reste à vérifier (🟡)
 
