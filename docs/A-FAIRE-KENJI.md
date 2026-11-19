@@ -34,7 +34,11 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       (lien : https://apps.apple.com/fr/app/id6830811515 — peut mettre quelques heures à apparaître dans la recherche)
 - [ ] Télécharger Debout depuis le vrai App Store et vérifier que les abonnements sont « Approuvés »
 - [ ] ⚠️ **Supabase en pause** (19/11 ; le plan gratuit met en pause un projet sans activité pendant 7 jours) :
-      cliquer **Resume project**, puis choisir avec Claude comment éviter la prochaine pause (plan Pro ou « ping » quotidien)
+      cliquer **Resume project**. Option choisie : le « ping » quotidien (fichier `.github/workflows/supabase-reveil.yml`)
+- [ ] Ping : GitHub → Settings → Secrets and variables → Actions → New repository secret →
+      `SUPABASE_PUBLISHABLE_KEY` = la publishable key de Supabase ; puis Actions → « Garder Supabase éveillé » → Run workflow
+- [ ] Accès à vie pour Lucho et Tess : ils rouvrent l'app (Supabase réveillé) → leurs pseudos apparaissent dans
+      `profiles` → RevenueCat → Customers → Grant `debout_pro` Lifetime
 
 ## Maintenant : l'app sur ton iPhone
 

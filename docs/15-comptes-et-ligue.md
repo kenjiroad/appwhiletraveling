@@ -63,3 +63,12 @@ d'environnement du projet sur expo.dev). On le fera ensemble au moment du build.
 - Une ligue = tous les joueurs pour l'instant (top 50). Plus tard : groupes de 30 joueurs, montées et
   descentes Bronze → Argent → Or.
 - Ajouter ses potes (code ami) pour une ligue privée.
+
+
+## Mise en pause du projet (19/11/2026)
+
+Le plan gratuit de Supabase met un projet en pause après environ 7 jours sans activité (c'est arrivé le 19/11,
+juste après la sortie). Pendant la pause, la ligue et les comptes ne marchent pas, mais aucune donnée n'est perdue.
+Parade : `.github/workflows/supabase-reveil.yml` fait une petite lecture chaque jour (secret GitHub
+`SUPABASE_PUBLISHABLE_KEY`) et échoue si la base ne répond plus, ce qui envoie un e-mail d'alerte. Plus tard, avec des
+abonnés payants : plan Pro (25 $/mois), sans pause et avec sauvegardes quotidiennes.
