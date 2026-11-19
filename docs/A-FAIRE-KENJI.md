@@ -38,9 +38,8 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [ ] Ping : GitHub → Settings → Secrets and variables → Actions → New repository secret →
       `SUPABASE_PUBLISHABLE_KEY` = la publishable key de Supabase ; puis Actions → « Garder Supabase éveillé » → Run workflow
 - [x] Supabase → SQL Editor → `0004_droits.sql` → Run ✅ 19/11
-- [ ] expo.dev → `EXPO_PUBLIC_SUPABASE_URL` = `https://eoskvfpgsyjhtxkctfoz.supabase.co` (c'était l'adresse du tableau de bord)
-- [ ] Terminal (dossier `app`) : `npx eas-cli update --channel production --environment production --message "Adresse Supabase corrigée"`
-      puis ouvrir l'app, attendre 10 s, la fermer et la rouvrir → les pseudos apparaissent dans `profiles`
+- [x] expo.dev → `EXPO_PUBLIC_SUPABASE_URL` corrigée ✅ 19/11
+- [x] Mise à jour à distance publiée ✅ 19/11 : les journaux Supabase montrent compte, pseudo, séances et ligue OK (12:11)
 - [ ] Accès à vie pour Lucho et Tess : ils rouvrent l'app (Supabase réveillé) → leurs pseudos apparaissent dans
       `profiles` → RevenueCat → Customers → Grant `debout_pro` Lifetime
 

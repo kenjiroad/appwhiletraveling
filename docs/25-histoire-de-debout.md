@@ -280,6 +280,22 @@ pour Berlin. 🎉
 
 ---
 
+## Chapitre 12 — La ligue fantôme (19 novembre)
+
+Juste après la sortie, Kenji veut offrir l'app à vie à ses amis Lucho et Tess… mais introuvables dans la base.
+
+> « Je me suis enregistré, un autre pote aussi, et je vois aucun id. »
+
+Deux surprises d'un coup. La base Supabase (gratuite) s'était **mise en pause** faute d'activité, et surtout l'app
+cherchait la base à la mauvaise adresse : celle de la **page du tableau de bord** au lieu de celle de la **base**.
+Résultat, depuis le premier jour, la ligue était vide et personne n'était enregistré. Correction de l'adresse, puis
+une **mise à jour à distance** (sans nouveau build ni passage chez Apple). Les journaux de Supabase montrent alors,
+ligne après ligne, le premier compte créé, le premier pseudo et la première ligue chargée.
+
+Leçon : une adresse mal copiée peut casser une fonctionnalité entière sans aucun message d'erreur visible.
+
+---
+
 ## Ce qui reste à faire
 
 - Tester la marmotte de nuit sur l'écran verrouillé.
@@ -322,7 +338,7 @@ pour Berlin. 🎉
 - « Pourquoi une marmotte ? »
 
 **Formats**
-- Série « Jour X de mon app » (les 11 chapitres ci-dessus = 11 épisodes).
+- Série « Jour X de mon app » (les 12 chapitres ci-dessus = 12 épisodes).
 - Avant / après du design (planche `0-evolution-du-design.png`).
 - Carrousel « 10 leçons pour lancer sa première app ».
 - Post LinkedIn : « De l'idée à l'App Store en 28 jours, avec une IA ».
