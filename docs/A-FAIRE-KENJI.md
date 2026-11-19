@@ -33,6 +33,8 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] **Debout accepté par Apple** ✅ 19/11 : « 1.0 Prête pour la distribution » → en ligne sur l'App Store
       (lien : https://apps.apple.com/fr/app/id6830811515 — peut mettre quelques heures à apparaître dans la recherche)
 - [ ] Télécharger Debout depuis le vrai App Store et vérifier que les abonnements sont « Approuvés »
+- [ ] ⚠️ **Supabase en pause** (19/11 ; le plan gratuit met en pause un projet sans activité pendant 7 jours) :
+      cliquer **Resume project**, puis choisir avec Claude comment éviter la prochaine pause (plan Pro ou « ping » quotidien)
 
 ## Maintenant : l'app sur ton iPhone
 
