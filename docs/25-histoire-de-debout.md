@@ -1,10 +1,10 @@
-# L'histoire de Debout — de l'idée à l'App Store en 27 jours
+# L'histoire de Debout — de l'idée à l'App Store en 28 jours
 
 _Écrit le 18 novembre 2026, le soir de l'envoi à Apple. Pour créer du contenu (TikTok, Instagram, LinkedIn, X)._
 
 > **Debout**, c'est le réveil qui ne s'arrête que quand tu fais tes pompes ou tes squats, comptés par l'IA de
 > la caméra. Kenji l'a créé en voyageant, avec Claude, **sans jamais ouvrir Xcode** : c'était sa première app.
-> Commencée le 22 octobre 2026, envoyée à Apple le 18 novembre 2026.
+> Commencée le 22 octobre 2026, envoyée à Apple le 18 novembre, **acceptée et publiée le 19 novembre 2026**.
 
 Les phrases de Kenji sont citées telles qu'il les a écrites, avec l'orthographe juste corrigée. Les clés, les
 identifiants et les infos bancaires vus pendant le projet ne sont **pas** dans ce document.
@@ -17,6 +17,7 @@ identifiants et les infos bancaires vus pendant le projet ne sont **pas** dans c
 |---|---|
 | Début | mercredi **22 octobre 2026**, au réveil, en partant pour Berlin |
 | Envoi à Apple | mercredi **18 novembre 2026** (27 jours plus tard) |
+| Acceptée par Apple | jeudi **19 novembre 2026**, du premier coup (28 jours après la première idée) |
 | Idées envisagées avant Debout | une app de musculation en équipe (Cordée), une app d'alternance IA, une app de couple, un nettoyeur de photos (Ménage, codé puis abandonné le jour même)… |
 | Directions artistiques | 3 : le premier jet, le « néon » (rejeté), « l'Aube » (gardée) |
 | Logos proposés | 4 pistes, puis 2 versions de la piste C |
@@ -266,9 +267,21 @@ La dernière ligne droite :
 
 ---
 
+## Chapitre 11 — Acceptée du premier coup (19 novembre)
+
+Le lendemain matin, Kenji ouvre App Store Connect et envoie une capture : à côté de « 1.0 », une **coche verte**
+et les mots « **Prête pour la distribution** ».
+
+> « Ça veut dire quoi ?? »
+
+Ça veut dire qu'Apple a tout validé : l'app, les deux abonnements, la fiche. Comme on avait choisi « Publier
+automatiquement », **Debout est en ligne sur l'App Store**, 28 jours après le message envoyé au réveil en partant
+pour Berlin. 🎉
+
+---
+
 ## Ce qui reste à faire
 
-- La réponse d'Apple (en général 24 à 48 h). En cas de refus, on corrige et on renvoie.
 - Tester la marmotte de nuit sur l'écran verrouillé.
 - S'inscrire au Small Business Program d'Apple (15 % de commission au lieu de 30 %).
 - Lancer les premières vidéos.
@@ -300,7 +313,7 @@ La dernière ligne droite :
 ## Idées de contenus
 
 **Accroches (TikTok / Reels / Shorts)**
-- « J'ai créé une app iPhone en 27 jours en voyageant, sans écrire une ligne de code. »
+- « J'ai créé une app iPhone en 28 jours en voyageant, sans écrire une ligne de code. Apple l'a acceptée du premier coup. »
 - « Mon réveil ne s'arrête que si je fais 15 pompes. Je l'ai codé avec une IA. »
 - « L'IA comptait des pompes quand je bougeais juste le téléphone 💀 »
 - « Le jour où je voulais publier mon app, Apple est tombé en panne dans le monde entier. »
@@ -309,10 +322,10 @@ La dernière ligne droite :
 - « Pourquoi une marmotte ? »
 
 **Formats**
-- Série « Jour X de mon app » (les 10 chapitres ci-dessus = 10 épisodes).
+- Série « Jour X de mon app » (les 11 chapitres ci-dessus = 11 épisodes).
 - Avant / après du design (planche `0-evolution-du-design.png`).
 - Carrousel « 10 leçons pour lancer sa première app ».
-- Post LinkedIn : « De l'idée à l'App Store en 27 jours, avec une IA ».
+- Post LinkedIn : « De l'idée à l'App Store en 28 jours, avec une IA ».
 - Vidéo face caméra au réveil : l'alarme sonne, les pompes, la victoire (et la marmotte qui se lève).
 
 **Visuels disponibles** (dans le dossier `debout-designs`)

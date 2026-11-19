@@ -30,6 +30,7 @@ Construite en voyageant, sans Mac : Expo + EAS Build.
 - 29/10/2026 — Feu vert : joker de série, story à partager, « Toujours debout ? », sortie de secours, rappel du coucher + Activité en direct « sommeil » (`docs/21`). Blocage des apps = étape 3.
 - 01/11/2026 — Écran verrouillé façon Uber, marmotte qui avance la nuit via Supabase + APNs, rappel du soir « réveil de demain » (`docs/22`).
 - 04/11/2026 — Lancement payant : 29,99 €/an avec **1 semaine gratuite**, 7,99 €/mois. Vraie ligue Supabase. Réveil testé : il sonne ✅. Nom : « Debout » (marmotte = mascotte).
+- 19/11/2026 — **Debout accepté par Apple** et publié (version 1.0, build 5). Envoyé le 18/11.
 - 22/10/2026 — Ordre : valider la DA → compte Apple Developer + premier build EAS → comptes + vraie ligue → AlarmKit + RevenueCat.
 
 ## À confirmer (🟡)

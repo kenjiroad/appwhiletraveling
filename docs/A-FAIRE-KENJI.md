@@ -30,7 +30,9 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] **Envoyé à Apple** ✅ 18/11 : version 1.0 (build 5) « En attente de vérification »
 - [x] Le Mensuel était resté à part : version retirée puis **renvoyée avec les 4** (version 1.0, groupe, Annuel,
       Mensuel) ✅ 18/11
-- [ ] Attendre la réponse d'Apple (24–48 h) ; en cas de refus, envoyer le message à Claude
+- [x] **Debout accepté par Apple** ✅ 19/11 : « 1.0 Prête pour la distribution » → en ligne sur l'App Store
+      (lien : https://apps.apple.com/fr/app/id6830811515 — peut mettre quelques heures à apparaître dans la recherche)
+- [ ] Télécharger Debout depuis le vrai App Store et vérifier que les abonnements sont « Approuvés »
 
 ## Maintenant : l'app sur ton iPhone
 

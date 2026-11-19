@@ -163,6 +163,10 @@ Pour chaque nouveau projet : un carnet d'histoire tenu à jour dès le jour 1, e
 (chapitres, vraies phrases, chiffres réels, leçons, idées de contenus) + la planche avant / après des designs.
 → `.claude/skills/histoire-du-projet/` (à installer aussi dans le profil Claude pour tous les projets)
 
+## Debout accepté par Apple 🎉 (19/11/2026)
+Vérification passée du premier coup : version 1.0 « Prête pour la distribution », publiée automatiquement sur
+l'App Store (France, Belgique, Suisse, Luxembourg, Canada). 28 jours après la première idée.
+
 ## Étape 15 — Compte Apple Developer + premier build EAS (à faire)
 
 ## Analyse des concurrents — faite ✅ (28/10/2026)
