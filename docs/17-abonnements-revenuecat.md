@@ -90,8 +90,10 @@ Après le lancement, deux façons, sans toucher au code :
 Pour l'accès offert (vérifié dans le code le 19/11 : le pseudo est enregistré dès la fin de l'onboarding) :
 1. La personne installe Debout, fait l'onboarding avec un pseudo reconnaissable, et s'arrête sur le paywall (sans payer).
 2. Supabase → **Table Editor** → `profiles` → la ligne de ce pseudo → copier l'`id`.
-3. RevenueCat → **Customers** → coller l'`id` dans la recherche → ouvrir la fiche → **Grant** (accès offert) →
-   `debout_pro` → **Lifetime**.
+3. Ouvrir directement la fiche RevenueCat en collant l'`id` à la fin de cette adresse (la recherche de la page
+   Customers ne le trouve pas toujours) : `https://app.revenuecat.com/projects/e9feaabd/customers/<id>`.
+   Sur la fiche : cadre **Entitlements** → **+ Grant** → `debout_pro` → **Lifetime**.
+   (L'`id` Supabase apparaît dans « App User IDs » comme alias du compte RevenueCat anonyme : c'est normal.)
 4. La personne ferme complètement l'app et la rouvre (ou touche « Restaurer mes achats ») : le paywall disparaît.
 
 ## Reste à vérifier (🟡)
