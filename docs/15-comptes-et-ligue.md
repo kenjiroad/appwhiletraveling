@@ -86,3 +86,11 @@ tableau de bord (`https://supabase.com/dashboard/project/…`) au lieu de l'adre
 (`https://eoskvfpgsyjhtxkctfoz.supabase.co`, visible dans Supabase → bouton **Connect** ou Project Settings → Data API).
 L'app ne trouvait donc jamais Supabase : aucun compte créé, ligue avec soi seul. Corrigé sur expo.dev puis envoyé par
 mise à jour à distance : `npx eas-cli update --channel production --environment production`.
+
+## Une seule ligue avec tout le monde (19/11/2026)
+
+Il n'y a toujours eu qu'une ligue, mais elle ne montrait que les joueurs ayant fait au moins une répétition dans la
+semaine (plus soi). Demande de Kenji : tous les utilisateurs dans la même ligue, visibles dès l'installation.
+`app/supabase/migrations/0005_ligue_pour_tous.sql` (à lancer dans le SQL Editor) montre les 50 premiers, même à 0.
+Testé sur un PostgreSQL local avec les fichiers 0001 à 0005 : Kenji (15), Lucho (0) et Tess (0) se voient tous ;
+un visiteur non connecté reste refusé.
