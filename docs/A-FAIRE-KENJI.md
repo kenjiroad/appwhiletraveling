@@ -37,6 +37,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
       cliquer **Resume project**. Option choisie : le « ping » quotidien (fichier `.github/workflows/supabase-reveil.yml`)
 - [ ] Ping : GitHub → Settings → Secrets and variables → Actions → New repository secret →
       `SUPABASE_PUBLISHABLE_KEY` = la publishable key de Supabase ; puis Actions → « Garder Supabase éveillé » → Run workflow
+- [ ] Supabase → SQL Editor → coller `app/supabase/migrations/0004_droits.sql` → Run (sinon les pseudos ne s'enregistrent pas)
 - [ ] Accès à vie pour Lucho et Tess : ils rouvrent l'app (Supabase réveillé) → leurs pseudos apparaissent dans
       `profiles` → RevenueCat → Customers → Grant `debout_pro` Lifetime
 

@@ -72,3 +72,11 @@ juste après la sortie). Pendant la pause, la ligue et les comptes ne marchent p
 Parade : `.github/workflows/supabase-reveil.yml` fait une petite lecture chaque jour (secret GitHub
 `SUPABASE_PUBLISHABLE_KEY`) et échoue si la base ne répond plus, ce qui envoie un e-mail d'alerte. Plus tard, avec des
 abonnés payants : plan Pro (25 $/mois), sans pause et avec sauvegardes quotidiennes.
+
+
+## Table `profiles` vide malgré les comptes (19/11/2026)
+
+Les comptes anonymes se créaient (≈ 10 dans Authentication), mais aucun pseudo n'arrivait dans `profiles` et la
+ligue ne montrait que soi. Cause probable : les nouveaux projets Supabase ne donnent plus automatiquement aux
+comptes le droit d'utiliser les tables (la RLS seule ne suffit pas). Correctif : `app/supabase/migrations/0004_droits.sql`
+à lancer dans le SQL Editor, puis rouvrir l'app.
