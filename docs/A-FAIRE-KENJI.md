@@ -40,6 +40,9 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Supabase → SQL Editor → `0004_droits.sql` → Run ✅ 19/11
 - [x] expo.dev → `EXPO_PUBLIC_SUPABASE_URL` corrigée ✅ 19/11
 - [x] Mise à jour à distance publiée ✅ 19/11 : les journaux Supabase montrent compte, pseudo, séances et ligue OK (12:11)
+- [x] Accès à vie pour Kenji (RevenueCat → Grant `debout_pro` Lifetime) ✅ 19/11
+- [ ] ⚠️ Annuler le **vrai essai** lancé sur l'App Store (Réglages → ton nom → Abonnements → Debout → Annuler),
+      sinon 29,99 € prélevés le 26/11
 - [ ] Accès à vie pour Lucho et Tess : ils rouvrent l'app (Supabase réveillé) → leurs pseudos apparaissent dans
       `profiles` → RevenueCat → Customers → Grant `debout_pro` Lifetime
 
