@@ -43,7 +43,7 @@ Ta liste perso, dans l'ordre. Je la mets à jour à chaque étape.
 - [x] Accès à vie pour Kenji (RevenueCat → Grant `debout_pro` Lifetime) ✅ 19/11
 - [ ] ⚠️ Annuler le **vrai essai** lancé sur l'App Store (Réglages → ton nom → Abonnements → Debout → Annuler),
       sinon 29,99 € prélevés le 26/11
-- [ ] Supabase → SQL Editor → coller `app/supabase/migrations/0005_ligue_pour_tous.sql` → Run (tout le monde dans la ligue)
+- [x] Ligue pour tous (`0005_ligue_pour_tous.sql` lancé dans Supabase) ✅ 19/11
 - [ ] Accès à vie pour Lucho et Tess : ils rouvrent l'app (Supabase réveillé) → leurs pseudos apparaissent dans
       `profiles` → RevenueCat → Customers → Grant `debout_pro` Lifetime
 
