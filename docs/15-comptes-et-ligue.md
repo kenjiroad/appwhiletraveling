@@ -80,3 +80,9 @@ Les comptes anonymes se créaient (≈ 10 dans Authentication), mais aucun pseud
 ligue ne montrait que soi. Cause probable : les nouveaux projets Supabase ne donnent plus automatiquement aux
 comptes le droit d'utiliser les tables (la RLS seule ne suffit pas). Correctif : `app/supabase/migrations/0004_droits.sql`
 à lancer dans le SQL Editor, puis rouvrir l'app.
+
+**Vraie cause (19/11/2026)** : sur expo.dev, `EXPO_PUBLIC_SUPABASE_URL` contenait l'adresse de la page du
+tableau de bord (`https://supabase.com/dashboard/project/…`) au lieu de l'adresse de la base
+(`https://eoskvfpgsyjhtxkctfoz.supabase.co`, visible dans Supabase → bouton **Connect** ou Project Settings → Data API).
+L'app ne trouvait donc jamais Supabase : aucun compte créé, ligue avec soi seul. Corrigé sur expo.dev puis envoyé par
+mise à jour à distance : `npx eas-cli update --channel production --environment production`.
